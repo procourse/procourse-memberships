@@ -1,1 +1,7 @@
-<div>Levels</div>
+<div class='content-list span6'>
+	<h3>{{i18n 'admin.guild.levels'}}</h3>
+	{{#unless model.levels}}
+	<p class="desc">Add some levels for your users.</p>
+	{{/unless}}
+	<button {{action "testAlert"}} class='btn'><i class="fa fa-plus"></i>{{i18n 'admin.customize.new'}}</button>
+</div>
