@@ -1,4 +1,13 @@
 en:
   js:
+    admin:
+      guild:
+        dashboard: "Dashboard"
+        levels: "Levels"
+        pages: "Pages"
+        payment: "Payment"
+        messages: "Messages"
+        advanced: "Advanced"
+        extras: "Extras"
     guild:
       title: "Guild"

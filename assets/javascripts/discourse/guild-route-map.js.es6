@@ -1,7 +1,7 @@
-export default {
-  resource: 'admin.adminPlugins',
-  path: '/plugins',
-  map() {
-    this.route('guild');
-  }
+export default function(){
+	this.route('guild', function(){
+		this.route('level', {path: '/l' }, function(){
+			this.route('show', {path: '/:level'});
+		});
+	});
 };

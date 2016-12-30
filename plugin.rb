@@ -9,5 +9,13 @@ enabled_site_setting :guild_enabled
 add_admin_route 'guild.title', 'guild'
 
 Discourse::Application.routes.append do
-  get '/admin/plugins/guild' => 'admin/plugins#index', constraints: StaffConstraint.new
+	get '/admin/plugins/guild' => 'admin/plugins#index', constraints: StaffConstraint.new
+	get '/admin/plugins/guild/levels' => 'admin/plugins#index', constraints: StaffConstraint.new
+	get '/admin/plugins/guild/pages' => 'admin/plugins#index', constraints: StaffConstraint.new
+	get '/admin/plugins/guild/payment' => 'admin/plugins#index', constraints: StaffConstraint.new
+	get '/admin/plugins/guild/messages' => 'admin/plugins#index', constraints: StaffConstraint.new
+	get '/admin/plugins/guild/advanced' => 'admin/plugins#index', constraints: StaffConstraint.new
+	get '/admin/plugins/guild/extras' => 'admin/plugins#index', constraints: StaffConstraint.new
 end
+
+load File.expand_path('../lib/discourse_guild/engine.rb', __FILE__)

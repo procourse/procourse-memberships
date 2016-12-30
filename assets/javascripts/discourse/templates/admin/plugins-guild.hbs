@@ -1,3 +1,13 @@
-<div class='tentacle'>
-	<img src="http://eviltrout.com/images/tentacle.gif">
+{{#admin-nav}}
+	{{nav-item route='adminPlugins.guild.index' label='admin.guild.dashboard'}}
+	{{nav-item route='adminPlugins.guild.levels' label='admin.guild.levels'}}
+	{{nav-item route='adminPlugins.guild.pages' label='admin.guild.pages'}}
+	{{nav-item route='adminPlugins.guild.payment' label='admin.guild.payment'}}
+	{{nav-item route='adminPlugins.guild.messages' label='admin.guild.messages'}}
+	{{nav-item route='adminPlugins.guild.advanced' label='admin.guild.advanced'}}
+	{{nav-item route='adminPlugins.guild.extras' label='admin.guild.extras'}}
+{{/admin-nav}}
+
+<div class="admin-container">
+  {{outlet}}
 </div>
