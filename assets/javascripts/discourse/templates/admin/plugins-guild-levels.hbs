@@ -1,7 +1,68 @@
-<div class='content-list span6'>
-	<h3>{{i18n 'admin.guild.levels'}}</h3>
-	{{#unless model.levels}}
-	<p class="desc">Add some levels for your users.</p>
-	{{/unless}}
-	<button {{action "testAlert"}} class='btn'><i class="fa fa-plus"></i>{{i18n 'admin.customize.new'}}</button>
+<div class="customize">
+	<div class="admin-container">
+		<div class='content-list span6'>
+			<h3>{{i18n 'admin.guild.levels.title'}}</h3>
+			<ul>
+			{{#each model as |level|}}
+				<li><a {{action "selectDGLevel" level}} class="{{if level.selected 'active'}}">{{level.name}}</a></li>
+			{{/each}}
+			</ul>
+			{{#unless model}}
+				<p class="desc">Add some levels for your users.</p>
+			{{/unless}}
+			{{d-button class="btn"
+		             action="newDGLevel"
+		             label="admin.customize.new"
+		             icon="plus"}}
+		</div>
+		{{#if selectedItem.name}}
+		<div class="current-style color-scheme badges">
+			<div class='admin-container'>
+			    <h1>{{text-field class="style-name" value=selectedItem.name}}</h1>
+			    <div class="controls">
+					<button {{action "save"}} disabled={{selectedItem.disableSave}} class='btn'>{{i18n 'admin.customize.save'}}</button>
+					<button {{action "toggleEnabled"}} disabled={{selectedItem.disableEnable}} class="btn">
+						{{#if selectedItem.enabled}}
+							{{i18n 'disable'}}
+						{{else}}
+							{{i18n 'enable'}}
+						{{/if}}
+					</button>
+					<button {{action "copy" selectedItem}} class='btn'><i class="fa fa-copy"></i> {{i18n 'admin.customize.copy'}}</button>
+					<button {{action "destroy"}} class='btn btn-danger'><i class="fa fa-trash-o"></i> {{i18n 'admin.customize.delete'}}</button>
+					<span class="saving {{unless selectedItem.savingStatus 'hidden'}}">{{selectedItem.savingStatus}}</span>
+				</div>
+		    </div>
+		    <br>
+		    <form class="form-horizontal">
+			<div>
+			    <label for="initial-payment">{{i18n 'admin.guild.initial_payment'}}</label>
+			    {{input type="text" name="initial-payment" value="teste"}}
+		    </div>
+			<div>
+			    <label>
+			    	{{input type="checkbox" name="recurring" checked=true}}
+				    {{i18n 'admin.guild.recurring'}}
+			    </label>
+		    </div>
+			<div>
+			    <label for="recurring-payment">{{i18n 'admin.guild.recurring_payment'}}</label>
+			    {{input type="text" name="recurring-payment" value="teste"}}
+		    </div>
+			<div>
+			    <label>
+			    	{{input type="checkbox" name="trial" checked=true}}
+				    {{i18n 'admin.guild.trial'}}
+			    </label>
+		    </div>
+			<div>
+			    <label for="trial-period">{{i18n 'admin.guild.trial_period'}}</label>
+			    {{input type="text" name="trial-period" value="teste"}}
+		    </div>
+		    </form>
+		</div>
+		{{else}}
+			<div class="current-style color-scheme badges">No level selected.</div>
+		{{/if}}
+	</div>
 </div>

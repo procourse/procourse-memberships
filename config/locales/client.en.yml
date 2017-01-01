@@ -3,11 +3,18 @@ en:
     admin:
       guild:
         dashboard: "Dashboard"
-        levels: "Levels"
         pages: "Pages"
         payment: "Payment"
         messages: "Messages"
         advanced: "Advanced"
         extras: "Extras"
+        initial_payment: "Initial Payment"
+        recurring: "Recurring"
+        recurring_payment: "Recurring Payment"
+        trial: "Trial"
+        trial_period: "Trial Period"
+        levels:
+          title: "Levels"
+          new_name: "New Guild Level"
     guild:
       title: "Guild"
