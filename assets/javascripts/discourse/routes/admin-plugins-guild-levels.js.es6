@@ -1,10 +1,8 @@
-import Level from '../models/level';
+import GuildLevel from '../models/guild-level';
 
 export default Discourse.Route.extend({
   model() {
-    return Level.findAll().then((result) => {
-      return result.levels;
-    });
+    return GuildLevel.findAll();
   },
 
   setupController(controller, model) {

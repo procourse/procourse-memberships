@@ -1,7 +1,7 @@
 <div class="customize">
 	<div class="admin-container">
 		<div class='content-list span6'>
-			<h3>{{i18n 'admin.guild.levels.title'}}</h3>
+			<h3>{{i18n 'admin.guild.titles.levels'}}</h3>
 			<ul>
 			{{#each model as |level|}}
 				<li><a {{action "selectDGLevel" level}} class="{{if level.selected 'active'}}">{{level.name}}</a></li>
@@ -36,28 +36,28 @@
 		    <br>
 		    <form class="form-horizontal">
 			<div>
-			    <label for="initial-payment">{{i18n 'admin.guild.initial_payment'}}</label>
-			    {{input type="text" name="initial-payment" value="teste"}}
+			    <label for="initial-payment">{{i18n 'admin.guild.levels.initial_payment'}}</label>
+			    {{input type="text" name="initial-payment" value=selectedItem.initial_payment}}
 		    </div>
 			<div>
 			    <label>
-			    	{{input type="checkbox" name="recurring" checked=true}}
-				    {{i18n 'admin.guild.recurring'}}
+			    	{{input type="checkbox" name="recurring" checked=selectedItem.recurring}}
+				    {{i18n 'admin.guild.levels.recurring'}}
 			    </label>
 		    </div>
 			<div>
-			    <label for="recurring-payment">{{i18n 'admin.guild.recurring_payment'}}</label>
-			    {{input type="text" name="recurring-payment" value="teste"}}
+			    <label for="recurring-payment">{{i18n 'admin.guild.levels.recurring_payment'}}</label>
+			    {{input type="text" name="recurring-payment" value=selectedItem.recurring_payment}}
 		    </div>
 			<div>
 			    <label>
-			    	{{input type="checkbox" name="trial" checked=true}}
-				    {{i18n 'admin.guild.trial'}}
+			    	{{input type="checkbox" name="trial" checked=selectedItem.trial}}
+				    {{i18n 'admin.guild.levels.trial'}}
 			    </label>
 		    </div>
 			<div>
-			    <label for="trial-period">{{i18n 'admin.guild.trial_period'}}</label>
-			    {{input type="text" name="trial-period" value="teste"}}
+			    <label for="trial-period">{{i18n 'admin.guild.levels.trial_period'}}</label>
+			    {{input type="text" name="trial-period" value=selectedItem.trial_period}}
 		    </div>
 		    </form>
 		</div>

@@ -3,12 +3,12 @@ module DiscourseGuild
 
 	  def show
 	  	@level = params[:level]
-	  	render_json_dump(level: @level)
+	  	render_json_dump(@level)
 	  end
 
 	  def all
-	  	levels = Levels.all
-	  	render_json_dump(levels: levels)
+	  	levels = Level.all
+	  	render_json_dump(levels)
 	  end
 
 	end

@@ -2,19 +2,20 @@ en:
   js:
     admin:
       guild:
-        dashboard: "Dashboard"
-        pages: "Pages"
-        payment: "Payment"
-        messages: "Messages"
-        advanced: "Advanced"
-        extras: "Extras"
-        initial_payment: "Initial Payment"
-        recurring: "Recurring"
-        recurring_payment: "Recurring Payment"
-        trial: "Trial"
-        trial_period: "Trial Period"
+        titles:
+          dashboard: "Dashboard"
+          levels: "Levels"
+          pages: "Pages"
+          payment: "Payment"
+          messages: "Messages"
+          advanced: "Advanced"
+          extras: "Extras"
         levels:
-          title: "Levels"
           new_name: "New Guild Level"
+          initial_payment: "Initial Payment"
+          recurring: "Recurring"
+          recurring_payment: "Recurring Payment"
+          trial: "Trial"
+          trial_period: "Trial Period"
     guild:
       title: "Guild"
