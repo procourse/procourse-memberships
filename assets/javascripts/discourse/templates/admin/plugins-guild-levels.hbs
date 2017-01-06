@@ -15,13 +15,13 @@
 		             label="admin.customize.new"
 		             icon="plus"}}
 		</div>
-		{{#if selectedItem.name}}
+		{{#if selectedItem}}
 		<div class="current-style color-scheme badges">
 			<div class='admin-container'>
 			    <h1>{{text-field class="style-name" value=selectedItem.name}}</h1>
 			    <div class="controls">
-					<button {{action "save"}} disabled={{selectedItem.disableSave}} class='btn'>{{i18n 'admin.customize.save'}}</button>
-					<button {{action "toggleEnabled"}} disabled={{selectedItem.disableEnable}} class="btn">
+					<button {{action "save"}} disabled={{disableSave}} class='btn'>{{i18n 'admin.customize.save'}}</button>
+					<button {{action "toggleEnabled"}} disabled={{disableEnable}} class="btn">
 						{{#if selectedItem.enabled}}
 							{{i18n 'disable'}}
 						{{else}}
@@ -35,9 +35,12 @@
 		    </div>
 		    <br>
 		    <form class="form-horizontal">
+		    {{#if selectedItem.id}}
 		    <div>
 			    <label>{{i18n 'admin.guild.levels.id'}}: {{ selectedItem.id }}</label>
+			    <p class="help">Public membership page: <a target="_blank" href="{{levelURL}}{{selectedItem.id}}">{{levelURL}}{{selectedItem.id}}</a></p>
 		    </div>
+		    {{/if}}
 		    <div>
 		    {{combo-box content=customGroups valueAttribute="id" value=selectedItem.group none="admin.groups.bulk_select"}}
 		    </div>
