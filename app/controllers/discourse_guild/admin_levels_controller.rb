@@ -18,13 +18,14 @@ module DiscourseGuild
     end
 
     def update
-      @guild_level.name = params[:guild_level][:name] if params[:guild_level][:name].present?
-      @guild_level.enabled = params[:guild_level][:enabled] if params[:guild_level][:enabled].present?
-      @guild_level.initial_payment = params[:guild_level][:initial_payment] if params[:guild_level][:initial_payment].present?
-      @guild_level.recurring = params[:guild_level][:recurring] if params[:guild_level][:recurring].present?
-      @guild_level.recurring_payment = params[:guild_level][:recurring_payment] if params[:guild_level][:recurring_payment].present?
-      @guild_level.trial = params[:guild_level][:trial] if params[:guild_level][:trial].present?
-      @guild_level.trial_period = params[:guild_level][:trial_period] if params[:guild_level][:trial_period].present?
+      @guild_level.name = params[:guild_level][:name] if !params[:guild_level][:name].nil?
+      @guild_level.enabled = params[:guild_level][:enabled] if !params[:guild_level][:enabled].nil?
+      @guild_level.group = params[:guild_level][:group] if !params[:guild_level][:group].nil?
+      @guild_level.initial_payment = params[:guild_level][:initial_payment] if !params[:guild_level][:initial_payment].nil?
+      @guild_level.recurring = params[:guild_level][:recurring] if !params[:guild_level][:recurring].nil?
+      @guild_level.recurring_payment = params[:guild_level][:recurring_payment] if !params[:guild_level][:recurring_payment].nil?
+      @guild_level.trial = params[:guild_level][:trial] if !params[:guild_level][:trial].nil?
+      @guild_level.trial_period = params[:guild_level][:trial_period] if !params[:guild_level][:trial_period].nil?
       @guild_level.save
 
       if @guild_level.valid?
@@ -57,7 +58,7 @@ module DiscourseGuild
     end
 
     def guild_level_params
-      params.permit(guild_level: [:enabled, :name, :initial_payment, :recurring, :recurring_payment, :trial, :trial_payment])[:guild_level]
+      params.permit(guild_level: [:enabled, :name, :group, :initial_payment, :recurring, :recurring_payment, :trial, :trial_payment])[:guild_level]
     end
   end
 end

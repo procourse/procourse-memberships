@@ -1,4 +1,5 @@
 import { ajax } from 'discourse/lib/ajax';
+import Group from 'discourse/models/group';
 
 const GuildLevel = Discourse.Model.extend(Ember.Copyable, {
 
@@ -17,16 +18,22 @@ var GuildLevels = Ember.ArrayProxy.extend({
 });
 
 GuildLevel.reopenClass({
+  customGroups: function(){
+    return Group.findAll().then(groups => {
+      return groups.filter(g => !g.get('automatic'));
+    });
+  },
 
   findAll: function() {
     var guildLevels = GuildLevels.create({ content: [], loading: true });
     ajax('/guild/levels').then(function(levels) {
       if (levels){
         _.each(levels, function(guildLevel){
-          guildLevels.pushObject(GuildLevel.create({
+            guildLevels.pushObject(GuildLevel.create({
             id: guildLevel.id,
             name: guildLevel.name,
             enabled: guildLevel.enabled,
+            group: guildLevel.group,
             initial_payment: guildLevel.initial_payment,
             recurring: guildLevel.recurring,
             recurring_payment: guildLevel.recurring_payment,
@@ -55,6 +62,7 @@ GuildLevel.reopenClass({
 
     if (!object || !enabledOnly) {
       data.name = self.name;
+      data.group = self.group;
       data.initial_payment = self.initial_payment;
       data.recurring = self.recurring;
       data.recurring_payment = self.recurring_payment;
@@ -68,10 +76,17 @@ GuildLevel.reopenClass({
       dataType: 'json',
       contentType: 'application/json'
     }).then(function(result) {
+      console.log(result);
       if(result.id) { self.set('id', result.id); }
       self.set('savingStatus', I18n.t('saved'));
       self.set('saving', false);
     });
+  },
+
+  copy: function(object){
+    var copiedLevel = GuildLevel.create(object);
+    copiedLevel.id = null;
+    return copiedLevel;
   },
 
   destroy: function(object) {

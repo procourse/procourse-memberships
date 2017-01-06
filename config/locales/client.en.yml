@@ -12,10 +12,16 @@ en:
           extras: "Extras"
         levels:
           new_name: "New Guild Level"
+          id: "ID"
           initial_payment: "Initial Payment"
+          initial_payment_description: "The amount charged at the beginning of membership."
           recurring: "Recurring"
+          recurring_description: "Does this level have a recurring payment?"
           recurring_payment: "Recurring Payment"
+          recurring_payment_description: "The amount to charge each period."
           trial: "Trial"
+          trial_description: "Do you want to offer a trial for this level?"
           trial_period: "Trial Period"
+          trial_period_description: "The length of the trial in days."
     guild:
       title: "Guild"
