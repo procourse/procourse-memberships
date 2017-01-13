@@ -1,3 +1,3 @@
 en:
   site_settings: 
-    guild_enabled: "Enable the Guild at /admin/plugins/guild"
+    league_enabled: "Enable the League at /admin/plugins/league"

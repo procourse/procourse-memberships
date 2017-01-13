@@ -1,4 +1,4 @@
 plugins:
-  guild_enabled:
+  league_enabled:
     default: true
     client: true

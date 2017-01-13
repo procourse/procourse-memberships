@@ -1,7 +1,7 @@
 en:
   js:
     admin:
-      guild:
+      league:
         titles:
           dashboard: "Dashboard"
           levels: "Levels"
@@ -11,7 +11,7 @@ en:
           advanced: "Advanced"
           extras: "Extras"
         levels:
-          new_name: "New Guild Level"
+          new_name: "New League Level"
           id: "ID"
           initial_payment: "Initial Payment"
           initial_payment_description: "The amount charged at the beginning of membership."
@@ -23,11 +23,11 @@ en:
           trial_description: "Do you want to offer a trial for this level?"
           trial_period: "Trial Period"
           trial_period_description: "The length of the trial in days."
-          delete_confirm: "Delete this Guild level?"
+          delete_confirm: "Delete this League level?"
         pages:
-          new_title: "New Guild Page"
+          new_title: "New League Page"
           slug: "Slug"
           slug_description: "The end of the URL for the page."
-          delete_confirm: "Delete this Guild page?"
-    guild:
-      title: "Guild"
+          delete_confirm: "Delete this League page?"
+    league:
+      title: "League"

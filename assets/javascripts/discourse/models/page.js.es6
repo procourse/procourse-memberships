@@ -2,10 +2,10 @@ import { ajax } from 'discourse/lib/ajax';
 
 export default {
   findAll() {
-    return ajax('/guild/pages');
+    return ajax('/league/pages');
   },
 
   findById(opts) {
-    return ajax(`/guild/p/${opts.id}`);
+    return ajax(`/league/p/${opts.id}`);
   }
 };
