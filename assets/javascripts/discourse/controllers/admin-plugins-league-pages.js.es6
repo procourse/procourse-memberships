@@ -16,6 +16,25 @@ export default Ember.Controller.extend({
     this.set('selectedItem', null);
   },
 
+  editTitle: function(){
+    this.set('editingTitle', true);
+    if (!this.get('selectedItem').custom_slug && this.get('selectedItem').selected){
+      this.get('selectedItem').set('slug', this.slugify(this.get('selectedItem').title));
+    };
+    this.set('editingTitle', false);
+  }.observes('selectedItem.title'),
+
+  editSlug: function(){
+    if (!this.get('editingTitle') && this.get('selectedItem').selected){
+      if (this.get('originals').slug == this.get('selectedItem').slug){
+        this.get('selectedItem').set('custom_slug', this.get('originals').custom_slug);
+      }
+      else{
+        this.get('selectedItem').set('custom_slug', true);
+      }
+    }
+  }.observes('selectedItem.slug'),
+
   changed: function(){
     if (!this.get('originals') || !this.get('selectedItem')) {this.set('disableSave', true); return;}
     if (((this.get('originals').title == this.get('selectedItem').title) &&
@@ -24,14 +43,23 @@ export default Ember.Controller.extend({
       (this.get('originals').cooked == this.get('selectedItem').cooked)) ||
       (!this.get('selectedItem').title) ||
       (!this.get('selectedItem').raw)
-      ) {
-        this.set('disableSave', true); 
-        return;
-      }
-      else{
-        this.set('disableSave', false);
-      }
+    ) {
+      this.set('disableSave', true); 
+      return;
+    }
+    else{
+      this.set('disableSave', false);
+    };
   }.observes('selectedItem.title', 'selectedItem.slug', 'selectedItem.raw'),
+
+  slugify: function(text){
+    return text.toString().toLowerCase()
+      .replace(/\s+/g, '-')           // Replace spaces with -
+      .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+      .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+      .replace(/^-+/, '')             // Trim - from start of text
+      .replace(/-+$/, '');            // Trim - from end of text
+  },
 
   actions: {
     selectDLPage: function(leaguePage) {
@@ -41,7 +69,8 @@ export default Ember.Controller.extend({
         active: leaguePage.active,
         slug: leaguePage.slug,
         raw: leaguePage.raw,
-        cooked: leaguePage.cooked
+        cooked: leaguePage.cooked,
+        custom_slug: leaguePage.custom_slug
       });
       this.set('disableSave', true);
       this.set('selectedItem', leaguePage);
@@ -51,7 +80,11 @@ export default Ember.Controller.extend({
 
     newDLPage: function() {
       const newDLPage = Em.copy(this.get('baseDLPage'), true);
-      newDLPage.set('title', I18n.t('admin.league.pages.new_title'));
+      var newTitle = I18n.t('admin.league.pages.new_title');
+      newDLPage.set('title', newTitle);
+      newDLPage.set('slug', this.slugify(newTitle));
+      newDLPage.set('slugEdited', false);
+      newDLPage.set('newRecord', true);
       this.get('model').pushObject(newDLPage);
       this.send('selectDLPage', newDLPage);
     },
@@ -72,6 +105,7 @@ export default Ember.Controller.extend({
 
     save: function() {
       LeaguePage.save(this.get('selectedItem'));
+      this.set('disableSave', true);
     },
 
     copy: function(leaguePage) {
@@ -79,6 +113,7 @@ export default Ember.Controller.extend({
       newDLPage.set('title', I18n.t('admin.customize.colors.copy_name_prefix') + ' ' + leaguePage.get('title'));
       this.get('model').pushObject(newDLPage);
       this.send('selectDLPage', newDLPage);
+      this.set('disableSave', false);
     },
 
     destroy: function() {

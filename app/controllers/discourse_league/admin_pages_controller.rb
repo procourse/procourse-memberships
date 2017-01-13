@@ -21,6 +21,7 @@ module DiscourseLeague
       @league_page.slug = params[:league_page][:slug] if !params[:league_page][:slug].nil?
       @league_page.raw = params[:league_page][:raw] if !params[:league_page][:raw].nil?
       @league_page.cooked = params[:league_page][:cooked] if !params[:league_page][:cooked].nil?
+      @league_page.custom_slug = params[:league_page][:custom_slug] if !params[:league_page][:custom_slug].nil?
       @league_page.save
 
       if @league_page.valid?
@@ -53,7 +54,7 @@ module DiscourseLeague
     end
 
     def league_page_params
-      params.permit(league_page: [:active, :title, :slug, :raw, :cooked])[:league_page]
+      params.permit(league_page: [:active, :title, :slug, :raw, :cooked, :custom_slug])[:league_page]
     end
 
   end

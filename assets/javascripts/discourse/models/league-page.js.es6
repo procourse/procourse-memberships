@@ -41,7 +41,8 @@ LeaguePage.reopenClass({
             active: leaguePage.active,
             slug: leaguePage.slug,
             raw: leaguePage.raw,
-            cooked: leaguePage.cooked
+            cooked: leaguePage.cooked,
+            custom_slug: leaguePage.custom_slug
           }));
         });
       };
@@ -68,6 +69,7 @@ LeaguePage.reopenClass({
       data.slug = object.slug;
       data.raw = object.raw;
       data.cooked = cooked.string;
+      data.custom_slug = object.custom_slug;
     };
     
     return ajax("/league/admin/pages.json", {
