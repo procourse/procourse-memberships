@@ -1,7 +1,6 @@
 import { registerOption } from 'pretty-text/pretty-text';
 
 registerOption((siteSettings, opts) => {
-  console.log(opts);
   opts.features.guild = true;
 });
 

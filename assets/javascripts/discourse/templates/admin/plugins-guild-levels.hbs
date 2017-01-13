@@ -1,4 +1,4 @@
-<div class="customize guild-levels">
+<div class="customize guild">
 	<div class="admin-container">
 		<div class='content-list span6'>
 			<h3>{{i18n 'admin.guild.titles.levels'}}</h3>
@@ -15,7 +15,7 @@
 		             label="admin.customize.new"
 		             icon="plus"}}
 		</div>
-		{{#if selectedItem}}
+		{{#if selectedItem.selected}}
 		<div class="current-style color-scheme badges">
 			<div class='admin-container'>
 			    <h1>{{text-field class="style-name" value=selectedItem.name}}</h1>

@@ -3,7 +3,7 @@ import Group from 'discourse/models/group';
 
 export default Ember.Controller.extend({
 
-  levelURL: document.location.origin + "/guild/l/",
+  levelURL: document.location.origin + "/dg/l/",
 
   baseDGLevel: function() {
     var a = [];
@@ -18,7 +18,7 @@ export default Ember.Controller.extend({
   },
 
   changed: function(){
-    if (!this.get('originals')) {this.set('disableSave', true); return;}
+    if (!this.get('originals') || !this.get('selectedItem')) {this.set('disableSave', true); return;}
     if (((this.get('originals').name == this.get('selectedItem').name) &&
       (this.get('originals').group == this.get('selectedItem').group) &&
       (this.get('originals').initial_payment == this.get('selectedItem').initial_payment) &&
@@ -97,7 +97,7 @@ export default Ember.Controller.extend({
       var self = this,
           item = self.get('selectedItem');
 
-      return bootbox.confirm(I18n.t("admin.customize.colors.delete_confirm"), I18n.t("no_value"), I18n.t("yes_value"), function(result) {
+      return bootbox.confirm(I18n.t("admin.guild.levels.delete_confirm"), I18n.t("no_value"), I18n.t("yes_value"), function(result) {
         if (result) {
           if (item.get('newRecord')) {
             self.removeSelected();

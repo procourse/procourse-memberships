@@ -18,6 +18,8 @@ Discourse::Application.routes.append do
 	get '/admin/plugins/guild/messages' => 'admin/plugins#index', constraints: StaffConstraint.new
 	get '/admin/plugins/guild/advanced' => 'admin/plugins#index', constraints: StaffConstraint.new
 	get '/admin/plugins/guild/extras' => 'admin/plugins#index', constraints: StaffConstraint.new
+	get '/g/:slug/:id' => 'levels#show'
+	get '/p/:slug/:id' => 'pages#show'
 end
 
 load File.expand_path('../lib/discourse_guild/engine.rb', __FILE__)

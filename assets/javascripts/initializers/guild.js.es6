@@ -2,7 +2,7 @@ import { withPluginApi } from 'discourse/lib/plugin-api';
 
 function initializeGuild(api) {
 
-  api.decorateCooked($elem => $("guild", $elem).guild());
+  // api.decorateCooked($elem => $("guild", $elem).guild());
 
   const ComposerController = api.container.lookupFactory("controller:composer");
   ComposerController.reopen({

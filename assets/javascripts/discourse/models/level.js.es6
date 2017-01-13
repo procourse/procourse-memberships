@@ -6,6 +6,6 @@ export default {
   },
 
   findById(id) {
-    return ajax(`/guild/level/${id}`);
+    return ajax(`/guild/l/${id}`);
   }
 };

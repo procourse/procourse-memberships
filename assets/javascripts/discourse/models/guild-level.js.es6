@@ -76,7 +76,6 @@ GuildLevel.reopenClass({
       dataType: 'json',
       contentType: 'application/json'
     }).then(function(result) {
-      console.log(result);
       if(result.id) { self.set('id', result.id); }
       self.set('savingStatus', I18n.t('saved'));
       self.set('saving', false);

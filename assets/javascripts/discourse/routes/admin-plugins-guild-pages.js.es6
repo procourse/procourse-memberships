@@ -1,8 +1,8 @@
-import GuildLevel from '../models/level';
+import GuildPage from '../models/guild-page';
 
 export default Discourse.Route.extend({
-  model(opts) {
-  	return GuildLevel.findById(opts.id);
+  model() {
+    return GuildPage.findAll();
   },
 
   setupController(controller, model) {
