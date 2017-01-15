@@ -104,8 +104,11 @@ export default Ember.Controller.extend({
     }.property('id'),
 
     save: function() {
+      if (this.get('selectedItem').slug == this.slugify(this.get('selectedItem').title)){
+        this.get('selectedItem').set('custom_slug', false);
+      }
       LeaguePage.save(this.get('selectedItem'));
-      this.set('disableSave', true);
+      this.send('selectDLPage', this.get('selectedItem'));
     },
 
     copy: function(leaguePage) {
