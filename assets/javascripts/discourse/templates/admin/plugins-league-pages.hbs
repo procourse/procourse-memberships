@@ -8,7 +8,7 @@
 			{{/each}}
 			</ul>
 			{{#unless model}}
-				<p class="desc">Add some pages for your users.</p>
+				<p class="desc">{{i18n 'admin.league.pages.no_pages'}}</p>
 			{{/unless}}
 			{{d-button class="btn"
 		             action="newDLPage"
@@ -16,7 +16,7 @@
 		             icon="plus"}}
 		</div>
 		{{#if selectedItem.selected}}
-		<div class="current-style color-scheme badges">
+		<div class="current-style color-scheme">
 			<div class='admin-container'>
 			    <h1>{{text-field class="style-name" value=selectedItem.title}}</h1>
 			    <div class="controls">
@@ -37,8 +37,8 @@
 		    <form class="form-horizontal">
 		    {{#if selectedItem.id}}
 		    <div>
-			    <label>{{i18n 'admin.league.levels.id'}}: {{ selectedItem.id }}</label>
-			    <p class="help">Public page URL: <a target="_blank" href="{{pageURL}}{{selectedItem.slug}}/{{selectedItem.id}}/">{{pageURL}}{{selectedItem.slug}}/{{selectedItem.id}}/</a></p>
+			    <label>{{i18n 'admin.league.pages.id'}}: {{ selectedItem.id }}</label>
+			    <p class="help">{{i18n 'admin.league.pages.page_url_description'}}: <a target="_blank" href="{{pageURL}}{{selectedItem.slug}}/{{selectedItem.id}}/">{{pageURL}}{{selectedItem.slug}}/{{selectedItem.id}}/</a></p>
 		    </div>
 		    {{/if}}
 		    <div>
@@ -48,12 +48,11 @@
 		    </div>
 			<div>
 				{{d-editor value=selectedItem.raw class="raw-bio"}}
-			    <p class="help">{{i18n 'admin.league.levels.initial_payment_description'}}</p>
 		    </div>
 		    </form>
 		</div>
 		{{else}}
-			<div class="current-style color-scheme badges">No level selected.</div>
+			<div class="current-style color-scheme badges">{{i18n 'admin.league.pages.no_page_selected'}}</div>
 		{{/if}}
 	</div>
 </div>

@@ -13,6 +13,7 @@ en:
         levels:
           new_name: "New League Level"
           id: "ID"
+          membership_page: "Public membership page"
           initial_payment: "Initial Payment"
           initial_payment_description: "The amount charged at the beginning of membership."
           recurring: "Recurring"
@@ -24,10 +25,16 @@ en:
           trial_period: "Trial Period"
           trial_period_description: "The length of the trial in days."
           delete_confirm: "Delete this League level?"
+          no_levels: "Add some levels for your users."
+          no_level_selected: "No level selected."
         pages:
           new_title: "New League Page"
+          id: "ID"
+          page_url_description: "Public page URL"
           slug: "Slug"
           slug_description: "The end of the URL for the page."
           delete_confirm: "Delete this League page?"
+          no_pages: "Add some pages for your users."
+          no_page_selected: "No page selected."
     league:
       title: "League"

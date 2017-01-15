@@ -8,7 +8,7 @@
 			{{/each}}
 			</ul>
 			{{#unless model}}
-				<p class="desc">Add some levels for your users.</p>
+				<p class="desc">{{i18n 'admin.league.levels.no_levels'}}</p>
 			{{/unless}}
 			{{d-button class="btn"
 		             action="newDLLevel"
@@ -38,7 +38,7 @@
 		    {{#if selectedItem.id}}
 		    <div>
 			    <label>{{i18n 'admin.league.levels.id'}}: {{ selectedItem.id }}</label>
-			    <p class="help">Public membership page: <a target="_blank" href="{{levelURL}}{{selectedItem.id}}">{{levelURL}}{{selectedItem.id}}</a></p>
+			    <p class="help">{{i18n 'admin.league.levels.membership_page'}}: <a target="_blank" href="{{levelURL}}{{selectedItem.id}}">{{levelURL}}{{selectedItem.id}}</a></p>
 		    </div>
 		    {{/if}}
 		    <div>
@@ -80,7 +80,7 @@
 		    </form>
 		</div>
 		{{else}}
-			<div class="current-style color-scheme badges">No level selected.</div>
+			<div class="current-style color-scheme badges">{{i18n 'admin.league.levels.no_levels'}}</div>
 		{{/if}}
 	</div>
 </div>
