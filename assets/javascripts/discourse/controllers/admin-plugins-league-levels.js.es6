@@ -64,6 +64,7 @@ export default Ember.Controller.extend({
     newDLLevel: function() {
       const newDLLevel = Em.copy(this.get('baseDLLevel'), true);
       newDLLevel.set('name', I18n.t('admin.league.levels.new_name'));
+      newDLLevel.set('newRecord', true);
       this.get('model').pushObject(newDLLevel);
       this.send('selectDLLevel', newDLLevel);
     },
