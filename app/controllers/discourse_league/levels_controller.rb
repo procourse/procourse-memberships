@@ -1,15 +1,23 @@
 module DiscourseLeague
-	class LevelsController < ApplicationController
+  class LevelsController < ApplicationController
 
-	  def show
-	  	@level = params[:level]
-	  	render_json_dump(@level)
-	  end
+    def show
+      if params[:id]
+        @level = Level.find(params[:id])
+      end
 
-	  def all
-	  	levels = Level.all
-	  	render_json_dump(levels)
-	  end
+      if @level.valid? && @level.enabled?
+        render_json_dump(@level)
+      else
+        render nothing: true, status: 404
+      end
 
-	end
+    end
+
+    def all
+      levels = Level.all
+      render_json_dump(levels)
+    end
+
+  end
 end

@@ -1,4 +1,4 @@
-.league{
+.league.admin{
   label {
     margin-top: 25px;
   }
@@ -14,6 +14,44 @@
 
   .raw-bio {
     margin-top: 20px;
+  }
+
+}
+.league.checkout{
+  max-width: 500px;
+  margin: 0px auto;
+
+  h1{
+    text-align: center;
+  }
+
+  .billing-section{
+    h3{
+      margin:20px 0px;
+      text-align: center;
+    }
+  }
+
+  .controls input{
+    width: calc(100% - 10px);
+  }
+  .expiration > span{
+    float: left;
+    font-size: 1.5em;
+    line-height: 1.5em;
+  }
+  .expiration-month, .expiration-year{
+    float: left;
+  }
+  .expiration-month{
+    min-width: 75px;
+    width: 75px;
+   margin-right: 10px; 
+  }
+  .expiration-year{
+    min-width: 100px;
+    width: 100px;
+    margin-left: 10px;
   }
 }
 

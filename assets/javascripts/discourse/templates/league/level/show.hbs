@@ -1,2 +1,107 @@
-<div>I have it!</div>
-<div>{{ model.username }}</div>
+<div class="league checkout">
+  <h1>Membership Checkout</h1>
+  <div class="billing-section">
+    <p>The price for membership to {{model.name}} is $27 now.</p>
+  </div>
+  {{#if currentUser }}
+  <div class="user-table">
+    <div class="wrapper">
+      <form class="form-horizontal">
+        <hr>
+        <div class="billing-section">
+          <h3>Billing Address</h3>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.checkout.first_name'}}</label>
+            <div class="controls">
+              {{text-field value=memberDetails.first_name }}
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.checkout.last_name'}}</label>
+            <div class="controls">
+              {{text-field value=memberDetails.last_name }}
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.checkout.address_1'}}</label>
+            <div class="controls">
+              {{text-field value=memberDetails.address_1 }}
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.checkout.address_2'}}</label>
+            <div class="controls">
+              {{text-field value=memberDetails.address_2 }}
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.checkout.city'}}</label>
+            <div class="controls">
+              {{text-field value=memberDetails.city }}
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.checkout.state'}}</label>
+            <div class="controls">
+              {{combo-box content=states value=memberDetails.billing_state}}
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.checkout.postal_code'}}</label>
+            <div class="controls">
+              {{text-field value=memberDetails.postal_code }}
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.checkout.country'}}</label>
+            <div class="controls">
+              {{combo-box content=countries value=memberDetails.country}}
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.checkout.phone'}}</label>
+            <div class="controls">
+              {{text-field value=memberDetails.phone }}
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="billing-section">
+          <h3>Payment Details</h3>
+          <div class="radio-field-choice">
+            {{radio-button value="credit"
+                           radioValue="Credit Card"
+                           label="Credit Card"
+                           name="paymentmethod"
+                           selection="true"}}
+            <span>Credit Card</span>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.checkout.card_number'}}</label>
+            <div class="controls">
+              {{text-field value=memberDetails.card_number }}
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.checkout.expiration_date'}}</label>
+            <div class="controls expiration">
+              {{combo-box content=expMonths value=memberDetails.expiration_month class="expiration-month"}}
+              <span>/</span>
+              {{combo-box content=expYears value=memberDetails.expiration_year class="expiration-year"}}
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.checkout.cvv'}}</label>
+            <div class="controls">
+              {{text-field value=memberDetails.cvv }}
+            </div>
+          </div>
+        </div>
+        <button {{action "submit"}} disabled={{disableSubmit}} class='btn'>{{i18n 'admin.customize.save'}}</button>
+      </form>
+    </div>
+  </div>
+  {{else}}
+  <div>anon</div>
+  {{/if}}
+</div>

@@ -38,3 +38,16 @@ en:
           no_page_selected: "No page selected."
     league:
       title: "League"
+      checkout:
+        first_name: "First Name"
+        last_name: "Last Name"
+        address_1: "Address 1"
+        address_2: "Address 2"
+        city: "City"
+        state: "State"
+        postal_code: "Postal Code"
+        country: "Country"
+        phone: "Phone"
+        card_number: "Card Number"
+        expiration_date: "Expiration Date"
+        cvv: "CVV"

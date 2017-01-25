@@ -10,6 +10,8 @@ add_admin_route 'league.title', 'league'
 
 register_asset "stylesheets/discourse-league.scss"
 
+gem 'activemerchant', '1.62.0'
+
 Discourse::Application.routes.append do
 	get '/admin/plugins/league' => 'admin/plugins#index', constraints: StaffConstraint.new
 	get '/admin/plugins/league/levels' => 'admin/plugins#index', constraints: StaffConstraint.new
