@@ -51,3 +51,5 @@ en:
         card_number: "Card Number"
         expiration_date: "Expiration Date"
         cvv: "CVV"
+        submit_verify: "Submit and Verify"
+        submit_checkout: "Checkout"

@@ -1,5 +1,6 @@
 <div class="league checkout">
   <h1>Membership Checkout</h1>
+  {{checkout-progress state=checkoutState}}
   <div class="billing-section">
     <p>The price for membership to {{model.name}} is $27 now.</p>
   </div>
@@ -97,7 +98,7 @@
             </div>
           </div>
         </div>
-        <button {{action "submit"}} disabled={{disableSubmit}} class='btn'>{{i18n 'admin.customize.save'}}</button>
+        <button {{action "submitReview"}} disabled={{disableSubmit}} class='btn'>{{i18n 'league.checkout.submit_review'}}</button>
       </form>
     </div>
   </div>

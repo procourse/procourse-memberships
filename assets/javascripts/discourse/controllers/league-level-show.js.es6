@@ -10,9 +10,12 @@ export default Ember.Controller.extend({
 
   memberDetails: {"first_name": "", "last_name": "", "address_1":"", "address_2":"", "city":"", "billing_state":"", "postal_code":"", "country":"United States", "phone":"", "card_number":"", "expiration_month":"", "expiration_year":"", "cvv":"",},
 
+  checkoutState: "login",
+
   actions: {
 
-    submit: function() {
+    submitReview: function() {
+      this.set('checkoutState', "reviewing");
       console.log("submitting");
       console.log(this.get("memberDetails"));
     }
