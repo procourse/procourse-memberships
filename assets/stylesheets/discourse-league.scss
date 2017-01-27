@@ -53,6 +53,90 @@
     width: 100px;
     margin-left: 10px;
   }
+  #checkout-progress{
+    margin: 30px 0px;
+
+    #line{
+      min-height: 3px;
+      background-color: #ccc;
+    }
+    #states-wrapper{
+      margin: 0px auto;
+      color: #666;
+      font-size: 0.9em;
+    }
+    .state{
+      display: inline-block;
+      width: calc(25% - 3px);
+      text-align: center;
+    }
+    .indicator{
+      height: 10px;
+      width: 10px;
+      border: 2px solid #cccccc;
+      background: #cccccc;
+      border-radius: 100%;
+      position: relative;
+      top: 8px;
+      left: calc(50% - 6px);
+    }
+    .sign-in-state{
+      #sign-in .indicator{
+        background: #ffffff;
+      }
+      #billing-payment .indicator{
+        background: #cccccc;
+      }
+      #review .indicator{
+        background: #cccccc;
+      }
+      #completed .indicator{
+        background: #cccccc;
+      }
+    }
+    .billing-payment-state{
+      #sign-in .indicator{
+        background: #cccccc;
+      }
+      #billing-payment .indicator{
+        background: #ffffff;
+      }
+      #review .indicator{
+        background: #cccccc;
+      }
+      #completed .indicator{
+        background: #cccccc;
+      }
+    }
+    .review-state{
+      #sign-in .indicator{
+        background: #cccccc;
+      }
+      #billing-payment .indicator{
+        background: #cccccc;
+      }
+      #review .indicator{
+        background: #ffffff;
+      }
+      #completed .indicator{
+        background: #cccccc;
+      }
+    }
+    .completed-state{
+      #sign-in .indicator{
+        background: #cccccc;
+      }
+      #billing-payment .indicator{
+        background: #cccccc;
+      }
+      #review .indicator{
+        background: #cccccc;
+      }
+      #completed .indicator{
+        background: #ffffff;
+      }
+    }
+  }
 }
 
 .league.league-page{
