@@ -1,8 +1,11 @@
 import LeaguePage from '../models/league-page';
+import { licensed } from 'discourse/plugins/discourse-league/discourse/lib/constraint';
 
 export default Ember.Controller.extend({
 
   pageURL: document.location.origin + "/league/p/",
+
+  licensed: licensed(),
 
   baseDLPage: function() {
     var a = [];

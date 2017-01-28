@@ -2,3 +2,6 @@ plugins:
   league_enabled:
     default: true
     client: true
+  league_licensed:
+    default: false
+    client: true
