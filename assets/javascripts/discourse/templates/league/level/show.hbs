@@ -1,5 +1,5 @@
 <div class="league checkout">
-  <h1>Membership Checkout</h1>
+  <h1>{{i18n 'league.checkout.title'}}</h1>
   {{checkout-progress state=checkoutState}}
   <div class="billing-section">
     <p>The price for membership to {{model.name}} is $27 now.</p>
@@ -10,7 +10,7 @@
       <form class="form-horizontal">
         <hr>
         <div class="billing-section">
-          <h3>Billing Address</h3>
+          <h3>{{i18n 'league.checkout.billing_address'}}</h3>
           <div class="control-group">
             <label class="control-label">{{i18n 'league.checkout.first_name'}}</label>
             <div class="controls">
@@ -68,14 +68,14 @@
         </div>
         <hr>
         <div class="billing-section">
-          <h3>Payment Details</h3>
+          <h3>{{i18n 'league.checkout.payment_details'}}</h3>
           <div class="radio-field-choice">
             {{radio-button value="credit"
                            radioValue="Credit Card"
                            label="Credit Card"
                            name="paymentmethod"
                            selection="true"}}
-            <span>Credit Card</span>
+            <span>{{i18n 'league.checkout.credit_card'}}</span>
           </div>
           <div class="control-group">
             <label class="control-label">{{i18n 'league.checkout.card_number'}}</label>
@@ -98,11 +98,15 @@
             </div>
           </div>
         </div>
-        <button {{action "submitReview"}} disabled={{disableSubmit}} class='btn'>{{i18n 'league.checkout.submit_review'}}</button>
+        <button {{action "submitBillingPayment"}} disabled={{disableSubmit}} class='btn btn-primary'>{{i18n 'league.checkout.submit_verify'}}</button>
       </form>
     </div>
   </div>
   {{else}}
-  <div>anon</div>
+  <div>{{i18n 'league.checkout.sign_up_message'}}</div>
+  <div class="account-buttons">
+    <span>{{d-button action="showCreateAccount" class="btn-primary sign-up-button" label="sign_up"}}</span>
+    <span>{{#d-button class="btn-primary" action="showLogin"}}{{fa-icon 'user'}} {{i18n 'log_in'}}{{/d-button}}</span>
+  </div>
   {{/if}}
 </div>

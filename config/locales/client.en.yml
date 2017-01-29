@@ -39,6 +39,12 @@ en:
     league:
       title: "League"
       checkout:
+        title: "Membership Checkout"
+        billing_address: "Billing Address"
+        payment_details: "Payment Details"
+        credit_card: "Credit Card"
+        paypal: "PayPal"
+        sign_up_message: "Before you can sign up, you need to be logged in. Your first step is to either log in below or create a new account."
         first_name: "First Name"
         last_name: "Last Name"
         address_1: "Address 1"
@@ -53,3 +59,8 @@ en:
         cvv: "CVV"
         submit_verify: "Submit and Verify"
         submit_checkout: "Checkout"
+        progress:
+          log_in: "Log In"
+          billing_payment: "Billing & Payment"
+          verify: "Verify"
+          completed: "Completed"

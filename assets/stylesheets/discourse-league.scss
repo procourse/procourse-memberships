@@ -53,6 +53,10 @@
     width: 100px;
     margin-left: 10px;
   }
+  .account-buttons{
+    text-align: center;
+    margin-top: 20px;
+  }
   #checkout-progress{
     margin: 30px 0px;
 
@@ -87,7 +91,7 @@
       #billing-payment .indicator{
         background: #cccccc;
       }
-      #review .indicator{
+      #verify .indicator{
         background: #cccccc;
       }
       #completed .indicator{
@@ -101,21 +105,21 @@
       #billing-payment .indicator{
         background: #ffffff;
       }
-      #review .indicator{
+      #verify .indicator{
         background: #cccccc;
       }
       #completed .indicator{
         background: #cccccc;
       }
     }
-    .review-state{
+    .verify-state{
       #sign-in .indicator{
         background: #cccccc;
       }
       #billing-payment .indicator{
         background: #cccccc;
       }
-      #review .indicator{
+      #verify .indicator{
         background: #ffffff;
       }
       #completed .indicator{
@@ -129,7 +133,7 @@
       #billing-payment .indicator{
         background: #cccccc;
       }
-      #review .indicator{
+      #verify .indicator{
         background: #cccccc;
       }
       #completed .indicator{

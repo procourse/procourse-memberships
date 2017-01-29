@@ -1,4 +1,3 @@
 export function licensed() {
-  var leagueLicensed = Discourse.SiteSettings.league_licensed;
-  return leagueLicensed;
+  return Discourse.SiteSettings.league_licensed;
 }
