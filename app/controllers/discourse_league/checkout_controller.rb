@@ -1,7 +1,7 @@
 require 'active_merchant'
 
 module DiscourseLeague
-  class PaymentsController < ApplicationController
+  class CheckoutController < ApplicationController
 
     def 
 
