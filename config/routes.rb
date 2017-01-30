@@ -17,4 +17,5 @@ DiscourseLeague::Engine.routes.draw do
 
   resource :admin_levels, path: '/admin/levels', constraints: AdminConstraint.new
   resource :admin_pages, path: '/admin/pages', constraints: AdminConstraint.new
+  resource :admin_gateways, path: '/admin/gateways', constraints: AdminConstraint.new
 end

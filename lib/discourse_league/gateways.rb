@@ -1,20 +1,21 @@
 module DiscourseLeague
   class Gateways
+
     def initialize(options = {})
       @options = options
+      byebug
     end
 
-    def gateway_availability
-      gateway_availability = {
-        braintree: { 
-          gateway_name: "Braintree", 
-          am_class: "BraintreeGateway", 
-          currencies: ["USD"] },
-        stripe: { 
-          gateway_name: "Stripe", 
-          am_class: "StripeGateway", 
-          currencies: ["USD"] }
-      }
-    end
+    GATEWAYS = {
+      braintree: { 
+        name: "Braintree", 
+        class_name: "Braintree", 
+        currencies: ["USD"] },
+      stripe: { 
+        name: "Stripe", 
+        class_name: "Stripe", 
+        currencies: ["USD"] }
+    }
+
   end
 end

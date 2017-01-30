@@ -6,7 +6,7 @@ en:
           dashboard: "Dashboard"
           levels: "Levels"
           pages: "Pages"
-          payment: "Payment"
+          gateways: "Gateways"
           messages: "Messages"
           advanced: "Advanced"
           extras: "Extras"

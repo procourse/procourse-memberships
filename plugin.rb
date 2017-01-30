@@ -16,7 +16,7 @@ Discourse::Application.routes.append do
 	get '/admin/plugins/league' => 'admin/plugins#index', constraints: StaffConstraint.new
 	get '/admin/plugins/league/levels' => 'admin/plugins#index', constraints: StaffConstraint.new
 	get '/admin/plugins/league/pages' => 'admin/plugins#index', constraints: StaffConstraint.new
-	get '/admin/plugins/league/payment' => 'admin/plugins#index', constraints: StaffConstraint.new
+	get '/admin/plugins/league/gateways' => 'admin/plugins#index', constraints: StaffConstraint.new
 	get '/admin/plugins/league/messages' => 'admin/plugins#index', constraints: StaffConstraint.new
 	get '/admin/plugins/league/advanced' => 'admin/plugins#index', constraints: StaffConstraint.new
 	get '/admin/plugins/league/extras' => 'admin/plugins#index', constraints: StaffConstraint.new
