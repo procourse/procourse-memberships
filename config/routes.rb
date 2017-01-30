@@ -12,6 +12,8 @@ DiscourseLeague::Engine.routes.draw do
   get "/p/:slug/:id" => "pages#show", constraints: LeagueConstraint.new
   put "/p/:id" => "pages#update", constraints: LeagueConstraint.new
   delete "/p/:id" => "pages#destroy", constraints: LeagueConstraint.new
+  post '/checkout/billing-payment' => "checkout#submit_billing_payment", constraints: LeagueConstraint.new
+  post '/checkout/verify' => "checkout#submit_verify", constraints: LeagueConstraint.new
 
   resource :admin_levels, path: '/admin/levels', constraints: AdminConstraint.new
   resource :admin_pages, path: '/admin/pages', constraints: AdminConstraint.new
