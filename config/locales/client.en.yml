@@ -1,4 +1,9 @@
 en:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_league: "Discourse League"
   js:
     admin:
       league:
@@ -37,7 +42,7 @@ en:
           no_pages: "Add some pages for your users."
           no_page_selected: "No page selected."
     league:
-      title: "League"
+      title: "Discourse League"
       checkout:
         title: "Membership Checkout"
         billing_address: "Billing Address"

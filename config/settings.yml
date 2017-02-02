@@ -5,3 +5,29 @@ plugins:
   league_licensed:
     default: false
     client: true
+    hidden: true
+
+discourse_league:
+  league_go_live:
+    default: false
+    client: true
+  league_gateway:
+    client: true
+    type: enum
+    default: "paypal"
+    choices:
+      - "braintree"
+      - "paypal"
+      - "stripe"
+  league_include_paypal:
+    default: false
+    client: true
+  league_braintree_merchant_id:
+    default: ""
+    client: true
+  league_braintree_production_key:
+    default: ""
+    client: true
+  league_braintree_private_key:
+    default: ""
+    client: true
