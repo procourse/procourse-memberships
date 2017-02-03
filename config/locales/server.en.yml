@@ -5,5 +5,5 @@ en:
     league_gateway: "Which gateway would you like to use?"
     league_include_paypal: "Allow both credit card and PayPal options?"
     league_braintree_merchant_id: "Braintree Merchant ID" 
-    league_braintree_production_key: "Braintree Production Key"
+    league_braintree_public_key: "Braintree Public Key"
     league_braintree_private_key: "Braintree Private Key"

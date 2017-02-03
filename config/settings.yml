@@ -24,10 +24,10 @@ discourse_league:
     client: true
   league_braintree_merchant_id:
     default: ""
-    client: true
-  league_braintree_production_key:
+    client: false
+  league_braintree_public_key:
     default: ""
-    client: true
+    client: false
   league_braintree_private_key:
     default: ""
-    client: true
+    client: false
