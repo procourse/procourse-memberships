@@ -1,3 +1,4 @@
+import { popupAjaxError } from 'discourse/lib/ajax-error';
 import { ajax } from 'discourse/lib/ajax';
 
 export default Ember.Controller.extend({
@@ -10,11 +11,12 @@ export default Ember.Controller.extend({
 
   expYears: [2017,2018,2019],
 
-  memberDetails: {"first_name": "", "last_name": "", "address_1":"", "address_2":"", "city":"", "billing_state":"", "postal_code":"", "country":"United States", "phone":"", "card_number":"", "expiration_month":"", "expiration_year":"", "cvv":"",},
+  initMemberDetails: {"first_name": "", "last_name": "", "address_1":"", "address_2":"", "city":"", "billing_state":"", "postal_code":"", "country":"United States", "phone":"", "card_number":"", "expiration_month":"", "expiration_year":"", "cvv":"",},
 
   _init: function() {
     if (this.currentUser){
       this.set('checkoutState', 'billing-payment');
+      this.set('memberDetails', this.get('initMemberDetails'));
     }
     else{
       this.set('checkoutState', "sign-in")
@@ -26,12 +28,13 @@ export default Ember.Controller.extend({
     submitBillingPayment: function() {
       var data = this.get("memberDetails");
       return ajax("/league/checkout/billing-payment.json", {
-        data: JSON.stringify({"league_billing_payment": data}),
+        data: JSON.stringify(data),
         type: 'POST',
         dataType: 'json',
         contentType: 'application/json'
-      }).then(function(result) {
-        console.log(result);
+      }).catch(e => {
+        bootbox.alert(e.jqXHR.responseJSON.errors);
+      }).finally(() => {
         this.set('checkoutState', "verify");
       });
     }

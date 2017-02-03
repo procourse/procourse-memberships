@@ -69,3 +69,11 @@ en:
           billing_payment: "Billing & Payment"
           verify: "Verify"
           completed: "Completed"
+  league:
+    errors:
+      first_name: "First Name"
+      last_name: "Last Name"
+      card_number: "Card Number"
+      expiration_month: "Expriation Month"
+      expiration_year: "Expiration Year"
+      cvv: "CVV"
