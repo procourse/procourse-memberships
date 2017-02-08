@@ -21,14 +21,14 @@ export default Ember.Controller.extend({
 
   editTitle: function(){
     this.set('editingTitle', true);
-    if (!this.get('selectedItem').custom_slug && this.get('selectedItem').selected){
+    if (this.get('selectedItem') && !this.get('selectedItem').custom_slug && this.get('selectedItem').selected){
       this.get('selectedItem').set('slug', this.slugify(this.get('selectedItem').title));
     };
     this.set('editingTitle', false);
   }.observes('selectedItem.title'),
 
   editSlug: function(){
-    if (!this.get('editingTitle') && this.get('selectedItem').selected){
+    if (this.get('selectedItem') && !this.get('editingTitle') && this.get('selectedItem').selected){
       if (this.get('originals').slug == this.get('selectedItem').slug){
         this.get('selectedItem').set('custom_slug', this.get('originals').custom_slug);
       }

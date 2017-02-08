@@ -32,7 +32,7 @@ LeaguePage.reopenClass({
 
   findAll: function() {
     var leaguePages = LeaguePages.create({ content: [], loading: true });
-    ajax('/league/pages').then(function(pages) {
+    ajax('/league/admin/pages.json').then(function(pages) {
       if (pages){
         _.each(pages, function(leaguePage){
             leaguePages.pushObject(LeaguePage.create({
