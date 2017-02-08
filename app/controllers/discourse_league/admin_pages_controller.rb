@@ -21,7 +21,8 @@ module DiscourseLeague
         slug: params[:league_page][:slug], 
         raw: params[:league_page][:raw], 
         cooked: params[:league_page][:cooked], 
-        custom_slug: params[:league_page][:custom_slug]}
+        custom_slug: params[:league_page][:custom_slug]
+      }
 
       pages[id] = new_page
       PluginStore.set("discourse_league", "pages", pages)

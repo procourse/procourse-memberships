@@ -26,7 +26,7 @@ LeagueLevel.reopenClass({
 
   findAll: function() {
     var leagueLevels = LeagueLevels.create({ content: [], loading: true });
-    ajax('/league/levels').then(function(levels) {
+    ajax('/league/admin/levels.json').then(function(levels) {
       if (levels){
         _.each(levels, function(leagueLevel){
             leagueLevels.pushObject(LeagueLevel.create({
