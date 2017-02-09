@@ -28,6 +28,7 @@ export default Ember.Controller.extend({
 
     submitBillingPayment: function() {
       var data = this.get("memberDetails");
+      var success = true;
       return ajax("/league/checkout/billing-payment.json", {
         data: JSON.stringify(data),
         type: 'POST',
@@ -35,9 +36,12 @@ export default Ember.Controller.extend({
         contentType: 'application/json'
       }).catch(e => {
         bootbox.alert(e.jqXHR.responseJSON.errors);
-      }).finally(() => {
-        this.set('checkoutState', "verify");
-        this.set('showDescription', false);
+        success = false;
+      }).finally((result) => {
+        if (success){
+          this.set('checkoutState', "verify");
+          this.set('showDescription', false);
+        }
       });
     }
   }
