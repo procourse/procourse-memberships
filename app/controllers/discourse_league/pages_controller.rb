@@ -4,10 +4,10 @@ module DiscourseLeague
     def show
       if params[:id]
         pages = PluginStore.get("discourse_league", "pages")
-        page = pages[params[:id].to_i]
+        page = pages.select{|page| page[:id] == params[:id].to_i}
       end
 
-      if page && page[:active]
+      if !page.empty? && page[:active]
         render_json_dump(page)
       else
         render nothing: true, status: 404

@@ -37,6 +37,7 @@ LeagueLevel.reopenClass({
             initial_payment: leagueLevel.initial_payment,
             recurring: leagueLevel.recurring,
             recurring_payment: leagueLevel.recurring_payment,
+            recurring_payment_period: leagueLevel.recurring_payment_period,
             trial: leagueLevel.trial,
             trial_period: leagueLevel.trial_period
           }));
@@ -66,6 +67,7 @@ LeagueLevel.reopenClass({
       data.initial_payment = self.initial_payment;
       data.recurring = self.recurring;
       data.recurring_payment = self.recurring_payment;
+      data.recurring_payment_period = self.recurring_payment_period;
       data.trial = self.trial;
       data.trial_period = self.trial_period;
     };

@@ -24,6 +24,7 @@ export default Ember.Controller.extend({
       (this.get('originals').initial_payment == this.get('selectedItem').initial_payment) &&
       (this.get('originals').recurring == this.get('selectedItem').recurring) &&
       (this.get('originals').recurring_payment == this.get('selectedItem').recurring_payment) &&
+      (this.get('originals').recurring_payment_period == this.get('selectedItem').recurring_payment_period) &&
       (this.get('originals').trial == this.get('selectedItem').trial) &&
       (this.get('originals').trial_period == this.get('selectedItem').trial_period)) ||
       (!this.get('selectedItem').group) ||
@@ -37,7 +38,8 @@ export default Ember.Controller.extend({
         this.set('disableSave', false);
       }
   }.observes('selectedItem.name', 'selectedItem.group', 'selectedItem.initial_payment', 
-    'selectedItem.recurring', 'selectedItem.recurring_payment', 'selectedItem.trial', 'selectedItem.trial_period'),
+    'selectedItem.recurring', 'selectedItem.recurring_payment', 'selectedItem.recurring_payment_period', 
+    'selectedItem.trial', 'selectedItem.trial_period'),
 
   actions: {
     selectDLLevel: function(leagueLevel) {

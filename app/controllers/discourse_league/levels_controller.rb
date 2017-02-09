@@ -5,10 +5,10 @@ module DiscourseLeague
 
       if params[:id]
         levels = PluginStore.get("discourse_league", "levels")
-        level = levels[params[:id].to_i]
+        level = levels.select{|level| level[:id] == params[:id].to_i}
       end
 
-      if level && level[:enabled]
+      if !level.empty? && level[0][:enabled]
         render_json_dump(level)
       else
         render nothing: true, status: 404

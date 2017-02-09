@@ -1,88 +1,93 @@
 {{#conditional-loading-spinner condition=model.loading}}
 <div class="customize league admin">
-	<div class="admin-container">
-		<div class='content-list span6'>
-			<h3>{{i18n 'admin.league.titles.levels'}}</h3>
-			<ul>
-			{{#each model as |level|}}
-				<li><a {{action "selectDLLevel" level}} class="{{if level.selected 'active'}}">{{level.name}}</a></li>
-			{{/each}}
-			</ul>
-			{{#unless model}}
-				<p class="desc">{{i18n 'admin.league.levels.no_levels'}}</p>
-			{{/unless}}
-			{{d-button class="btn"
-		             action="newDLLevel"
-		             label="admin.customize.new"
-		             icon="plus"}}
-		</div>
-		{{#if selectedItem.selected}}
-		<div class="current-style color-scheme badges">
-			<div class='admin-container'>
-			    <h1>{{text-field class="style-name" value=selectedItem.name}}</h1>
-			    <div class="controls">
-					<button {{action "save"}} disabled={{disableSave}} class='btn'>{{i18n 'admin.customize.save'}}</button>
-					<button {{action "toggleEnabled"}} disabled={{disableEnable}} class="btn">
-						{{#if selectedItem.enabled}}
-							{{i18n 'disable'}}
-						{{else}}
-							{{i18n 'enable'}}
-						{{/if}}
-					</button>
-					<button {{action "copy" selectedItem}} class='btn'><i class="fa fa-copy"></i> {{i18n 'admin.customize.copy'}}</button>
-					<button {{action "destroy"}} class='btn btn-danger'><i class="fa fa-trash-o"></i> {{i18n 'admin.customize.delete'}}</button>
-					<span class="saving {{unless selectedItem.savingStatus 'hidden'}}">{{selectedItem.savingStatus}}</span>
-				</div>
-		    </div>
-		    <br>
-		    <form class="form-horizontal">
-		    {{#if selectedItem.id}}
-		    <div>
-			    <label>{{i18n 'admin.league.levels.id'}}: {{ selectedItem.id }}</label>
-			    <p class="help">{{i18n 'admin.league.levels.membership_page'}}: <a target="_blank" href="{{levelURL}}{{selectedItem.id}}">{{levelURL}}{{selectedItem.id}}</a></p>
-		    </div>
-		    {{/if}}
-		    <div>
-		    {{combo-box content=customGroups valueAttribute="id" value=selectedItem.group none="admin.groups.bulk_select"}}
-		    </div>
-			<div>
-			    <label for="initial-payment">{{i18n 'admin.league.levels.initial_payment'}}</label>
-			    <span>$</span>{{input type="text" name="initial-payment" value=selectedItem.initial_payment}}
-			    <p class="help">{{i18n 'admin.league.levels.initial_payment_description'}}</p>
-		    </div>
-			<div>
-			    <label>
-			    	{{input type="checkbox" name="recurring" checked=selectedItem.recurring}}
-				    {{i18n 'admin.league.levels.recurring'}}
-			    </label>
-			    <p class="help">{{i18n 'admin.league.levels.recurring_description'}}</p>
-		    </div>
-		    {{#if selectedItem.recurring}}
-			<div>
-			    <label for="recurring-payment">{{i18n 'admin.league.levels.recurring_payment'}}</label>
-			    {{input type="text" name="recurring-payment" value=selectedItem.recurring_payment}}
-			    <p class="help">{{i18n 'admin.league.levels.recurring_payment_description'}}</p>
-		    </div>
-			<div>
-			    <label>
-			    	{{input type="checkbox" name="trial" checked=selectedItem.trial}}
-				    {{i18n 'admin.league.levels.trial'}}
-			    </label>
-			    <p class="help">{{i18n 'admin.league.levels.trial_description'}}</p>
-		    </div>
-		    {{#if selectedItem.trial}}
-			<div>
-			    <label for="trial-period">{{i18n 'admin.league.levels.trial_period'}}</label>
-			    {{input type="text" name="trial-period" value=selectedItem.trial_period}}
-			    <p class="help">{{i18n 'admin.league.levels.trial_period_description'}}</p>
-		    </div>
-		    {{/if}}
-		    {{/if}}
-		    </form>
-		</div>
-		{{else}}
-			<div class="current-style color-scheme badges">{{i18n 'admin.league.levels.no_levels'}}</div>
-		{{/if}}
-	</div>
+  <div class="admin-container">
+    <div class='content-list span6'>
+      <h3>{{i18n 'admin.league.titles.levels'}}</h3>
+      <ul>
+      {{#each model as |level|}}
+        <li><a {{action "selectDLLevel" level}} class="{{if level.selected 'active'}}">{{level.name}}</a></li>
+      {{/each}}
+      </ul>
+      {{#unless model}}
+        <p class="desc">{{i18n 'admin.league.levels.no_levels'}}</p>
+      {{/unless}}
+      {{d-button class="btn"
+                 action="newDLLevel"
+                 label="admin.customize.new"
+                 icon="plus"}}
+    </div>
+    {{#if selectedItem.selected}}
+    <div class="current-style color-scheme badges">
+      <div class='admin-container'>
+          <h1>{{text-field class="style-name" value=selectedItem.name}}</h1>
+          <div class="controls">
+          <button {{action "save"}} disabled={{disableSave}} class='btn'>{{i18n 'admin.customize.save'}}</button>
+          <button {{action "toggleEnabled"}} disabled={{disableEnable}} class="btn">
+            {{#if selectedItem.enabled}}
+              {{i18n 'disable'}}
+            {{else}}
+              {{i18n 'enable'}}
+            {{/if}}
+          </button>
+          <button {{action "copy" selectedItem}} class='btn'><i class="fa fa-copy"></i> {{i18n 'admin.customize.copy'}}</button>
+          <button {{action "destroy"}} class='btn btn-danger'><i class="fa fa-trash-o"></i> {{i18n 'admin.customize.delete'}}</button>
+          <span class="saving {{unless selectedItem.savingStatus 'hidden'}}">{{selectedItem.savingStatus}}</span>
+        </div>
+        </div>
+        <br>
+        <form class="form-horizontal">
+        {{#if selectedItem.id}}
+        <div>
+          <label>{{i18n 'admin.league.levels.id'}}: {{ selectedItem.id }}</label>
+          <p class="help">{{i18n 'admin.league.levels.membership_page'}}: <a target="_blank" href="{{levelURL}}{{selectedItem.id}}">{{levelURL}}{{selectedItem.id}}</a></p>
+        </div>
+        {{/if}}
+        <div>
+          {{combo-box content=customGroups valueAttribute="id" value=selectedItem.group none="admin.groups.bulk_select"}}
+        </div>
+      <div>
+        <label for="initial-payment">{{i18n 'admin.league.levels.initial_payment'}}</label>
+        <span>$</span>{{input type="text" name="initial-payment" value=selectedItem.initial_payment}}
+        <p class="help">{{i18n 'admin.league.levels.initial_payment_description'}}</p>
+      </div>
+      <div>
+        <label>
+          {{input type="checkbox" name="recurring" checked=selectedItem.recurring}}
+          {{i18n 'admin.league.levels.recurring'}}
+        </label>
+        <p class="help">{{i18n 'admin.league.levels.recurring_description'}}</p>
+      </div>
+      {{#if selectedItem.recurring}}
+      <div>
+        <label for="recurring-payment">{{i18n 'admin.league.levels.recurring_payment'}}</label>
+        <span>$</span>{{input type="text" name="recurring-payment" value=selectedItem.recurring_payment}}
+        <p class="help">{{i18n 'admin.league.levels.recurring_payment_description'}}</p>
+      </div>
+      <div>
+        <label for="recurring-payment-period">{{i18n 'admin.league.levels.recurring_payment_period'}}</label>
+        <span>Every </span>{{input type="number" name="recurring-payment-period" value=selectedItem.recurring_payment_period}}<span> month(s)</span>
+        <p class="help">{{i18n 'admin.league.levels.recurring_payment_period_description'}}</p>
+      </div>
+      <div>
+        <label>
+          {{input type="checkbox" name="trial" checked=selectedItem.trial}}
+          {{i18n 'admin.league.levels.trial'}}
+        </label>
+        <p class="help">{{i18n 'admin.league.levels.trial_description'}}</p>
+      </div>
+      {{#if selectedItem.trial}}
+      <div>
+        <label for="trial-period">{{i18n 'admin.league.levels.trial_period'}}</label>
+        {{input type="text" name="trial-period" value=selectedItem.trial_period}}
+        <p class="help">{{i18n 'admin.league.levels.trial_period_description'}}</p>
+      </div>
+      {{/if}}
+      {{/if}}
+      </form>
+    </div>
+    {{else}}
+      <div class="current-style color-scheme badges">{{i18n 'admin.league.levels.no_levels'}}</div>
+    {{/if}}
+  </div>
 </div>
 {{/conditional-loading-spinner}}

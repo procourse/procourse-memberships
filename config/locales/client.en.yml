@@ -25,6 +25,8 @@ en:
           recurring_description: "Does this level have a recurring payment?"
           recurring_payment: "Recurring Payment"
           recurring_payment_description: "The amount to charge each period."
+          recurring_payment_period: "Recurring Payment Period"
+          recurring_payment_period_description: "The cycle to which charges apply."
           trial: "Trial"
           trial_description: "Do you want to offer a trial for this level?"
           trial_period: "Trial Period"
