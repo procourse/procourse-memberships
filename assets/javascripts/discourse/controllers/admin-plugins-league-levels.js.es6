@@ -26,6 +26,8 @@ export default Ember.Controller.extend({
       (this.get('originals').recurring_payment == this.get('selectedItem').recurring_payment) &&
       (this.get('originals').recurring_payment_period == this.get('selectedItem').recurring_payment_period) &&
       (this.get('originals').trial == this.get('selectedItem').trial) &&
+      (this.get('originals').description_raw == this.get('selectedItem').description_raw) &&
+      (this.get('originals').description_cooked == this.get('selectedItem').description_cooked) &&
       (this.get('originals').trial_period == this.get('selectedItem').trial_period)) ||
       (!this.get('selectedItem').group) ||
       (!this.get('selectedItem').name) ||
@@ -39,7 +41,7 @@ export default Ember.Controller.extend({
       }
   }.observes('selectedItem.name', 'selectedItem.group', 'selectedItem.initial_payment', 
     'selectedItem.recurring', 'selectedItem.recurring_payment', 'selectedItem.recurring_payment_period', 
-    'selectedItem.trial', 'selectedItem.trial_period'),
+    'selectedItem.trial', 'selectedItem.trial_period', 'selectedItem.description_raw', 'selectedItem.description_cooked'),
 
   actions: {
     selectDLLevel: function(leagueLevel) {
@@ -54,7 +56,9 @@ export default Ember.Controller.extend({
           recurring: leagueLevel.recurring,
           recurring_payment: leagueLevel.recurring_payment,
           trial: leagueLevel.trial,
-          trial_period: leagueLevel.trial_period
+          trial_period: leagueLevel.trial_period,
+          description_raw: leagueLevel.description_raw,
+          description_cooked: leagueLevel.description_cooked
         });
         this.set('disableSave', true);
         this.set('selectedItem', leagueLevel);

@@ -16,6 +16,7 @@ export default Ember.Controller.extend({
   _init: function() {
     if (this.currentUser){
       this.set('checkoutState', 'billing-payment');
+      this.set('showDescription', true);
       this.set('memberDetails', this.get('initMemberDetails'));
     }
     else{
@@ -36,6 +37,7 @@ export default Ember.Controller.extend({
         bootbox.alert(e.jqXHR.responseJSON.errors);
       }).finally(() => {
         this.set('checkoutState', "verify");
+        this.set('showDescription', false);
       });
     }
   }

@@ -1,8 +1,9 @@
 <div class="league checkout">
-  <h1>{{i18n 'league.checkout.title'}}</h1>
   {{checkout-progress state=checkoutState}}
   <div class="billing-section">
-    <p>The price for membership to {{model.name}} is $27 now.</p>
+    {{#if showDescription}}
+    <p>{{{model.0.description_cooked}}}</p>
+    {{/if}}
   </div>
   {{#if currentUser }}
   <div class="user-table">
@@ -98,7 +99,9 @@
             </div>
           </div>
         </div>
-        <button {{action "submitBillingPayment"}} disabled={{disableSubmit}} class='btn btn-primary'>{{i18n 'league.checkout.submit_verify'}}</button>
+        <div align="center">
+          <button {{action "submitBillingPayment"}} disabled={{disableSubmit}} class='btn btn-primary'>{{i18n 'league.checkout.submit_verify'}}</button>
+        </div>
       </form>
     </div>
   </div>

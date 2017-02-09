@@ -24,7 +24,9 @@ module DiscourseLeague
         recurring_payment: params[:league_level][:recurring_payment],
         recurring_payment_period: params[:league_level][:recurring_payment_period],
         trial: params[:league_level][:trial],
-        trial_period: params[:league_level][:trial_period]
+        trial_period: params[:league_level][:trial_period],
+        description_raw: params[:league_level][:description_raw],
+        description_cooked: params[:league_level][:description_cooked]
       }
 
       levels.push(new_level)
@@ -49,7 +51,8 @@ module DiscourseLeague
         league_level[0][:recurring_payment_period] = params[:league_level][:recurring_payment_period] if !params[:league_level][:recurring_payment_period].nil?
         league_level[0][:trial] = params[:league_level][:trial] if !params[:league_level][:trial].nil?
         league_level[0][:trial_period] = params[:league_level][:trial_period] if !params[:league_level][:trial_period].nil?
-        league_level[0][:save]
+        league_level[0][:description_raw] = params[:league_level][:description_raw] if !params[:league_level][:description_raw].nil?
+        league_level[0][:description_cooked] = params[:league_level][:description_cooked] if !params[:league_level][:description_cooked].nil?
 
         PluginStore.set("discourse_league", "levels", levels)
 
@@ -76,7 +79,7 @@ module DiscourseLeague
     private
 
     def league_level_params
-      params.permit(league_level: [:enabled, :name, :group, :initial_payment, :recurring, :recurring_payment, :recurring_payment_period, :trial, :trial_payment])[:league_level]
+      params.permit(league_level: [:enabled, :name, :group, :initial_payment, :recurring, :recurring_payment, :recurring_payment_period, :trial, :trial_payment, :description_raw, :description_cooked])[:league_level]
     end
   end
 end

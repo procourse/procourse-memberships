@@ -1,5 +1,6 @@
 import { ajax } from 'discourse/lib/ajax';
 import Group from 'discourse/models/group';
+import { default as PrettyText, buildOptions } from 'pretty-text/pretty-text';
 
 const LeagueLevel = Discourse.Model.extend(Ember.Copyable, {
 
@@ -7,6 +8,16 @@ const LeagueLevel = Discourse.Model.extend(Ember.Copyable, {
     this._super();
   }
 });
+
+function getOpts() {
+  const siteSettings = Discourse.__container__.lookup('site-settings:main');
+
+  return buildOptions({
+    getURL: Discourse.getURLWithCDN,
+    currentUser: Discourse.__container__.lookup('current-user:main'),
+    siteSettings
+  });
+}
 
 var LeagueLevels = Ember.ArrayProxy.extend({
   selectedItemChanged: function() {
@@ -39,7 +50,9 @@ LeagueLevel.reopenClass({
             recurring_payment: leagueLevel.recurring_payment,
             recurring_payment_period: leagueLevel.recurring_payment_period,
             trial: leagueLevel.trial,
-            trial_period: leagueLevel.trial_period
+            trial_period: leagueLevel.trial_period,
+            description_raw: leagueLevel.description_raw,
+            description_cooked: leagueLevel.description_cooked
           }));
         });
       };
@@ -62,6 +75,7 @@ LeagueLevel.reopenClass({
     }
 
     if (!object || !enabledOnly) {
+      var cooked = new Handlebars.SafeString(new PrettyText(getOpts()).cook(object.description_raw));
       data.name = self.name;
       data.group = self.group;
       data.initial_payment = self.initial_payment;
@@ -70,6 +84,8 @@ LeagueLevel.reopenClass({
       data.recurring_payment_period = self.recurring_payment_period;
       data.trial = self.trial;
       data.trial_period = self.trial_period;
+      data.description_raw = self.description_raw;
+      data.description_cooked = cooked.string;
     };
 
     return ajax("/league/admin/levels.json", {
