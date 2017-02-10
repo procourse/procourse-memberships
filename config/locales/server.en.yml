@@ -1,9 +1,10 @@
 en:
-  site_settings: 
+  site_settings:
     league_enabled: "Enable the League. All settings are found here at the bottom of the settings category list. All League group and page setup is found at /admin/plugins/league."
+    league_license_key: 'Enter your license key to unlock premium features. Get a license key at <a href="https://discourseleague.com/premium">discourseleague.com/premium</a>.'
     league_go_live: "The League runs in TEST mode until you enable this option. Turn this on when you're ready to go live."
     league_gateway: "Which gateway would you like to use?"
     league_include_paypal: "Allow both credit card and PayPal options?"
-    league_braintree_merchant_id: "Braintree Merchant ID" 
+    league_braintree_merchant_id: "Braintree Merchant ID"
     league_braintree_public_key: "Braintree Public Key"
     league_braintree_private_key: "Braintree Private Key"

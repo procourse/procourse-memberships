@@ -2,6 +2,9 @@ plugins:
   league_enabled:
     default: true
     client: true
+  league_license_key:
+    default: ""
+    client: false
   league_licensed:
     default: false
     client: true
@@ -18,7 +21,6 @@ discourse_league:
     choices:
       - "braintree"
       - "paypal"
-      - "stripe"
   league_include_paypal:
     default: false
     client: true
