@@ -18,6 +18,9 @@ export default Ember.Controller.extend({
   paymentType: "credit-card",
 
   showPaypal: false,
+  showBilling: false,
+  showVerify: false,
+  showCompleted: false,
 
   paymentTypeChanged: function(){
     if (this.get('paymentType') == "paypal"){
@@ -31,6 +34,7 @@ export default Ember.Controller.extend({
   _init: function() {
     if (this.currentUser){
       this.set('checkoutState', 'billing-payment');
+      this.set('showBilling', true);
       this.set('showDescription', true);
       this.set('memberDetails', this.get('initMemberDetails'));
       if (Discourse.SiteSettings.league_gateway == "paypal"){
@@ -64,7 +68,40 @@ export default Ember.Controller.extend({
       }).finally((result) => {
         if (success){
           this.set('checkoutState', "verify");
+          this.set('showBilling', false);
+          this.set('showVerify', true);
           this.set('showDescription', false);
+        }
+      });
+    },
+
+    editBillingPayment: function(){
+      this.set('checkoutState', 'billing-payment');
+      this.set('showBilling', true);
+      this.set('showVerify', false);
+      this.set('showDescription', true);
+    },
+
+    submitCheckout: function(){
+      var data = this.get("memberDetails");
+      var success = true;
+      return ajax("/league/checkout/verify.json", {
+        data: JSON.stringify(data),
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json'
+      }).catch(e => {
+        bootbox.alert(e.jqXHR.responseJSON.errors);
+        this.set('checkoutState', 'billing-payment');
+        this.set('showBilling', true);
+        this.set('showVerify', false);
+        this.set('showDescription', true);
+        success = false;
+      }).finally((result) => {
+        if (success){
+          this.set('checkoutState', "completed");
+          this.set('showVerify', false);
+          this.set('showCompleted', true);
         }
       });
     }

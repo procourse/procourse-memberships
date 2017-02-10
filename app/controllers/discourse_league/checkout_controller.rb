@@ -31,7 +31,7 @@ module DiscourseLeague
 
     def submit_verify
       gateway = DiscourseLeague::Gateways.new.gateway
-      byebug
+      
     end
 
   end

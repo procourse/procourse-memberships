@@ -34,6 +34,17 @@
       text-align: center;
     }
   }
+  .radio-field-choice{
+    text-align: center;
+    margin-bottom: 20px;
+
+    input{
+      margin:0px 5px 0px 10px;
+    }
+    span{
+      margin:0px 10px 0px 5px;
+    }
+  }
 
   .controls input{
     width: calc(100% - 10px);
@@ -142,6 +153,18 @@
       #completed .indicator{
         background: #ffffff;
       }
+    }
+  }
+  #verify-state{
+    .control-group{
+      margin-bottom: 0px;
+    }
+    .expiration > span {
+      font-size: 1em;
+      line-height: 1.3em;
+    }
+    .btn-primary{
+      margin-left: 30px;
     }
   }
 }

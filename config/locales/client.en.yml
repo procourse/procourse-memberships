@@ -66,12 +66,14 @@ en:
         expiration_date: "Expiration Date"
         cvv: "CVV"
         submit_verify: "Submit and Verify"
+        edit_payment: "Edit"
         submit_checkout: "Checkout"
         progress:
           log_in: "Log In"
           billing_payment: "Billing & Payment"
           verify: "Verify"
           completed: "Completed"
+        completed_message: '<h2>Success!</h2><p>Thanks for signing up. You should receive a PM shortly with more details about your membership.</p>'
   league:
     errors:
       first_name: "First Name"
