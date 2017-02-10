@@ -1,3 +1,4 @@
+{{#conditional-loading-spinner condition=model.loading}}
 <div class="league checkout">
   {{checkout-progress state=checkoutState}}
   <div class="billing-section">
@@ -202,3 +203,4 @@
   </div>
   {{/if}}
 </div>
+{{/conditional-loading-spinner}}
