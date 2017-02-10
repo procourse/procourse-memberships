@@ -43,6 +43,7 @@ en:
           delete_confirm: "Delete this League page?"
           no_pages: "Add some pages for your users."
           no_page_selected: "No page selected."
+        unlicensed_message: 'This section requires a valid license key. <a href="https://discourseleague.com/premium" target="_blank">Get your key here</a> and enter it into the <a href="/admin/site_settings/category/all_results?filter=league%20license%20key">plugin settings here</a>.'
     league:
       title: "Discourse League"
       checkout:
