@@ -184,7 +184,7 @@
         {{#unless showPaypal}}
         <div align="center">
           <button {{action "editBillingPayment"}} disabled={{disableSubmit}} class='btn'>{{i18n 'league.checkout.edit_payment'}}</button>
-          <button {{action "submitCheckout"}} disabled={{disableSubmit}} class='btn btn-primary'>{{i18n 'league.checkout.submit_checkout'}}</button>
+          <button {{action "submitCheckout" model}} disabled={{disableSubmit}} class='btn btn-primary'>{{i18n 'league.checkout.submit_checkout'}}</button>
         </div>
         {{/unless}}
       </form>

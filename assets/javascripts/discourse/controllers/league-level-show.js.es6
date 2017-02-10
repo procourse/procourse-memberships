@@ -11,7 +11,7 @@ export default Ember.Controller.extend({
 
   expYears: [2017,2018,2019],
 
-  initMemberDetails: {"first_name": "", "last_name": "", "address_1":"", "address_2":"", "city":"", "billing_state":"", "postal_code":"", "country":"United States", "phone":"", "card_number":"", "expiration_month":"", "expiration_year":"", "cvv":"",},
+  initMemberDetails: {"product_id": "", "first_name": "", "last_name": "", "address_1":"", "address_2":"", "city":"", "billing_state":"", "postal_code":"", "country":"United States", "phone":"", "card_number":"", "expiration_month":"", "expiration_year":"", "cvv":"",},
 
   showPaymentOptions: false,
 
@@ -82,8 +82,9 @@ export default Ember.Controller.extend({
       this.set('showDescription', true);
     },
 
-    submitCheckout: function(){
+    submitCheckout: function(product){
       var data = this.get("memberDetails");
+      data.product_id = product[0].id;
       var success = true;
       return ajax("/league/checkout/verify.json", {
         data: JSON.stringify(data),
