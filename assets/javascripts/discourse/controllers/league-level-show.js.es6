@@ -13,11 +13,35 @@ export default Ember.Controller.extend({
 
   initMemberDetails: {"first_name": "", "last_name": "", "address_1":"", "address_2":"", "city":"", "billing_state":"", "postal_code":"", "country":"United States", "phone":"", "card_number":"", "expiration_month":"", "expiration_year":"", "cvv":"",},
 
+  showPaymentOptions: false,
+
+  paymentType: "credit-card",
+
+  showPaypal: false,
+
+  paymentTypeChanged: function(){
+    if (this.get('paymentType') == "paypal"){
+      this.set('showPaypal', true);
+    }
+    else {
+      this.set('showPaypal', false);
+    }
+  }.observes('paymentType'),
+
   _init: function() {
     if (this.currentUser){
       this.set('checkoutState', 'billing-payment');
       this.set('showDescription', true);
       this.set('memberDetails', this.get('initMemberDetails'));
+      if (Discourse.SiteSettings.league_gateway == "paypal"){
+        this.set('showPaypal', true);
+      }
+      else{
+        this.set('showPaypal', false);
+        if (Discourse.SiteSettings.league_include_paypal){
+          this.set('showPaymentOptions', true);
+        }
+      }
     }
     else{
       this.set('checkoutState', "sign-in")

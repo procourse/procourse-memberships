@@ -70,14 +70,23 @@
         <hr>
         <div class="billing-section">
           <h3>{{i18n 'league.checkout.payment_details'}}</h3>
+          {{#if showPaymentOptions}}
           <div class="radio-field-choice">
-            {{radio-button value="credit"
-                           radioValue="Credit Card"
+            {{radio-button value="credit-card"
+                           name="payment-type"
                            label="Credit Card"
-                           name="paymentmethod"
-                           selection="true"}}
+                           selection=paymentType}}
             <span>{{i18n 'league.checkout.credit_card'}}</span>
+            {{radio-button value="paypal"
+                           name="payment-type"
+                           label="PayPal"
+                           selection=paymentType}}
+            <span>{{i18n 'league.checkout.paypal'}}</span>
           </div>
+          {{/if}}
+          {{#if showPaypal}}
+          <div>paypal</div>
+          {{else}}
           <div class="control-group">
             <label class="control-label">{{i18n 'league.checkout.card_number'}}</label>
             <div class="controls">
@@ -98,10 +107,13 @@
               {{text-field value=memberDetails.cvv }}
             </div>
           </div>
+          {{/if}}
         </div>
+        {{#unless showPaypal}}
         <div align="center">
           <button {{action "submitBillingPayment"}} disabled={{disableSubmit}} class='btn btn-primary'>{{i18n 'league.checkout.submit_verify'}}</button>
         </div>
+        {{/unless}}
       </form>
     </div>
   </div>
