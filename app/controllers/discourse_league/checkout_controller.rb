@@ -30,28 +30,12 @@ module DiscourseLeague
           :phone => params[:phone]
         }
 
-        response = gateway.store(@credit_card, :billing_address => billing_address)
+        products = PluginStore.get("discourse_league", "levels")
+        product = products.select{|level| level[:id] == params[:product_id]}
+
+        response = gateway.subscribe(current_user.id, product[0], @credit_card, :billing_address => billing_address)
 
         if response.success?
-          tokens = PluginStore.get("discourse_league", "user_payment_tokens")
-          tokens = [] if tokens.nil?
-          id = SecureRandom.random_number(1000000)
-
-          until tokens.select{|token| token[:id] == id}.empty?
-            id = SecureRandom.random_number(1000000)
-          end
-
-          new_token = {
-            id: id,
-            user_id: current_user.id,
-            product_id: params[:product_id],
-            token: response.params["credit_card_token"]
-          }
-
-          tokens.push(new_token)
-
-          PluginStore.set("discourse_league", "user_payment_tokens", tokens)
-
           render json: success_json
         else
           return render_json_error(response.message)
