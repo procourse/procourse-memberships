@@ -10,9 +10,19 @@ module ActiveMerchant
         if response.success?
           league_gateway = DiscourseLeague::Gateways.new(:user_id => user_id, :product_id => product[:id], :token => response.params["credit_card_token"])
           league_gateway.store_token
-          @braintree_gateway.subscription.create(:payment_method_token => response.params["credit_card_token"], :plan_id => product[:braintree_plan_id])
+          subscription = @braintree_gateway.subscription.create(:payment_method_token => response.params["credit_card_token"], :plan_id => product[:braintree_plan_id])
+
+          if subscription.success?
+            league_gateway.store_subscription(subscription.subscription.id, subscription.subscription.billing_period_end_date)
+            subscription.subscription.transactions.each do |transaction|
+              league_gateway.store_transaction(transaction.id, transaction.amount, transaction.created_at)
+            end
+            subscription
+          else
+            return {:success => false, :message => message_from_result(subscription)}
+          end
         else
-          message_from_result(response)
+          return {:success => false, :message => message_from_result(response)}
         end
 
       end
