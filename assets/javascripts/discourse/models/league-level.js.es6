@@ -52,7 +52,8 @@ LeagueLevel.reopenClass({
             trial: leagueLevel.trial,
             trial_period: leagueLevel.trial_period,
             description_raw: leagueLevel.description_raw,
-            description_cooked: leagueLevel.description_cooked
+            description_cooked: leagueLevel.description_cooked,
+            braintree_plan_id: leagueLevel.braintree_plan_id
           }));
         });
       };
@@ -86,6 +87,7 @@ LeagueLevel.reopenClass({
       data.trial_period = self.trial_period;
       data.description_raw = self.description_raw;
       data.description_cooked = cooked.string;
+      data.braintree_plan_id = self.braintree_plan_id;
     };
 
     return ajax("/league/admin/levels.json", {

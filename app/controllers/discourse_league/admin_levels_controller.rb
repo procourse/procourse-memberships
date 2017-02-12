@@ -26,7 +26,8 @@ module DiscourseLeague
         trial: params[:league_level][:trial],
         trial_period: params[:league_level][:trial_period],
         description_raw: params[:league_level][:description_raw],
-        description_cooked: params[:league_level][:description_cooked]
+        description_cooked: params[:league_level][:description_cooked],
+        braintree_plan_id: params[:league_level][:braintree_plan_id]
       }
 
       levels.push(new_level)
@@ -53,6 +54,7 @@ module DiscourseLeague
         league_level[0][:trial_period] = params[:league_level][:trial_period] if !params[:league_level][:trial_period].nil?
         league_level[0][:description_raw] = params[:league_level][:description_raw] if !params[:league_level][:description_raw].nil?
         league_level[0][:description_cooked] = params[:league_level][:description_cooked] if !params[:league_level][:description_cooked].nil?
+        league_level[0][:braintree_plan_id] = params[:league_level][:braintree_plan_id] if !params[:league_level][:braintree_plan_id].nil?
 
         PluginStore.set("discourse_league", "levels", levels)
 
@@ -62,7 +64,6 @@ module DiscourseLeague
 
     def destroy
       levels = PluginStore.get("discourse_league", "levels")
-      byebug
       league_level = levels.select{|level| level[:id] == params[:league_level][:id].to_i}
 
       levels.delete(league_level[0])
