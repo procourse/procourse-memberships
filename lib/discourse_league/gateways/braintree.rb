@@ -1,3 +1,15 @@
+module ActiveMerchant
+  module Billing
+    class BraintreeBlueGateway
+
+      def subscribe(credit_card_or_vault_id, options = {})
+        return "subscribed"
+      end
+
+    end
+  end
+end
+
 module DiscourseLeague
   class Gateways
     class Braintree
