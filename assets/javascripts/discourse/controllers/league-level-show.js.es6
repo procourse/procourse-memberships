@@ -55,6 +55,7 @@ export default Ember.Controller.extend({
   actions: {
 
     submitBillingPayment: function() {
+      this.set("loading",true);
       var data = this.get("memberDetails");
       var success = true;
       return ajax("/league/checkout/billing-payment.json", {
@@ -65,12 +66,14 @@ export default Ember.Controller.extend({
       }).catch(e => {
         bootbox.alert(e.jqXHR.responseJSON.errors);
         success = false;
+        this.set("loading",false);
       }).finally((result) => {
         if (success){
           this.set('checkoutState', "verify");
           this.set('showBilling', false);
           this.set('showVerify', true);
           this.set('showDescription', false);
+          this.set("loading",false);
         }
       });
     },
@@ -83,6 +86,7 @@ export default Ember.Controller.extend({
     },
 
     submitCheckout: function(product){
+      this.set("loading",true);
       var data = this.get("memberDetails");
       data.product_id = product[0].id;
       var success = true;
@@ -98,11 +102,13 @@ export default Ember.Controller.extend({
         this.set('showVerify', false);
         this.set('showDescription', true);
         success = false;
+        this.set("loading",false);
       }).finally((result) => {
         if (success){
           this.set('checkoutState', "completed");
           this.set('showVerify', false);
           this.set('showCompleted', true);
+          this.set("loading",false);
         }
       });
     }

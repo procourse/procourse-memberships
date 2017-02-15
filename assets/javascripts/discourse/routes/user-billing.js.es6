@@ -1,8 +1,12 @@
-
+import Subscriptions from '../models/subscriptions';
+import Transactions from '../models/transactions';
 
 export default Discourse.Route.extend({
   model() {
-    return;
+    this.set('loading', true);
+    var subscriptions = Subscriptions.findAll(this.currentUser.id);
+    var transactions = Transactions.findAll(this.currentUser.id);
+    return {"subscriptions": subscriptions, "transactions": transactions};
   },
 
   setupController(controller, model) {
@@ -11,6 +15,6 @@ export default Discourse.Route.extend({
     }
     else{
       controller.setProperties({ model });
-  };
+    };
   }
 });

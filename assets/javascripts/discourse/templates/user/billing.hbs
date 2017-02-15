@@ -1,1 +1,46 @@
-<div>this is where it's at</div>
+{{#conditional-loading-spinner condition=loading}}
+<div class="admin-contents user-licenses">
+  <div class="dashboard-left">
+    <div class="dashboard-stats">
+      <table class="table table-condensed table-hover">
+      <thead>
+        <tr>
+          <th title="Product" class="title">{{i18n 'license_keys.product'}}</th>
+          <th>{{i18n 'license_keys.license_key'}}</th>
+        </tr>
+      </thead>
+      <tbody>
+      {{#each model as |license|}}
+        <tr>
+          <td><span>{{#if license.enabled }}<i class="fa fa-check-circle"></i>{{else}}<i class="fa fa-times-circle"></i>{{/if}}</span> {{license.license.product_name}}</td>
+          <td>{{license.key}}</td>
+        </tr>
+      {{/each}}
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <div class="dashboard-right">
+    <div class="dashboard-stats">
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th title="Product" class="title">{{i18n 'license_keys.product'}}</th>
+            <th>{{i18n 'license_keys.site'}}</th>
+          </tr>
+        </thead>
+        <tbody>
+        {{#each model as |license|}}
+          {{#each license.sites as |site|}}
+          <tr>
+            <td>{{license.license.product_name}}</td>
+            <td>{{site.site_url}}</td>
+          </tr>
+          {{/each}}
+        {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{{/conditional-loading-spinner}}
