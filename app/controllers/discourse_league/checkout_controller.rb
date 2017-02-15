@@ -33,7 +33,17 @@ module DiscourseLeague
         products = PluginStore.get("discourse_league", "levels")
         product = products.select{|level| level[:id] == params[:product_id]}
 
-        response = gateway.subscribe(current_user.id, product[0], @credit_card, :billing_address => billing_address)
+        if product[0][:recurring]
+          response = gateway.subscribe(current_user.id, product[0], @credit_card, :billing_address => billing_address)
+        else
+          initial_payment = product[0][:initial_payment].to_i * 100  # Converts ammount to cents
+
+          response = gateway.purchase(initial_payment, @credit_card, :billing_address => billing_address, :store => true)
+
+          league_gateway = DiscourseLeague::Gateways.new(:user_id => current_user.id, :product_id => product[0][:id], :token => response.params["credit_card_token"])
+
+          league_gateway.store_transaction(response.authorization, product[0][:initial_payment].to_i, Time.now())
+        end
 
         if response.success?
           render json: success_json
