@@ -21,6 +21,7 @@ Discourse::Application.routes.append do
 	get '/admin/plugins/league/messages' => 'admin/plugins#index', constraints: StaffConstraint.new
 	get '/admin/plugins/league/advanced' => 'admin/plugins#index', constraints: StaffConstraint.new
 	get '/admin/plugins/league/extras' => 'admin/plugins#index', constraints: StaffConstraint.new
+  get "users/:username/billing" => "users#show", constraints: {username: USERNAME_ROUTE_FORMAT}
 end
 
 load File.expand_path('../lib/discourse_league/engine.rb', __FILE__)

@@ -48,6 +48,7 @@ en:
         unlicensed_message: 'This section requires a valid license key. <a href="https://discourseleague.com/premium" target="_blank">Get your key here</a> and enter it into the <a href="/admin/site_settings/category/all_results?filter=league%20license%20key">plugin settings here</a>.'
     league:
       title: "Discourse League"
+      billing: "Billing"
       checkout:
         title: "Membership Checkout"
         billing_address: "Billing Address"
