@@ -46,9 +46,21 @@ module DiscourseLeague
         end
 
         if response.success?
-          render json: success_json
+          group = Group.find(product[0][:group].to_i)
+          if !group.users.include?(current_user)
+            group.add(current_user)
+            GroupActionLogger.new(current_user, group).log_add_user_to_group(current_user)
+          else
+            return render_json_error I18n.t('groups.errors.member_already_exist', username: current_user.username)
+          end
+
+          if group.save
+            render json: success_json
+          else
+            return render_json_error(group)
+          end
         else
-          return render_json_error(response.message)
+          render_json_error(response.message)
         end
       end
     end
