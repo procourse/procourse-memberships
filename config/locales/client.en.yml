@@ -49,6 +49,13 @@ en:
     league:
       title: "Discourse League"
       billing: "Billing"
+      product: "Product"
+      subscription_id: "Subscription ID"
+      created: "Created"
+      actions: "Actions"
+      update_billing: "Update Billing"
+      cancel_subscription: "Cancel"
+      cancel_confirmation: "Are you sure you want to cancel your subscription?"
       checkout:
         title: "Membership Checkout"
         billing_address: "Billing Address"

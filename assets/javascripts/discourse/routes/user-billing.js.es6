@@ -4,9 +4,12 @@ import Transactions from '../models/transactions';
 export default Discourse.Route.extend({
   model() {
     this.set('loading', true);
-    var subscriptions = Subscriptions.findAll(this.currentUser.id);
-    var transactions = Transactions.findAll(this.currentUser.id);
-    return {"subscriptions": subscriptions, "transactions": transactions};
+    var result = Ember.RSVP.hash({
+        subscriptions: Subscriptions.findAll(this.currentUser.id),
+        transactions: Transactions.findAll(this.currentUser.id)
+    });
+    this.set('loading', false);
+    return result;
   },
 
   setupController(controller, model) {

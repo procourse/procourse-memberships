@@ -17,6 +17,7 @@ module DiscourseLeague
       tokens = PluginStore.get("discourse_league", "user_payment_tokens")
       tokens = [] if tokens.nil?
       id = SecureRandom.random_number(1000000)
+      time = Time.now
 
       until tokens.select{|token| token[:id] == id}.empty?
         id = SecureRandom.random_number(1000000)
@@ -26,7 +27,8 @@ module DiscourseLeague
         id: id,
         user_id: @options[:user_id],
         product_id: @options[:product_id],
-        token: @options[:token]
+        token: @options[:token],
+        created_at: time
       }
 
       tokens.push(new_token)
@@ -38,6 +40,7 @@ module DiscourseLeague
       subscriptions = PluginStore.get("discourse_league", "subscriptions")
       subscriptions = [] if subscriptions.nil?
       id = SecureRandom.random_number(1000000)
+      time = Time.now
 
       until subscriptions.select{|subscription| subscription[:id] == id}.empty?
         id = SecureRandom.random_number(1000000)
@@ -48,7 +51,9 @@ module DiscourseLeague
         user_id: @options[:user_id],
         product_id: @options[:product_id],
         subscription_id: subscription_id,
-        subscription_end_date: subscription_end_date
+        subscription_end_date: subscription_end_date,
+        active: true,
+        created_at: time
       }
 
       subscriptions.push(new_subscription)
@@ -60,6 +65,7 @@ module DiscourseLeague
       transactions = PluginStore.get("discourse_league", "transactions")
       transactions = [] if transactions.nil?
       id = SecureRandom.random_number(1000000)
+      time = Time.now
 
       until transactions.select{|transaction| transaction[:id] == id}.empty?
         id = SecureRandom.random_number(1000000)
@@ -71,7 +77,8 @@ module DiscourseLeague
         product_id: @options[:product_id],
         transaction_id: transaction_id,
         transaction_amount: transaction_amount,
-        transaction_date: transaction_date
+        transaction_date: transaction_date,
+        created_at: time
       }
 
       transactions.push(new_transaction)

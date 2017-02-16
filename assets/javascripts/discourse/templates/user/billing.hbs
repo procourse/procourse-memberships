@@ -1,19 +1,29 @@
-{{#conditional-loading-spinner condition=loading}}
+{{#conditional-loading-spinner condition=model.loading}}
 <div class="admin-contents user-licenses">
   <div class="dashboard-left">
     <div class="dashboard-stats">
       <table class="table table-condensed table-hover">
       <thead>
         <tr>
-          <th title="Product" class="title">{{i18n 'license_keys.product'}}</th>
-          <th>{{i18n 'license_keys.license_key'}}</th>
+          <th title="Subscription ID" class="title">{{i18n 'league.subscription_id'}}</th>
+          <th title="Product" class="title">{{i18n 'league.product'}}</th>
+          <th title="Created" class="title">{{i18n 'league.created'}}</th>
+          <th title="Actions" class="title">{{i18n 'league.actions'}}</th>
         </tr>
       </thead>
       <tbody>
-      {{#each model as |license|}}
+      {{#each model.subscriptions as |subscription|}}
+      {{log subscription}}
         <tr>
-          <td><span>{{#if license.enabled }}<i class="fa fa-check-circle"></i>{{else}}<i class="fa fa-times-circle"></i>{{/if}}</span> {{license.license.product_name}}</td>
-          <td>{{license.key}}</td>
+          <td>{{subscription.id}}</td>
+          <td>{{subscription.product_name}}</td>
+          <td>{{format-date subscription.created_at}}</td>
+          <td>
+            <button {{action "updateBilling" subscription}} class="btn">{{i18n 'league.update_billing'}}</button>
+            {{#if subscription.active}}
+            <button {{action "cancelSubscription" subscription}} class="btn">{{i18n 'league.cancel_subscription'}}</button>
+            {{/if}}
+          </td>
         </tr>
       {{/each}}
       </tbody>
