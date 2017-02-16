@@ -7,5 +7,9 @@ export default {
 
   findById(user_id, id) {
     return ajax(`/league/subscriptions/${user_id}/${id}`);
+  },
+  destroy(id){
+    return ajax(`/league/subscriptions/${id}`, { 
+        type: 'DELETE'});
   }
 };

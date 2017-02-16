@@ -27,6 +27,15 @@ module ActiveMerchant
 
       end
 
+      def unsubscribe(subscription_id)
+        response = @braintree_gateway.subscription.cancel(subscription_id)
+        if response.success?
+          response
+        else
+          return {:success => false, :message => message_from_result(response)}
+        end
+      end
+
     end
   end
 end

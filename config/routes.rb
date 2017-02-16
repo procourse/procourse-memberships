@@ -10,6 +10,8 @@ DiscourseLeague::Engine.routes.draw do
   post '/checkout/verify' => "checkout#submit_verify", constraints: LeagueConstraint.new
   get '/subscriptions/:user_id' => "subscriptions#all", constraints: LeagueConstraint.new
   get '/subscriptions/:user_id/:id' => "subscriptions#show", constraints: LeagueConstraint.new
+  put '/subscriptions/:id' => "subscriptions#update", constraints: LeagueConstraint.new
+  delete '/subscriptions/:id' => "subscriptions#cancel", constraints: LeagueConstraint.new
   get '/transactions/:user_id' => "transactions#all", constraints: LeagueConstraint.new
   get '/transactions/:user_id/:id' => "transactions#show", constraints: LeagueConstraint.new
 

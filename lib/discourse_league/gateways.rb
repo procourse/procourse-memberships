@@ -86,6 +86,14 @@ module DiscourseLeague
       PluginStore.set("discourse_league", "transactions", transactions)
     end
 
+    def unstore_subscription(id)
+      subscriptions = PluginStore.get("discourse_league", "subscriptions")
+      subscription = subscriptions.select{|subscription| subscription[:id] = id.to_i}
+
+      subscriptions.delete(subscription[0])
+      PluginStore.set("discourse_league", "subscriptions", subscriptions)
+    end
+
     GATEWAYS = {
       braintree: { 
         name: "Braintree", 

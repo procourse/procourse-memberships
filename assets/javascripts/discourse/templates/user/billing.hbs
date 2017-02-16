@@ -1,56 +1,59 @@
 {{#conditional-loading-spinner condition=model.loading}}
 <div class="admin-contents user-licenses">
-  <div class="dashboard-left">
-    <div class="dashboard-stats">
-      <table class="table table-condensed table-hover">
+  <div class="dashboard-stats">
+    <h3 class="stats-title">{{i18n 'league.subscriptions_title'}}</h3>
+    <table class="table table-condensed table-hover">
+    <thead>
+      <tr>
+        <th title="Subscription ID" class="title">{{i18n 'league.subscription_id'}}</th>
+        <th title="Product" class="title">{{i18n 'league.product'}}</th>
+        <th title="Recurring" class="title">{{i18n 'league.recurring'}}</th>
+        <th title="Created" class="title">{{i18n 'league.created'}}</th>
+        <th title="Actions" class="title">{{i18n 'league.actions'}}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {{#each model.subscriptions as |subscription|}}
+      <tr>
+        <td>{{subscription.subscription_id}}</td>
+        <td>{{subscription.product.name}}</td>
+        <td>{{i18n 'league.recurring_item' period=subscription.product.recurring_payment_period}}</td>
+        <td>{{format-date subscription.created_at}}</td>
+        <td>
+          <button {{action "updateBilling" subscription}} class="btn">{{i18n 'league.update_billing'}}</button>
+          {{#if subscription.active}}
+          <button {{action "cancelSubscription" subscription}} class="btn">{{i18n 'league.cancel_subscription'}}</button>
+          {{/if}}
+        </td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table>
+  </div>
+  <div class="dashboard-stats">
+    <h3 class="stats-title">{{i18n 'league.transactions_title'}}</h3>
+    <table class="table table-condensed table-hover">
       <thead>
         <tr>
-          <th title="Subscription ID" class="title">{{i18n 'league.subscription_id'}}</th>
+          <th title="Transaction ID" class="title">{{i18n 'league.transaction_id'}}</th>
           <th title="Product" class="title">{{i18n 'league.product'}}</th>
-          <th title="Created" class="title">{{i18n 'league.created'}}</th>
+          <th title="Amount" class="title">{{i18n 'league.transaction_amount'}}</th>
+          <th title="Date" class="title">{{i18n 'league.transaction_date'}}</th>
           <th title="Actions" class="title">{{i18n 'league.actions'}}</th>
         </tr>
       </thead>
       <tbody>
-      {{#each model.subscriptions as |subscription|}}
-      {{log subscription}}
+      {{#each model.transactions as |transaction|}}
         <tr>
-          <td>{{subscription.id}}</td>
-          <td>{{subscription.product_name}}</td>
-          <td>{{format-date subscription.created_at}}</td>
-          <td>
-            <button {{action "updateBilling" subscription}} class="btn">{{i18n 'league.update_billing'}}</button>
-            {{#if subscription.active}}
-            <button {{action "cancelSubscription" subscription}} class="btn">{{i18n 'league.cancel_subscription'}}</button>
-            {{/if}}
-          </td>
+          <td>{{transaction.transaction_id}}</td>
+          <td>{{transaction.product_name}}</td>
+          <td>{{format-currency transaction.transaction_amount}}</td>
+          <td>{{format-date transaction.transaction_date}}</td>
+          <td><button {{action "viewReceipt" transaction}} class="btn">{{i18n 'league.view_receipt'}}</button></td>
         </tr>
       {{/each}}
       </tbody>
     </table>
-    </div>
-  </div>
-  <div class="dashboard-right">
-    <div class="dashboard-stats">
-      <table class="table table-condensed table-hover">
-        <thead>
-          <tr>
-            <th title="Product" class="title">{{i18n 'license_keys.product'}}</th>
-            <th>{{i18n 'license_keys.site'}}</th>
-          </tr>
-        </thead>
-        <tbody>
-        {{#each model as |license|}}
-          {{#each license.sites as |site|}}
-          <tr>
-            <td>{{license.license.product_name}}</td>
-            <td>{{site.site_url}}</td>
-          </tr>
-          {{/each}}
-        {{/each}}
-        </tbody>
-      </table>
-    </div>
   </div>
 </div>
 {{/conditional-loading-spinner}}

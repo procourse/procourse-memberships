@@ -1,16 +1,16 @@
 module ::DiscourseLeague
-  class SubscriptionSerializer < ApplicationSerializer
+  class TransactionSerializer < ApplicationSerializer
 
-    attributes :id,
-     :product,
-     :subscription_id,
-     :created_at,
-     :active
+    attributes :id, 
+    :product_name, 
+    :transaction_id, 
+    :transaction_amount, 
+    :transaction_date
 
-    def product
+    def product_name
       products = PluginStore.get("discourse_league", "levels") || []
       product = products.select{|level| level[:id] == object.product_id.to_i} if !products.empty?
-      product[0]
+      product[0][:name]
     end
 
   end
