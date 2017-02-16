@@ -49,7 +49,7 @@ module DiscourseLeague
           end
 
           if group.save
-            render json: success_json
+            render json: PluginStore.get("discourse_league", "subscriptions") || []
           else
             return render_json_error(group)
           end

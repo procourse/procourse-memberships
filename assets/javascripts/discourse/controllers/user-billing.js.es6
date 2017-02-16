@@ -11,8 +11,8 @@ export default Ember.Controller.extend({
         if (result) {
           self.set('model.loading', true);
           Subscriptions.destroy(subscription.id).then(function(result){
+            self.set('model.subscriptions', result);
             self.set('model.loading', false);
-            console.log(result);
           });
         }
       });

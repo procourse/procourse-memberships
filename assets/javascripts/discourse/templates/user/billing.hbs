@@ -18,7 +18,7 @@
         <td>{{subscription.subscription_id}}</td>
         <td>{{subscription.product.name}}</td>
         <td>{{i18n 'league.recurring_item' period=subscription.product.recurring_payment_period}}</td>
-        <td>{{format-date subscription.created_at}}</td>
+        <td>{{format-league-date subscription.created_at}}</td>
         <td>
           <button {{action "updateBilling" subscription}} class="btn">{{i18n 'league.update_billing'}}</button>
           {{#if subscription.active}}
@@ -48,7 +48,7 @@
           <td>{{transaction.transaction_id}}</td>
           <td>{{transaction.product_name}}</td>
           <td>{{format-currency transaction.transaction_amount}}</td>
-          <td>{{format-date transaction.transaction_date}}</td>
+          <td>{{format-league-date transaction.transaction_date}}</td>
           <td><button {{action "viewReceipt" transaction}} class="btn">{{i18n 'league.view_receipt'}}</button></td>
         </tr>
       {{/each}}
