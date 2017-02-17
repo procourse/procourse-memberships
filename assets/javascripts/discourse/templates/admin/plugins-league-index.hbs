@@ -1,1 +1,3 @@
-<div>Dashboard</div>
+{{#conditional-loading-spinner condition=model.loading}}
+<div>{{{dashboard}}}</div>
+{{/conditional-loading-spinner}}
