@@ -111,6 +111,28 @@ export default Ember.Controller.extend({
           this.set("loading",false);
         }
       });
+    },
+
+    checkoutWithPayPal: function(product){
+      this.set("loading",true);
+      var success = true;
+      return ajax("/league/checkout/paypal", {
+        data: {"product_id": product[0].id},
+        type: 'POST'
+      }).catch(e => {
+        bootbox.alert(e.jqXHR.responseJSON.errors);
+        this.set('checkoutState', 'billing-payment');
+        this.set('showBilling', true);
+        this.set('showVerify', false);
+        this.set('showDescription', true);
+        success = false;
+        this.set("loading",false);
+      }).then(incoming => {
+        console.log(incoming);
+        if (success){
+          window.location = incoming;
+        }
+      });
     }
   }
 });

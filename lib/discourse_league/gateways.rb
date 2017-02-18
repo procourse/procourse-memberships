@@ -13,6 +13,13 @@ module DiscourseLeague
       am_gateway = DiscourseLeague::Gateways.const_get(gateway[:class_name]).new.active_merchant
     end
 
+    def paypal
+      unless SiteSetting.league_go_live
+        ActiveMerchant::Billing::Base.mode = :test
+      end
+      am_gateway = DiscourseLeague::Gateways::PayPal.new.active_merchant
+    end
+
     def store_token
       tokens = PluginStore.get("discourse_league", "user_payment_tokens")
       tokens = [] if tokens.nil?
@@ -99,6 +106,10 @@ module DiscourseLeague
         name: "Braintree", 
         class_name: "Braintree", 
         currencies: ["USD"] },
+      paypal: {
+        name: "PayPal",
+        class_name: "PayPal",
+        currencies: ["USD"] },
       stripe: { 
         name: "Stripe", 
         class_name: "Stripe", 
@@ -109,3 +120,4 @@ module DiscourseLeague
 end
 
 require_relative "gateways/braintree"
+require_relative "gateways/paypal"

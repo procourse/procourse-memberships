@@ -7,11 +7,30 @@
     {{/if}}
   </div>
   {{#if currentUser }}
+  {{#if showPaymentOptions}}
+  <div class="radio-field-choice">
+    {{radio-button value="credit-card"
+                   name="payment-type"
+                   label="Credit Card"
+                   selection=paymentType}}
+    <span>{{i18n 'league.checkout.credit_card'}}</span>
+    {{radio-button value="paypal"
+                   name="payment-type"
+                   label="PayPal"
+                   selection=paymentType}}
+    <span><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" alt="PayPal" /></span>
+  </div>
+  {{/if}}
   <div class="user-table">
     <div class="wrapper">
       {{#if showBilling}}
       <form class="form-horizontal" id="billing-state">
         <hr>
+        {{#if showPaypal}}
+        <div align="center">
+          <button {{action "checkoutWithPayPal" model}}><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-medium.png" alt="Check out with PayPal" /></button>
+        </div>
+        {{else}}
         <div class="billing-section">
           <h3>{{i18n 'league.checkout.billing_address'}}</h3>
           <div class="control-group">
@@ -72,23 +91,6 @@
         <hr>
         <div class="billing-section">
           <h3>{{i18n 'league.checkout.payment_details'}}</h3>
-          {{#if showPaymentOptions}}
-          <div class="radio-field-choice">
-            {{radio-button value="credit-card"
-                           name="payment-type"
-                           label="Credit Card"
-                           selection=paymentType}}
-            <span>{{i18n 'league.checkout.credit_card'}}</span>
-            {{radio-button value="paypal"
-                           name="payment-type"
-                           label="PayPal"
-                           selection=paymentType}}
-            <span><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" alt="PayPal" /></span>
-          </div>
-          {{/if}}
-          {{#if showPaypal}}
-          <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" alt="PayPal" />
-          {{else}}
           <div class="control-group">
             <label class="control-label">{{i18n 'league.checkout.card_number'}}</label>
             <div class="controls">
@@ -109,13 +111,11 @@
               {{text-field value=memberDetails.cvv }}
             </div>
           </div>
-          {{/if}}
         </div>
-        {{#unless showPaypal}}
         <div align="center">
           <button {{action "submitBillingPayment"}} disabled={{disableSubmit}} class='btn btn-primary'>{{i18n 'league.checkout.submit_verify'}}</button>
         </div>
-        {{/unless}}
+        {{/if}}
       </form>
       {{/if}}
 

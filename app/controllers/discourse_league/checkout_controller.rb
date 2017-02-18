@@ -6,6 +6,10 @@ module DiscourseLeague
 
     before_filter :validate_card, only: [:submit_billing_payment, :submit_verify]
 
+    def index
+      render nothing: true
+    end
+
     def submit_billing_payment
       if !@errors.nil?
         return render_json_error(@errors)
@@ -62,6 +66,64 @@ module DiscourseLeague
         else
           render_json_error(response.message)
         end
+      end
+    end
+
+    def submit_paypal
+      gateway = DiscourseLeague::Gateways.new.paypal
+
+      products = PluginStore.get("discourse_league", "levels")
+      product = products.select{|level| level[:id] == params[:product_id]}
+
+      response = gateway.setup_purchase(1000,
+        ip: request.remote_ip,
+        return_url: request.protocol + request.host_with_port + "/league/checkout/paypal?product=" + params[:product_id].to_s,
+        cancel_return_url: request.protocol + request.host_with_port + "/league/checkout/paypal/cancelled",
+        currency: "USD",
+        allow_guest_checkout: true,
+        items: [{name: "Order", description: "Order description", quantity: "1", amount: 1000}]
+      )
+      if response.success?
+        render_json_dump(gateway.redirect_url_for(response.token))
+      else
+        render_json_error(response.message)
+      end
+    end
+
+    def paypal_success
+      products = PluginStore.get("discourse_league", "levels")
+      product = products.select{|level| level[:id] == params[:product_id]}
+
+      gateway = DiscourseLeague::Gateways.new.paypal
+
+      if product[0][:recurring]
+        response = gateway.subscribe(current_user.id, product[0], @credit_card, :billing_address => billing_address)
+      else
+        initial_payment = product[0][:initial_payment].to_i * 100  # Converts ammount to cents
+
+        response = gateway.purchase(initial_payment, {:ip => request.remote_ip, :token => params[:token], :payer_id => params[:payerID]})
+
+        # league_gateway = DiscourseLeague::Gateways.new(:user_id => current_user.id, :product_id => product[0][:id], :token => response.params["credit_card_token"])
+
+        # league_gateway.store_transaction(response.authorization, product[0][:initial_payment].to_i, Time.now())
+      end
+
+      if response.success?
+        group = Group.find(product[0][:group].to_i)
+        if !group.users.include?(current_user)
+          group.add(current_user)
+          GroupActionLogger.new(current_user, group).log_add_user_to_group(current_user)
+        else
+          return render_json_error I18n.t('groups.errors.member_already_exist', username: current_user.username)
+        end
+
+        if group.save
+          render json: success_json
+        else
+          return render_json_error(group)
+        end
+      else
+        render_json_error(response.message)
       end
     end
 

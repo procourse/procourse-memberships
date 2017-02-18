@@ -24,6 +24,15 @@ discourse_league:
   league_include_paypal:
     default: false
     client: true
+  league_paypal_username:
+    default: ""
+    client: false
+  league_paypal_password:
+    default: ""
+    client: false
+  league_paypal_signature:
+    default: ""
+    client: false
   league_braintree_merchant_id:
     default: ""
     client: false
