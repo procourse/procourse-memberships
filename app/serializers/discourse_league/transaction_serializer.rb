@@ -5,7 +5,9 @@ module ::DiscourseLeague
     :product_name, 
     :transaction_id, 
     :transaction_amount, 
-    :transaction_date
+    :transaction_date,
+    :billing_address,
+    :credit_card
 
     def product_name
       products = PluginStore.get("discourse_league", "levels") || []

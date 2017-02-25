@@ -15,7 +15,13 @@ module ActiveMerchant
           if subscription.success?
             league_gateway.store_subscription(subscription.subscription.id, subscription.subscription.billing_period_end_date)
             subscription.subscription.transactions.each do |transaction|
-              league_gateway.store_transaction(transaction.id, transaction.amount, transaction.created_at)
+              credit_card = {
+                name: transaction.credit_card_details.cardholder_name,
+                last_4: transaction.credit_card_details.last_4,
+                expiration: transaction.credit_card_details.expiration_date,
+                brand: transaction.credit_card_details.card_type
+              }
+              league_gateway.store_transaction(transaction.id, transaction.amount, transaction.created_at, options[:billing_address], credit_card)
             end
             subscription
           else

@@ -7,24 +7,24 @@
     {{/if}}
   </div>
   {{#if currentUser }}
-  {{#if showPaymentOptions}}
-  <div class="radio-field-choice">
-    {{radio-button value="credit-card"
-                   name="payment-type"
-                   label="Credit Card"
-                   selection=paymentType}}
-    <span>{{i18n 'league.checkout.credit_card'}}</span>
-    {{radio-button value="paypal"
-                   name="payment-type"
-                   label="PayPal"
-                   selection=paymentType}}
-    <span><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" alt="PayPal" /></span>
-  </div>
-  {{/if}}
   <div class="user-table">
     <div class="wrapper">
       {{#if showBilling}}
       <form class="form-horizontal" id="billing-state">
+        {{#if showPaymentOptions}}
+        <div class="radio-field-choice">
+          {{radio-button value="credit-card"
+                         name="payment-type"
+                         label="Credit Card"
+                         selection=paymentType}}
+          <span>{{i18n 'league.checkout.credit_card'}}</span>
+          {{radio-button value="paypal"
+                         name="payment-type"
+                         label="PayPal"
+                         selection=paymentType}}
+          <span><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" alt="PayPal" /></span>
+        </div>
+        {{/if}}
         <hr>
         {{#if showPaypal}}
         <div align="center">

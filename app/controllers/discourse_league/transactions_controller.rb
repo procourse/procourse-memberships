@@ -19,7 +19,19 @@ module DiscourseLeague
 
     def show
       if current_user.id == params[:user_id].to_i
-        render json: success_json
+        transactions = PluginStore.get("discourse_league", "transactions") || []
+
+        if transactions.empty?
+          render_json_error(params[:user_id])
+        else
+          transaction = transactions.select{|transaction| transaction[:id] == params[:id].to_i}
+          if !transaction.empty? && transaction[0][:user_id] == params[:user_id].to_i
+            transaction = transaction.flatten.map{|transaction| Transaction.new(transaction)}
+            render_json_dump(serialize_data(transaction[0], TransactionSerializer))
+          else
+            render_json_error(params[:user_id])
+          end
+        end
       else
         render_json_error(params[:user_id])
       end

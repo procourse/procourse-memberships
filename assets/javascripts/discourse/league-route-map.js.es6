@@ -13,6 +13,9 @@ export default function(){
       this.route('paypal', {path: '/paypal'}, function(){
         this.route('success', {path: '/success'});
       })
+    });
+    this .route('transactions', {path: '/transactions'}, function(){
+      this.route('show', {path: '/:user_id/:id'});
     })
 	});
 };

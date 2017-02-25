@@ -46,7 +46,7 @@ module DiscourseLeague
 
           league_gateway = DiscourseLeague::Gateways.new(:user_id => current_user.id, :product_id => product[0][:id], :token => response.params["credit_card_token"])
 
-          league_gateway.store_transaction(response.authorization, product[0][:initial_payment].to_i, Time.now())
+          league_gateway.store_transaction(response.authorization, product[0][:initial_payment].to_i, Time.now(), billing_address, @credit_card)
         end
 
         if response.success?
