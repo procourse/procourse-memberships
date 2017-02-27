@@ -21,6 +21,7 @@ export default Ember.Controller.extend({
   showBilling: false,
   showVerify: false,
   showCompleted: false,
+  currentMember: false,
 
   paymentTypeChanged: function(){
     if (this.get('paymentType') == "paypal"){

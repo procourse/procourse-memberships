@@ -7,6 +7,11 @@ module DiscourseLeague
   			mount ::DiscourseLeague::Engine, at: "/league"
   		end
 
+      require_dependency 'current_user_serializer'
+      class ::CurrentUserSerializer
+        attributes :groups
+      end 
+
       module ::Jobs
         class LeagueConfirmValidKey < Jobs::Scheduled
           every 1.days

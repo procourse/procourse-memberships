@@ -6,6 +6,13 @@ export default Discourse.Route.extend({
   },
 
   setupController(controller, model) {
-    controller.setProperties({ model });
+    var group = $.grep(this.currentUser.groups, function(group){ return group.id == parseInt(model[0].group); });
+    if (group.length > 0){
+      var memberExists = true;
+    }
+    else{
+      var memberExists = false;
+    }
+    controller.setProperties({ model, memberExists: memberExists });
   }
 });

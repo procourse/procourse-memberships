@@ -1,5 +1,8 @@
 {{#conditional-loading-spinner condition=loading}}
 <div class="league checkout">
+  {{#if memberExists}}
+  <div>{{i18n 'league.member_exists'}}</div>
+  {{else}}
   {{checkout-progress state=checkoutState}}
   <div class="billing-section">
     {{#if showDescription}}
@@ -201,6 +204,7 @@
     <span>{{d-button action="showCreateAccount" class="btn-primary sign-up-button" label="sign_up"}}</span>
     <span>{{#d-button class="btn-primary" action="showLogin"}}{{fa-icon 'user'}} {{i18n 'log_in'}}{{/d-button}}</span>
   </div>
+  {{/if}}
   {{/if}}
 </div>
 {{/conditional-loading-spinner}}
