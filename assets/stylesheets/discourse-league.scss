@@ -173,3 +173,28 @@
   max-width: 700px;
   margin: 0px auto;
 }
+
+.nav-pills > span > li {
+    float: left;
+    margin-right: 5px;
+}
+.nav-pills > span > li > a {
+    border: none;
+    padding: 5px 12px;
+    color: #222222;
+    font-size: 1.143em;
+    line-height: 20px;
+    transition: background .15s;
+}
+.nav-pills > span > li > a {
+    display: block;
+    text-decoration: none;
+}
+.nav-pills > span > li > a:hover {
+    color: #e45735;
+    background-color: #f7cdc2;
+}
+.nav-pills > span > li > a.active {
+    color: white;
+    background-color: #e45735;
+}
