@@ -95,6 +95,12 @@ en:
           verify: "Verify"
           completed: "Completed"
         completed_message: '<h2>Success!</h2><p>Thanks for signing up. You should receive a PM shortly with more details about your membership.</p>'
+      currency:
+        CAD: "$"
+        EUR: "€"
+        GBP: "£"
+        USD: "$"
+
   league:
     errors:
       first_name: "First Name"
