@@ -1,5 +1,6 @@
 require 'active_merchant'
-require_relative '../../../lib/discourse_league/gateways'
+require_relative '../../../lib/discourse_league/billing/credit_card'
+require_relative '../../../lib/discourse_league/billing/gateways'
 
 module DiscourseLeague
   class CheckoutController < ApplicationController
@@ -19,10 +20,12 @@ module DiscourseLeague
     end
 
     def submit_verify
+      byebug
       if !@errors.nil?
         return render_json_error(@errors)
       else
-        gateway = DiscourseLeague::Gateways.new.gateway
+        gateway = DiscourseLeague::Billing::Gateways.new.gateway
+        byebug
 
         billing_address = {
           :address1 => params[:address_1],
@@ -44,7 +47,7 @@ module DiscourseLeague
 
           response = gateway.purchase(initial_payment, @credit_card, :billing_address => billing_address, :store => true)
 
-          league_gateway = DiscourseLeague::Gateways.new(:user_id => current_user.id, :product_id => product[0][:id], :token => response.params["credit_card_token"])
+          league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => current_user.id, :product_id => product[0][:id], :token => response.params["credit_card_token"])
 
           league_gateway.store_transaction(response.authorization, product[0][:initial_payment].to_i, Time.now(), billing_address, @credit_card)
         end
@@ -70,18 +73,18 @@ module DiscourseLeague
     end
 
     def submit_paypal
-      gateway = DiscourseLeague::Gateways.new.paypal
+      gateway = DiscourseLeague::Billing::Gateways.new.paypal
 
       products = PluginStore.get("discourse_league", "levels")
       product = products.select{|level| level[:id] == params[:product_id]}
 
-      response = gateway.setup_purchase(1000,
+      response = gateway.setup_purchase(9700,
         ip: request.remote_ip,
         return_url: request.protocol + request.host_with_port + "/league/checkout/paypal?product=" + params[:product_id].to_s,
         cancel_return_url: request.protocol + request.host_with_port + "/league/checkout/paypal/cancelled",
         currency: "USD",
         allow_guest_checkout: true,
-        items: [{name: "Order", description: "Order description", quantity: "1", amount: 1000}]
+        items: [{name: "Discourse League", description: "Discourse League", quantity: "1", amount: 9700, category: "Digital"}]
       )
       if response.success?
         render_json_dump(gateway.redirect_url_for(response.token))
@@ -92,22 +95,22 @@ module DiscourseLeague
 
     def paypal_success
       products = PluginStore.get("discourse_league", "levels")
-      product = products.select{|level| level[:id] == params[:product_id]}
+      product = products.select{|level| level[:id] == params[:productID].to_i}
 
-      gateway = DiscourseLeague::Gateways.new.paypal
+      gateway = DiscourseLeague::Billing::Gateways.new.paypal
 
       if product[0][:recurring]
-        response = gateway.subscribe(current_user.id, product[0], @credit_card, :billing_address => billing_address)
+        response = gateway.subscribe(current_user.id, product[0], :token => params[:token], :start_date => Time.now)
       else
         initial_payment = product[0][:initial_payment].to_i * 100  # Converts ammount to cents
 
         response = gateway.purchase(initial_payment, {:ip => request.remote_ip, :token => params[:token], :payer_id => params[:payerID]})
 
-        # league_gateway = DiscourseLeague::Gateways.new(:user_id => current_user.id, :product_id => product[0][:id], :token => response.params["credit_card_token"])
+        # league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => current_user.id, :product_id => product[0][:id], :token => response.params["credit_card_token"])
 
         # league_gateway.store_transaction(response.authorization, product[0][:initial_payment].to_i, Time.now())
       end
-
+byebug
       if response.success?
         group = Group.find(product[0][:group].to_i)
         if !group.users.include?(current_user)
@@ -130,16 +133,17 @@ module DiscourseLeague
     private
 
       def validate_card
-        @credit_card = ActiveMerchant::Billing::CreditCard.new(
+        byebug
+        @credit_card = DiscourseLeague::Billing::CreditCard.new(
           :number => params[:card_number],
           :month => params[:expiration_month],
           :year => params[:expiration_year],
           :first_name => params[:first_name],
           :last_name => params[:last_name],
-          :verification_value => params[:cvv],
-          :brand => 'visa'
+          :verification_value => params[:cvv]
         )
         valid_card = @credit_card.validate
+
         if !valid_card.empty?
           @errors = ""
           @errors += I18n.t('league.errors.first_name') + " " + valid_card[:first_name][0] + "<br>" if !valid_card[:first_name].nil?

@@ -47,7 +47,7 @@ export default Ember.Controller.extend({
 
   _init: function() {
     var gateway = Discourse.SiteSettings.league_gateway;
-    if (gateway == "braintree"){
+    if (gateway == "Braintree"){
       this.set('braintree', true);
     };
   }.on('init'),
