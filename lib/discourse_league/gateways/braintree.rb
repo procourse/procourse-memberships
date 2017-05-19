@@ -18,11 +18,11 @@ module DiscourseLeague
         @client_token
       end
 
-      def purchase(user_id, amount, nonce, options = {})
+      def purchase(user_id, product, nonce, options = {})
         begin
           customer = Braintree::Customer.find(user_id)
           response = Braintree::Transaction.sale(
-            :amount => amount,
+            :amount => product[:initial_payment].to_i,
             :payment_method_nonce => nonce,
             :options => {
               :store_in_vault => true,
@@ -33,7 +33,7 @@ module DiscourseLeague
           )
         rescue Braintree::NotFoundError => e
           response = Braintree::Transaction.sale(
-            :amount => amount,
+            :amount => product[:initial_payment].to_i,
             :payment_method_nonce => nonce,
             :options => {
               :store_in_vault => true,
@@ -48,13 +48,15 @@ module DiscourseLeague
         end
         
         if response.success?
+          league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => user_id, :product_id => product[:id], :token => response.params["credit_card_token"])
+          league_gateway.store_token
           response
         else
           return {:success => false, :message => response}
         end
       end
 
-      def subscribe(user_id, product, credit_card_or_vault_id, options = {})
+      def subscribe(user_id, product, nonce, options = {})
         response = store(credit_card_or_vault_id, :billing_address => options[:billing_address])
 
         if response.success?
