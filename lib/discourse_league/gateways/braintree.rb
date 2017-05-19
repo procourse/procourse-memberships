@@ -19,36 +19,20 @@ module DiscourseLeague
       end
 
       def purchase(user_id, product, nonce, options = {})
-        begin
-          customer = Braintree::Customer.find(user_id)
-          response = Braintree::Transaction.sale(
-            :amount => product[:initial_payment].to_i,
-            :payment_method_nonce => nonce,
-            :options => {
-              :store_in_vault => true,
-              :submit_for_settlement => true
-            },
-            :customer_id => user_id,
-            :recurring => false
-          )
-        rescue Braintree::NotFoundError => e
-          response = Braintree::Transaction.sale(
-            :amount => product[:initial_payment].to_i,
-            :payment_method_nonce => nonce,
-            :options => {
-              :store_in_vault => true,
-              :submit_for_settlement => true
-            },
-            :customer => {
-              :email => current_user.email,
-              :id => user_id
-            },
-            :recurring => false
-          )
-        end
+        customer = self.customer(user_id)
+        response = Braintree::Transaction.sale(
+          :amount => product[:initial_payment].to_i,
+          :payment_method_nonce => nonce,
+          :options => {
+            :store_in_vault => true,
+            :submit_for_settlement => true
+          },
+          :customer_id => customer.id,
+          :recurring => false
+        )
         
         if response.success?
-          league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => user_id, :product_id => product[:id], :token => response.params["credit_card_token"])
+          league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => user_id, :product_id => product[:id], :token => response.transaction.credit_card_details.token)
           league_gateway.store_token
           response
         else
@@ -91,6 +75,19 @@ module DiscourseLeague
           response
         else
           return {:success => false, :message => message_from_result(response)}
+        end
+      end
+
+      def customer(user_id)
+        begin
+          customer = Braintree::Customer.find(user_id)
+        rescue Braintree::NotFoundError => e
+          user = User.find(user_id)
+          result = Braintree::Customer.create(
+            :email => user.email,
+            :id => user_id
+          )
+          result.customer
         end
       end
 

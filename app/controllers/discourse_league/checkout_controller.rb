@@ -18,9 +18,7 @@ module DiscourseLeague
       if product[0][:recurring]
         response = gateway.subscribe(current_user.id, product[0], params[:nonce])
       else
-        initial_payment = product[0][:initial_payment].to_i  # Converts ammount to cents
-
-        response = gateway.purchase(current_user.id, initial_payment, params[:nonce])
+        response = gateway.purchase(current_user.id, product[0], params[:nonce])
 
         # league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => current_user.id, :product_id => product[0][:id], :token => response.params["credit_card_token"])
 
