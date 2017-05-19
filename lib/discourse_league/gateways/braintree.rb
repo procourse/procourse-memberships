@@ -34,6 +34,7 @@ module DiscourseLeague
         if response.success?
           league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => user_id, :product_id => product[:id], :token => response.transaction.credit_card_details.token)
           league_gateway.store_token
+          league_gateway.store_transaction(response.transaction.id, response.transaction.amount, Time.now(), @credit_card)
           response
         else
           return {:success => false, :message => response}

@@ -19,10 +19,6 @@ module DiscourseLeague
         response = gateway.subscribe(current_user.id, product[0], params[:nonce])
       else
         response = gateway.purchase(current_user.id, product[0], params[:nonce])
-
-        # league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => current_user.id, :product_id => product[0][:id], :token => response.params["credit_card_token"])
-
-        # league_gateway.store_transaction(response.authorization, product[0][:initial_payment].to_i, Time.now(), billing_address, @credit_card)
       end
 
       if response.success?

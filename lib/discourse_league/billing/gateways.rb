@@ -70,7 +70,7 @@ module DiscourseLeague
         PluginStore.set("discourse_league", "subscriptions", subscriptions)
       end
 
-      def store_transaction(transaction_id, transaction_amount, transaction_date, billing_address = {}, credit_card = {})
+      def store_transaction(transaction_id, transaction_amount, transaction_date, credit_card = {})
         transactions = PluginStore.get("discourse_league", "transactions")
         transactions = [] if transactions.nil?
         id = SecureRandom.random_number(1000000)
@@ -88,7 +88,6 @@ module DiscourseLeague
           transaction_amount: transaction_amount,
           transaction_date: transaction_date,
           created_at: time,
-          billing_address: billing_address,
           credit_card: credit_card
         }
 
