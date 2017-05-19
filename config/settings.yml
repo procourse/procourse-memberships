@@ -26,10 +26,9 @@ discourse_league:
   league_gateway:
     client: true
     type: enum
-    default: "PayPal"
+    default: "Braintree"
     choices:
       - "Braintree"
-      - "PayPal"
   league_include_paypal:
     default: false
     client: true

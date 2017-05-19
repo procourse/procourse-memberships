@@ -1,4 +1,4 @@
-require_relative '../../../lib/discourse_league/gateways'
+require_relative '../../../lib/discourse_league/billing/gateways'
 
 module DiscourseLeague
   class SubscriptionsController < ApplicationController

@@ -1,74 +1,48 @@
 require 'active_merchant'
-require_relative '../../../lib/discourse_league/billing/credit_card'
 require_relative '../../../lib/discourse_league/billing/gateways'
+require_relative '../../../lib/discourse_league/gateways/braintree'
 
 module DiscourseLeague
   class CheckoutController < ApplicationController
-
-    before_filter :validate_card, only: [:submit_billing_payment, :submit_verify]
 
     def index
       render nothing: true
     end
 
-    def submit_billing_payment
-      if !@errors.nil?
-        return render_json_error(@errors)
+    def submit_payment
+      gateway = DiscourseLeague::Billing::Gateways.new.gateway
+
+      products = PluginStore.get("discourse_league", "levels")
+      product = products.select{|level| level[:id] == params[:level_id]}
+
+      if product[0][:recurring]
+        response = gateway.subscribe(current_user.id, product[0], params[:nonce])
       else
-        render json: success_json
+        initial_payment = product[0][:initial_payment].to_i  # Converts ammount to cents
+
+        response = gateway.purchase(current_user.id, initial_payment, params[:nonce])
+
+        # league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => current_user.id, :product_id => product[0][:id], :token => response.params["credit_card_token"])
+
+        # league_gateway.store_transaction(response.authorization, product[0][:initial_payment].to_i, Time.now(), billing_address, @credit_card)
       end
-    end
 
-    def submit_verify
-      byebug
-      if !@errors.nil?
-        return render_json_error(@errors)
+      if response.success?
+        group = Group.find(product[0][:group].to_i)
+        if !group.users.include?(current_user)
+          group.add(current_user)
+          GroupActionLogger.new(current_user, group).log_add_user_to_group(current_user)
+        else
+          return render_json_error I18n.t('groups.errors.member_already_exist', username: current_user.username)
+        end
+
+        if group.save
+          render json: success_json
+        else
+          return render_json_error(group)
+        end
       else
-        gateway = DiscourseLeague::Billing::Gateways.new.gateway
-        byebug
-
-        billing_address = {
-          :address1 => params[:address_1],
-          :address2 => params[:address_2],
-          :city => params[:city],
-          :state => params[:billing_state],
-          :zip => params[:postal_code],
-          :country_name => params[:country],
-          :phone => params[:phone]
-        }
-
-        products = PluginStore.get("discourse_league", "levels")
-        product = products.select{|level| level[:id] == params[:product_id]}
-
-        if product[0][:recurring]
-          response = gateway.subscribe(current_user.id, product[0], @credit_card, :billing_address => billing_address)
-        else
-          initial_payment = product[0][:initial_payment].to_i * 100  # Converts ammount to cents
-
-          response = gateway.purchase(initial_payment, @credit_card, :billing_address => billing_address, :store => true)
-
-          league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => current_user.id, :product_id => product[0][:id], :token => response.params["credit_card_token"])
-
-          league_gateway.store_transaction(response.authorization, product[0][:initial_payment].to_i, Time.now(), billing_address, @credit_card)
-        end
-
-        if response.success?
-          group = Group.find(product[0][:group].to_i)
-          if !group.users.include?(current_user)
-            group.add(current_user)
-            GroupActionLogger.new(current_user, group).log_add_user_to_group(current_user)
-          else
-            return render_json_error I18n.t('groups.errors.member_already_exist', username: current_user.username)
-          end
-
-          if group.save
-            render json: success_json
-          else
-            return render_json_error(group)
-          end
-        else
-          render_json_error(response.message)
-        end
+        render_json_error(response.message)
       end
     end
 
@@ -128,6 +102,12 @@ byebug
       else
         render_json_error(response.message)
       end
+    end
+
+    def braintree_token
+      braintree = DiscourseLeague::Gateways::BraintreeGateway.new()
+      token = braintree.client_token
+      render text: token
     end
 
     private

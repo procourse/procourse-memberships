@@ -111,4 +111,3 @@ module DiscourseLeague
 end
 
 require_relative "../gateways/braintree"
-require_relative "../gateways/paypal"

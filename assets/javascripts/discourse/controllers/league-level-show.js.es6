@@ -17,6 +17,7 @@ export default Ember.Controller.extend({
 
   paymentType: "credit-card",
 
+  showBraintree: false,
   showPaypal: false,
   showBilling: false,
   showVerify: false,
@@ -38,8 +39,8 @@ export default Ember.Controller.extend({
       this.set('showBilling', true);
       this.set('showDescription', true);
       this.set('memberDetails', this.get('initMemberDetails'));
-      if (Discourse.SiteSettings.league_gateway == "paypal"){
-        this.set('showPaypal', true);
+      if (Discourse.SiteSettings.league_gateway == "Braintree"){
+        this.set('showBraintree', true);
       }
       else{
         this.set('showPaypal', false);

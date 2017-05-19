@@ -1,0 +1,35 @@
+{{#if showLoading }}
+ {{loading-spinner}}
+{{/if}}
+<div class="{{{formClass}}}">
+  <div>
+    <script src="https://www.paypalobjects.com/api/button.js?"
+      data-merchant="braintree"
+      data-id="paypal-button"
+      data-button="checkout"
+      data-color="blue"
+      data-size="small"
+      data-shape="rect"
+      data-button_type="submit"
+      data-button_disabled="false"
+      >
+    </script>
+  </div>
+  <div>
+    <form id="checkout-form" action="/league/checkout/submit-payment" method="post">
+      <div id="error-message"></div>
+
+      <label for="card-number">Card Number</label>
+      <div class="hosted-field" id="card-number"></div>
+
+      <label for="cvv">CVV</label>
+      <div class="hosted-field" id="cvv"></div>
+
+      <label for="expiration-date">Expiration Date</label>
+      <div class="hosted-field" id="expiration-date"></div>
+
+      <input type="hidden" name="payment_method_nonce">
+      <input type="submit" value="Submit Payment" class="btn btn-primary" disabled>
+    </form>
+  </div>
+</div>
