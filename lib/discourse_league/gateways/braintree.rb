@@ -30,11 +30,16 @@ module DiscourseLeague
           :customer_id => customer.id,
           :recurring => false
         )
-        
         if response.success?
           league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => user_id, :product_id => product[:id], :token => response.transaction.credit_card_details.token)
           league_gateway.store_token
-          league_gateway.store_transaction(response.transaction.id, response.transaction.amount, Time.now(), @credit_card)
+          credit_card = {
+            name: response.transaction.credit_card_details.cardholder_name,
+            last_4: response.transaction.credit_card_details.last_4,
+            expiration: response.transaction.credit_card_details.expiration_date,
+            brand: response.transaction.credit_card_details.card_type
+          }
+          league_gateway.store_transaction(response.transaction.id, response.transaction.amount, Time.now(), credit_card)
           response
         else
           return {:success => false, :message => response}
@@ -42,14 +47,19 @@ module DiscourseLeague
       end
 
       def subscribe(user_id, product, nonce, options = {})
-        response = store(credit_card_or_vault_id, :billing_address => options[:billing_address])
-
-        if response.success?
-          league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => user_id, :product_id => product[:id], :token => response.params["credit_card_token"])
-          league_gateway.store_token
-          subscription = @braintree_gateway.subscription.create(:payment_method_token => response.params["credit_card_token"], :plan_id => product[:braintree_plan_id])
-
+        customer = self.customer(user_id)
+        payment = Braintree::PaymentMethod.create(
+          :customer_id => customer.id,
+          :payment_method_nonce => nonce
+        )
+        if payment.success?
+          subscription = Braintree::Subscription.create(
+            :payment_method_token => payment.payment_method.token,
+            :plan_id => product[:braintree_plan_id]
+          )
           if subscription.success?
+            league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => user_id, :product_id => product[:id], :token => subscription.subscription.payment_method_token)
+            league_gateway.store_token
             league_gateway.store_subscription(subscription.subscription.id, subscription.subscription.billing_period_end_date)
             subscription.subscription.transactions.each do |transaction|
               credit_card = {
@@ -58,14 +68,14 @@ module DiscourseLeague
                 expiration: transaction.credit_card_details.expiration_date,
                 brand: transaction.credit_card_details.card_type
               }
-              league_gateway.store_transaction(transaction.id, transaction.amount, transaction.created_at, options[:billing_address], credit_card)
+              league_gateway.store_transaction(transaction.id, transaction.amount, transaction.created_at, credit_card)
             end
             subscription
           else
-            return {:success => false, :message => message_from_result(subscription)}
+            return {:success => false, :message => subscription.errors[0].message}
           end
         else
-          return {:success => false, :message => message_from_result(response)}
+          return {:success => false, :message => payment.errors[0].message}
         end
 
       end
