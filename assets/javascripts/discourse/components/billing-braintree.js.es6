@@ -27,6 +27,36 @@ export default Ember.Component.extend({
     return showBilling === true ? true : false;
   },
 
+  @computed('verifyPayPal', 'showVerify')
+  hideCreditCardFields(verifyPayPal, showVerify){
+    if (verifyPayPal === true && showVerify === true){
+      return 'hidden';
+    }
+    else {
+      return undefined;
+    }
+  },
+
+  @computed('showVerify')
+  hidePayPalButton(showVerify){
+    if (showVerify === true){
+      return 'hidden';
+    }
+    else {
+      return undefined;
+    }
+  },
+
+  @computed('verifyPayPal', 'showVerify')
+  hidePayPalVerify(verifyPayPal, showVerify){
+    if (verifyPayPal === true && showVerify === true){
+      return undefined;
+    }
+    else {
+      return 'hidden';
+    }
+  },
+
   @on('init')
   braintree(){
     var self = this;
@@ -35,7 +65,7 @@ export default Ember.Component.extend({
       var form = document.querySelector('#checkout-form');
       var continueButton = document.querySelector('#continue-checkout');
       var submit = document.querySelector('input[type="submit"]');
-      var paypalButton = document.querySelector('.paypal-button');
+      var paypalButton = document.querySelector('#continue-paypal');
       loadScript("https://js.braintreegateway.com/web/3.15.0/js/client.min.js", { scriptTag: true }).then(() => {
         braintree.client.create({
           authorization: result
@@ -99,6 +129,7 @@ export default Ember.Component.extend({
               });
 
               continueButton.addEventListener('click', function(event){
+                self.set('verifyCreditCard', true);
                 hostedFieldsInstance.addClass('number', 'disabled', function (addClassErr) {
                   if (addClassErr) {
                     console.error(addClassErr);
@@ -112,6 +143,33 @@ export default Ember.Component.extend({
                 hostedFieldsInstance.addClass('expirationDate', 'disabled', function (addClassErr) {
                   if (addClassErr) {
                     console.error(addClassErr);
+                  }
+                });
+                hostedFieldsInstance.setAttribute({
+                  field: 'number',
+                  attribute: 'disabled',
+                  value: 'true'
+                }, function (attributeErr) {
+                  if (attributeErr) {
+                    console.error(attributeErr);
+                  }
+                });
+                hostedFieldsInstance.setAttribute({
+                  field: 'cvv',
+                  attribute: 'disabled',
+                  value: 'true'
+                }, function (attributeErr) {
+                  if (attributeErr) {
+                    console.error(attributeErr);
+                  }
+                });
+                hostedFieldsInstance.setAttribute({
+                  field: 'expirationDate',
+                  attribute: 'disabled',
+                  value: 'true'
+                }, function (attributeErr) {
+                  if (attributeErr) {
+                    console.error(attributeErr);
                   }
                 });
               });
@@ -154,7 +212,6 @@ export default Ember.Component.extend({
 
               // When the button is clicked, attempt to tokenize.
               paypalButton.addEventListener('click', function (event) {
-
                 // Because tokenization opens a popup, this has to be called as a result of
                 // customer action, like clicking a button—you cannot call this at any time.
                 paypalInstance.tokenize({
@@ -185,9 +242,17 @@ export default Ember.Component.extend({
   },
 
   _submitNonce(nonce){
+    var self = this;
+    this.set("braintreeLoading", true);
     var result = Payment.submitNonce(this.get('leagueLevel')[0].id, nonce);
     result.then(response => {
       console.log(response);
+      if (response.success){
+        self.set('checkoutState', 'completed');
+        self.set('showVerify', false);
+        self.set('showCompleted', true);
+      }
+      this.set("braintreeLoading", false);
     })
   },
 
@@ -199,6 +264,12 @@ export default Ember.Component.extend({
       fields.addClass('disabled');
       this.set('showBilling', false);
       this.set('showVerify', true);
+      this.set('checkoutState', 'verify');
+    },
+
+    submitPayPal(){
+      this.set('showVerify', true);
+      this.set('verifyPayPal', true);
       this.set('checkoutState', 'verify');
     }
   }

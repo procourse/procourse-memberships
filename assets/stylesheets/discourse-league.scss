@@ -66,7 +66,19 @@
     border: none;
     box-shadow: none;
   }
-  #continue-checkout{
+  .verify {
+    .control-label{
+      line-height: 20px;
+      padding-top: 5px;
+    }
+    .hosted-field{
+      border: none;
+      box-shadow: none;
+      height: 20px;
+      margin: 0px 0px 0px 20px;
+    }
+  }
+  #continue-checkout, .btn, .btn-primary{
     margin: 0px auto;
     font-size: 1.3rem;
     padding: 12px 25px;

@@ -33,6 +33,13 @@ export default Ember.Controller.extend({
     }
   }.observes('paymentType'),
 
+  updateOnComplete: function(){
+    if (this.get('showCompleted') === true){
+      this.set('showBraintree', false);
+      this.set('showDescription', false);
+    }
+  }.observes('showCompleted'),
+
   _init: function() {
     if (this.currentUser){
       this.set('checkoutState', 'billing-payment');
