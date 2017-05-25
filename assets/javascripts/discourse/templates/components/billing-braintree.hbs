@@ -2,7 +2,7 @@
  {{loading-spinner}}
 {{/if}}
 <div class="{{{formClass}}}">
-  <div>
+  <div id="paypal-checkout">
     <script src="https://www.paypalobjects.com/api/button.js?"
       data-merchant="braintree"
       data-id="paypal-button"
@@ -15,17 +15,18 @@
       >
     </script>
   </div>
+  <hr>
   <div>
-    <form id="checkout-form" action="/league/checkout/submit-payment" method="post">
+    <form id="checkout-form" class="form-horizontal" action="/league/checkout/submit-payment" method="post">
       <div id="error-message"></div>
 
-      <label for="card-number">Card Number</label>
+      <label class="control-label" for="card-number">Card Number</label>
       <div class="hosted-field" id="card-number"></div>
 
-      <label for="cvv">CVV</label>
+      <label class="control-label" for="cvv">CVV</label>
       <div class="hosted-field" id="cvv"></div>
 
-      <label for="expiration-date">Expiration Date</label>
+      <label class="control-label" for="expiration-date">Expiration Date</label>
       <div class="hosted-field" id="expiration-date"></div>
 
       <input type="hidden" name="payment_method_nonce">

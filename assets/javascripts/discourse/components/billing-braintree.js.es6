@@ -84,7 +84,7 @@ export default Ember.Component.extend({
                   // submit the form. Alternatively, you could send the nonce to your server
                   // with AJAX.
                   document.querySelector('input[name="payment_method_nonce"]').value = payload.nonce;
-                  this._submitNonce(payload.nonce);
+                  self._submitNonce(payload.nonce);
                 });
               }, false);
             });

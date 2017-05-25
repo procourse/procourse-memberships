@@ -49,6 +49,29 @@
   .controls input{
     width: calc(100% - 10px);
   }
+  .control-label{
+    line-height: 42px;
+  }
+  .hosted-field{
+    display: inline-block;
+    height: 30px;
+    margin: 0px 0px 20px 20px;
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid #e9e9e9;
+    border-radius: 3px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.3);
+  }
+  .btn-primary{
+    display: block;
+    margin: 0px auto;
+    font-size: 1.3rem;
+    padding: 12px 25px;
+  }
+  #paypal-checkout{
+    text-align: center;
+    margin-bottom: 25px;
+  }
   .expiration > span{
     float: left;
     font-size: 1.5em;
