@@ -17,6 +17,15 @@ export default Ember.Component.extend({
     return braintreeLoading;
   },
 
+  @computed('showBilling')
+  showSubmitButton(showBilling){
+    return showBilling === true ? 'hidden' : undefined;
+  },
+
+  @computed('showBilling')
+  showContinueButton(showBilling){
+    return showBilling === true ? true : false;
+  },
 
   @on('init')
   braintree(){
@@ -24,6 +33,7 @@ export default Ember.Component.extend({
     this.set("braintreeLoading", true);
     ajax('/league/checkout/braintree-token', {dataType: "text"}).then(result => {
       var form = document.querySelector('#checkout-form');
+      var continueButton = document.querySelector('#continue-checkout');
       var submit = document.querySelector('input[type="submit"]');
       var paypalButton = document.querySelector('.paypal-button');
       loadScript("https://js.braintreegateway.com/web/3.15.0/js/client.min.js", { scriptTag: true }).then(() => {
@@ -46,6 +56,10 @@ export default Ember.Component.extend({
                 },
                 'input.valid': {
                   'color': 'green'
+                },
+                'input.disabled': {
+                  'font-size': '12pt',
+                  'color': 'inherit'
                 }
               },
               fields: {
@@ -68,8 +82,39 @@ export default Ember.Component.extend({
                 // Handle error in Hosted Fields creation
                 return;
               }
-              submit.removeAttribute('disabled');
+
+              self.set('continueDisabled', true);
               self.set('braintreeLoading', false);
+
+              hostedFieldsInstance.on('validityChange', function (event) {
+                var formValid = Object.keys(event.fields).every(function (key) {
+                  return event.fields[key].isValid;
+                });
+
+                if (formValid) {
+                  self.set('continueDisabled', false);
+                } else {
+                  self.set('continueDisabled', true);
+                }
+              });
+
+              continueButton.addEventListener('click', function(event){
+                hostedFieldsInstance.addClass('number', 'disabled', function (addClassErr) {
+                  if (addClassErr) {
+                    console.error(addClassErr);
+                  }
+                });
+                hostedFieldsInstance.addClass('cvv', 'disabled', function (addClassErr) {
+                  if (addClassErr) {
+                    console.error(addClassErr);
+                  }
+                });
+                hostedFieldsInstance.addClass('expirationDate', 'disabled', function (addClassErr) {
+                  if (addClassErr) {
+                    console.error(addClassErr);
+                  }
+                });
+              });
 
               form.addEventListener('submit', function (event) {
                 event.preventDefault();
@@ -144,5 +189,17 @@ export default Ember.Component.extend({
     result.then(response => {
       console.log(response);
     })
+  },
+
+  actions: {
+    submitPayment(){
+      var submit = document.querySelector('input[type="submit"]');
+      var fields = $('.hosted-field');
+      submit.removeAttribute('disabled');
+      fields.addClass('disabled');
+      this.set('showBilling', false);
+      this.set('showVerify', true);
+      this.set('checkoutState', 'verify');
+    }
   }
 })

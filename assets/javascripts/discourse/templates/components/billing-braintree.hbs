@@ -30,7 +30,13 @@
       <div class="hosted-field" id="expiration-date"></div>
 
       <input type="hidden" name="payment_method_nonce">
-      <input type="submit" value="Submit Payment" class="btn btn-primary" disabled>
+
+      <center>
+        {{#if showContinueButton}}
+        {{d-button action="submitPayment" disabled=continueDisabled label="league.checkout.continue" id="continue-checkout" class="btn"}}
+        {{/if}}
+        <input type="submit" value="{{i18n 'league.checkout.submit_checkout'}}" class="btn btn-primary {{{showSubmitButton}}}" disabled>
+      </center>
     </form>
   </div>
 </div>

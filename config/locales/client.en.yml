@@ -86,9 +86,9 @@ en:
         card_number: "Card Number"
         expiration_date: "Expiration Date"
         cvv: "CVV"
-        submit_verify: "Submit and Verify"
+        continue: "Continue"
         edit_payment: "Edit"
-        submit_checkout: "Checkout"
+        submit_checkout: "Pay"
         progress:
           log_in: "Log In"
           billing_payment: "Billing & Payment"
