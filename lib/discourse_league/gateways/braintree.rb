@@ -72,21 +72,16 @@ module DiscourseLeague
             end
             subscription
           else
-            return {:success => false, :message => subscription.errors[0].message}
+            return {:success => false, :message => subscription.errors.first.message}
           end
         else
-          return {:success => false, :message => payment.errors[0].message}
+          return {:success => false, :message => payment.errors.first.message}
         end
 
       end
 
       def unsubscribe(subscription_id, options = {})
-        response = @braintree_gateway.subscription.cancel(subscription_id)
-        if response.success?
-          response
-        else
-          return {:success => false, :message => message_from_result(response)}
-        end
+        response = Braintree::Subscription.cancel(subscription_id)
       end
 
       def customer(user_id)

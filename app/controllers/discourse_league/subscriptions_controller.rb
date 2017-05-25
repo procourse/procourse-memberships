@@ -32,14 +32,14 @@ module DiscourseLeague
       subscription = subscriptions.select{|subscription| subscription[:id] == params[:id].to_i}
 
       if current_user.id == subscription[0][:user_id].to_i
-        gateway = DiscourseLeague::Gateways.new.gateway
+        gateway = DiscourseLeague::Billing::Gateways.new.gateway
         response = gateway.unsubscribe(subscription[0][:subscription_id])
 
         if response.success?
           products = PluginStore.get("discourse_league", "levels")
           product = products.select{|level| level[:id] == subscription[0][:product_id].to_i}
 
-          league_gateway = DiscourseLeague::Gateways.new
+          league_gateway = DiscourseLeague::Billing::Gateways.new
           league_gateway.unstore_subscription(subscription[0][:id])
 
           group = Group.find(product[0][:group].to_i)
