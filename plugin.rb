@@ -10,7 +10,6 @@ add_admin_route 'league.title', 'league'
 
 register_asset "stylesheets/discourse-league.scss"
 
-gem 'activemerchant', '1.62.0'
 gem 'braintree', '2.50.0'
 
 Discourse::Application.routes.append do

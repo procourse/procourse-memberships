@@ -1,4 +1,3 @@
-require 'active_merchant'
 require_relative '../../../lib/discourse_league/billing/gateways'
 require_relative '../../../lib/discourse_league/gateways/braintree'
 
