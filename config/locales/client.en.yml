@@ -98,6 +98,8 @@ en:
           verify: "Verify"
           completed: "Completed"
         completed_message: '<h2>Success!</h2><p>Thanks for signing up. You should receive a PM shortly with more details about your membership.</p>'
+        update_billing:
+          completed_message: '<h2>Success!</h2><p>Your payment method has been updated.</p>'
       currency:
         CAD: "$"
         EUR: "€"

@@ -1,0 +1,47 @@
+<div class="league checkout receipt">
+  <div class="user-table">
+    <div class="wrapper">
+      <a href="/u/{{currentUser.username}}/billing">← Back to Billing</a>
+      <form class="form-horizontal" id="verify-state">
+        <div class="billing-section">
+          <h3>{{i18n 'league.checkout.payment_details'}}</h3>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.transaction_id'}}</label>
+            <div class="controls expiration">{{ model.transaction.transaction_id }}</div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.product'}}</label>
+            <div class="controls expiration">{{ model.transaction.product_name }}</div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.transaction_date'}}</label>
+            <div class="controls expiration">{{format-league-date model.transaction.transaction_date }}</div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.transaction_amount'}}</label>
+            <div class="controls expiration">{{format-currency model.transaction.transaction_amount }}</div>
+          </div>
+          {{#if model.transaction.credit_card.last_4}}
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.checkout.card_number'}}</label>
+            <div class="controls"><img src="{{model.transaction.credit_card.image}}" /><span>{{obfuscate-credit-card model.transaction.credit_card.last_4}}</span></div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.checkout.expiration_date'}}</label>
+            <div class="controls expiration">{{ model.transaction.credit_card.expiration }}</div>
+          </div>
+          {{else}}
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.checkout.paypal_email'}}</label>
+            <div class="controls"><img src="{{model.transaction.paypal.image}}" /><span>{{ model.transaction.paypal.email}}</span></div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.checkout.paypal_name'}}</label>
+            <div class="controls expiration">{{ model.transaction.paypal.name }}</div>
+          </div>
+          {{/if}}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

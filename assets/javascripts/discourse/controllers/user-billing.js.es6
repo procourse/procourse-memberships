@@ -20,6 +20,10 @@ export default Ember.Controller.extend({
 
     viewReceipt: function(receipt){
       window.location.href = "/league/transactions/" + this.currentUser.id + "/" + receipt.id;
+    },
+
+    updateBilling: function(subscription){
+      window.location.href = "/league/subscriptions/" + this.currentUser.id + "/" + subscription.id;
     }
   }
 })

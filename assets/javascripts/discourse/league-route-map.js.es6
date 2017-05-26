@@ -16,6 +16,10 @@ export default function(){
     });
     this .route('transactions', {path: '/transactions'}, function(){
       this.route('show', {path: '/:user_id/:id'});
-    })
+    });
+
+    this .route('subscriptions', {path: '/subscriptions'}, function(){
+      this.route('show', {path: '/:user_id/:id'});
+    });
 	});
 };
