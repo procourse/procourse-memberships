@@ -72,6 +72,8 @@ en:
         payment_details: "Payment Details"
         credit_card: "Credit Card"
         paypal: "PayPal"
+        paypal_email: "PayPal Email"
+        paypal_name: "Name"
         sign_up_message: "Before you can sign up, you need to be logged in. Your first step is to either log in below or create a new account."
         name: "Name"
         first_name: "First Name"

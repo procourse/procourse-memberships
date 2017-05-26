@@ -33,13 +33,21 @@ module DiscourseLeague
         if response.success?
           league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => user_id, :product_id => product[:id], :token => response.transaction.credit_card_details.token)
           league_gateway.store_token
+
           credit_card = {
             name: response.transaction.credit_card_details.cardholder_name,
             last_4: response.transaction.credit_card_details.last_4,
             expiration: response.transaction.credit_card_details.expiration_date,
-            brand: response.transaction.credit_card_details.card_type
+            brand: response.transaction.credit_card_details.card_type,
+            image: response.transaction.credit_card_details.image_url
           }
-          league_gateway.store_transaction(response.transaction.id, response.transaction.amount, Time.now(), credit_card)
+          paypal = {
+            email: response.transaction.paypal_details.payer_email,
+            first_name: response.transaction.paypal_details.payer_first_name,
+            last_name: response.transaction.paypal_details.payer_last_name,
+            image: response.transaction.paypal_details.image_url
+          }
+          league_gateway.store_transaction(response.transaction.id, response.transaction.amount, Time.now(), credit_card, paypal)
           response
         else
           return {:success => false, :message => response}

@@ -1,42 +1,8 @@
-<div class="league checkout">
+<div class="league checkout receipt">
   <div class="user-table">
     <div class="wrapper">
+      <a href="/u/{{currentUser.username}}/billing">← Back to Billing</a>
       <form class="form-horizontal" id="verify-state">
-        <div class="billing-section">
-          <h3>{{i18n 'league.checkout.billing_address'}}</h3>
-          <div class="control-group">
-            <label class="control-label">{{i18n 'league.checkout.name'}}</label>
-            <div class="controls"><span>{{ model.transaction.credit_card.name }}</span></div>
-          </div>
-          <div class="control-group">
-            <label class="control-label">{{i18n 'league.checkout.address_1'}}</label>
-            <div class="controls"><span>{{ model.transaction.billing_address.address1 }}</span></div>
-          </div>
-          <div class="control-group">
-            <label class="control-label">{{i18n 'league.checkout.address_2'}}</label>
-            <div class="controls"><span>{{ model.transaction.billing_address.address2 }}</span></div>
-          </div>
-          <div class="control-group">
-            <label class="control-label">{{i18n 'league.checkout.city'}}</label>
-            <div class="controls"><span>{{ model.transaction.billing_address.city }}</span></div>
-          </div>
-          <div class="control-group">
-            <label class="control-label">{{i18n 'league.checkout.state'}}</label>
-            <div class="controls"><span>{{ model.transaction.billing_address.state }}</span></div>
-          </div>
-          <div class="control-group">
-            <label class="control-label">{{i18n 'league.checkout.postal_code'}}</label>
-            <div class="controls"><span>{{ model.transaction.billing_address.zip }}</span></div>
-          </div>
-          <div class="control-group">
-            <label class="control-label">{{i18n 'league.checkout.country'}}</label>
-            <div class="controls"><span>{{ model.transaction.billing_address.country_name }}</span></div>
-          </div>
-          <div class="control-group">
-            <label class="control-label">{{i18n 'league.checkout.phone'}}</label>
-            <div class="controls"><span>{{ model.transaction.billing_address.phone }}</span></div>
-          </div>
-        </div>
         <div class="billing-section">
           <h3>{{i18n 'league.checkout.payment_details'}}</h3>
           <div class="control-group">
@@ -55,14 +21,25 @@
             <label class="control-label">{{i18n 'league.transaction_amount'}}</label>
             <div class="controls expiration">{{format-currency model.transaction.transaction_amount }}</div>
           </div>
+          {{#if model.transaction.credit_card.last_4}}
           <div class="control-group">
             <label class="control-label">{{i18n 'league.checkout.card_number'}}</label>
-            <div class="controls"><span>{{obfuscate-credit-card model.transaction.credit_card.last_4}}</span></div>
+            <div class="controls"><img src="{{model.transaction.credit_card.image}}" /><span>{{obfuscate-credit-card model.transaction.credit_card.last_4}}</span></div>
           </div>
           <div class="control-group">
             <label class="control-label">{{i18n 'league.checkout.expiration_date'}}</label>
             <div class="controls expiration">{{ model.transaction.credit_card.expiration }}</div>
           </div>
+          {{else}}
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.checkout.paypal_email'}}</label>
+            <div class="controls"><img src="{{model.transaction.paypal.image}}" /><span>{{ model.transaction.paypal.email}}</span></div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">{{i18n 'league.checkout.paypal_name'}}</label>
+            <div class="controls expiration">{{ model.transaction.paypal.name }}</div>
+          </div>
+          {{/if}}
         </div>
       </form>
     </div>
