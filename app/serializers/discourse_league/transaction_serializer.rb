@@ -12,8 +12,10 @@ module ::DiscourseLeague
 
     def product_name
       products = PluginStore.get("discourse_league", "levels") || []
-      product = products.select{|level| level[:id] == object.product_id.to_i} if !products.empty?
-      product[0][:name]
+      product = products.select{|level| level[:id] == object.product_id.to_i}
+      if !product.empty?
+        product[0][:name]
+      end
     end
 
   end
