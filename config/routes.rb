@@ -4,8 +4,6 @@ require_dependency "admin_constraint"
 DiscourseLeague::Engine.routes.draw do
 
   get "/l/:id" => "levels#show", constraints: LeagueConstraint.new
-  get "/p/:id" => "pages#show", constraints: LeagueConstraint.new
-  get "/p/:slug/:id" => "pages#show", constraints: LeagueConstraint.new
   post '/checkout/submit-payment' => "checkout#submit_payment", constraints: LeagueConstraint.new
   get '/checkout/braintree-token' => "checkout#braintree_token", constraints: LeagueConstraint.new
   post '/checkout/verify' => "checkout#submit_verify", constraints: LeagueConstraint.new
@@ -20,6 +18,5 @@ DiscourseLeague::Engine.routes.draw do
   get '/transactions/:user_id/:id' => "transactions#show", constraints: LeagueConstraint.new
 
   resource :admin_levels, path: '/admin/levels', constraints: AdminConstraint.new
-  resource :admin_pages, path: '/admin/pages', constraints: AdminConstraint.new
   resource :admin_gateways, path: '/admin/gateways', constraints: AdminConstraint.new
 end
