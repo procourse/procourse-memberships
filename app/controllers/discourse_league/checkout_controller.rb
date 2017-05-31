@@ -30,6 +30,13 @@ module DiscourseLeague
         end
 
         if group.save
+          PostCreator.create(
+            Discourse.system_user,
+            target_usernames: current_user.username,
+            archetype: Archetype.private_message,
+            title: I18n.t('league.private_messages.sign_up_success.title', {productName: product[0][:name]}),
+            raw: product[0][:welcome_message]
+          )
           render json: success_json
         else
           return render_json_error(group)

@@ -92,7 +92,14 @@
         {{/if}} {{!-- braintree --}}
         {{/if}} {{!-- selectedItem.selected --}}
         <div>
+          <label for="description-raw">{{i18n 'admin.league.levels.description_raw'}}</label>
+          <p class="help">{{i18n 'admin.league.levels.description_raw_description'}}</p>
           {{d-editor value=selectedItem.description_raw class="raw-bio"}}
+        </div>
+        <div>
+          <label for="welcome-message">{{i18n 'admin.league.levels.welcome_message'}}</label>
+          <p class="help">{{i18n 'admin.league.levels.welcome_message_description'}}</p>
+          {{d-editor value=selectedItem.welcome_message class="raw-bio"}}
         </div>
       </form>
     </div>

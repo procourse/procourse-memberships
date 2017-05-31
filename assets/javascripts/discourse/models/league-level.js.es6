@@ -53,6 +53,7 @@ LeagueLevel.reopenClass({
             trial_period: leagueLevel.trial_period,
             description_raw: leagueLevel.description_raw,
             description_cooked: leagueLevel.description_cooked,
+            welcome_message: leagueLevel.welcome_message,
             braintree_plan_id: leagueLevel.braintree_plan_id
           }));
         });
@@ -87,6 +88,7 @@ LeagueLevel.reopenClass({
       data.trial_period = self.trial_period;
       data.description_raw = self.description_raw;
       data.description_cooked = cooked.string;
+      data.welcome_message = self.welcome_message;
       data.braintree_plan_id = self.braintree_plan_id;
     };
 

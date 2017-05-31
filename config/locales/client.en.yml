@@ -32,6 +32,10 @@ en:
           trial_period_description: "The length of the trial in days."
           braintree_plan_id: "Braintree Plan ID"
           braintree_plan_id_description: 'Braintree handles recurring subscriptions through "plans" created within their control panel. You will need to create the plan there and enter the PlanID here.'
+          description_raw: "Level Description"
+          description_raw_description: "This is the content that will be displayed above the checkout form. Be sure to clarify the details of payment for your customers."
+          welcome_message: "Welcome Message"
+          welcome_message_description: "The Welcome Message is the body of the Private Message that will be sent to your customers after signing up."
           delete_confirm: "Delete this League level?"
           no_levels: "Add some levels for your users."
           no_level_selected: "No level selected."
@@ -104,3 +108,6 @@ en:
       expiration_month: "Expriation Month"
       expiration_year: "Expiration Year"
       cvv: "CVV"
+    private_messages:
+      sign_up_success:
+        title: "Welcome to %{productName}!"

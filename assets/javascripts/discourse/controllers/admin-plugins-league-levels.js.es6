@@ -28,6 +28,7 @@ export default Ember.Controller.extend({
       (this.get('originals').trial == this.get('selectedItem').trial) &&
       (this.get('originals').description_raw == this.get('selectedItem').description_raw) &&
       (this.get('originals').description_cooked == this.get('selectedItem').description_cooked) &&
+      (this.get('originals').welcome_message == this.get('selectedItem').welcome_message) &&
       (this.get('originals').braintree_plan_id == this.get('selectedItem').braintree_plan_id) &&
       (this.get('originals').trial_period == this.get('selectedItem').trial_period)) ||
       (!this.get('selectedItem').group) ||
@@ -42,8 +43,8 @@ export default Ember.Controller.extend({
       }
   }.observes('selectedItem.name', 'selectedItem.group', 'selectedItem.initial_payment', 
     'selectedItem.recurring', 'selectedItem.recurring_payment', 'selectedItem.recurring_payment_period', 
-    'selectedItem.trial', 'selectedItem.trial_period', 'selectedItem.description_raw', 'selectedItem.description_cooked',
-    'selectedItem.braintree_plan_id'),
+    'selectedItem.trial', 'selectedItem.trial_period', 'selectedItem.description_raw', 'selectedItem.description_cooked', 
+    'selectedItem.welcome_message', 'selectedItem.braintree_plan_id'),
 
   _init: function() {
     var gateway = Discourse.SiteSettings.league_gateway;
@@ -68,6 +69,7 @@ export default Ember.Controller.extend({
           trial_period: leagueLevel.trial_period,
           description_raw: leagueLevel.description_raw,
           description_cooked: leagueLevel.description_cooked,
+          welcome_message: leagueLevel.welcome_message,
           braintree_plan_id: leagueLevel.braintree_plan_id
         });
         this.set('disableSave', true);

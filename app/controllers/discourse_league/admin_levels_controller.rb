@@ -27,6 +27,7 @@ module DiscourseLeague
         trial_period: params[:league_level][:trial_period],
         description_raw: params[:league_level][:description_raw],
         description_cooked: params[:league_level][:description_cooked],
+        welcome_message: params[:league_level][:welcome_message],
         braintree_plan_id: params[:league_level][:braintree_plan_id]
       }
 
@@ -54,6 +55,7 @@ module DiscourseLeague
         league_level[0][:trial_period] = params[:league_level][:trial_period] if !params[:league_level][:trial_period].nil?
         league_level[0][:description_raw] = params[:league_level][:description_raw] if !params[:league_level][:description_raw].nil?
         league_level[0][:description_cooked] = params[:league_level][:description_cooked] if !params[:league_level][:description_cooked].nil?
+        league_level[0][:welcome_message] = params[:league_level][:welcome_message] if !params[:league_level][:welcome_message].nil?
         league_level[0][:braintree_plan_id] = params[:league_level][:braintree_plan_id] if !params[:league_level][:braintree_plan_id].nil?
 
         PluginStore.set("discourse_league", "levels", levels)
@@ -80,7 +82,7 @@ module DiscourseLeague
     private
 
     def league_level_params
-      params.permit(league_level: [:enabled, :name, :group, :initial_payment, :recurring, :recurring_payment, :recurring_payment_period, :trial, :trial_payment, :description_raw, :description_cooked])[:league_level]
+      params.permit(league_level: [:enabled, :name, :group, :initial_payment, :recurring, :recurring_payment, :recurring_payment_period, :trial, :trial_payment, :description_raw, :description_cooked, :welcome_message])[:league_level]
     end
   end
 end
