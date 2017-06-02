@@ -23,7 +23,7 @@ export default Ember.Controller.extend({
     },
 
     updateBilling: function(subscription){
-      window.location.href = "/league/subscriptions/" + this.currentUser.id + "/" + subscription.id;
+      window.location.href = "/league/l/" + subscription.product.id;
     }
   }
 })

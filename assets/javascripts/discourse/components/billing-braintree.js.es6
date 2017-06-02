@@ -244,7 +244,7 @@ export default Ember.Component.extend({
   _submitNonce(nonce){
     var self = this;
     this.set("braintreeLoading", true);
-    var result = Payment.submitNonce(this.get('leagueLevel')[0].id, nonce);
+    var result = Payment.submitNonce(this.get('leagueLevel')[0].id, nonce, this.get("update"));
     result.then(response => {
       console.log(response);
       if (response.success){

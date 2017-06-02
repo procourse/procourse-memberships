@@ -6,6 +6,16 @@ module DiscourseLeague
       if params[:id]
         levels = PluginStore.get("discourse_league", "levels")
         level = levels.select{|level| level[:id] == params[:id].to_i}
+
+        subscriptions = PluginStore.get("discourse_league", "subscriptions") || []
+        user_subscription = subscriptions.select{|subscription| subscription[:product_id].to_i == level[0][:id].to_i && subscription[:user_id] == current_user.id} || []
+
+        if user_subscription.empty?
+          level[0][:user_subscribed] = false
+        else
+          level[0][:user_subscribed] = true
+          level[0][:subscription_id] = user_subscription[0][:id]
+        end
       end
 
       if !level.empty? && level[0][:enabled]

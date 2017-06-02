@@ -1,41 +1,50 @@
 {{#conditional-loading-spinner condition=loading}}
 <div class="league checkout">
   {{#if memberExists}}
-  <div>{{i18n 'league.member_exists'}}</div>
-  {{else}}
-  {{checkout-progress state=checkoutState}}
-  <div class="billing-section">
-    {{#if showDescription}}
-    <p>{{{model.0.description_cooked}}}</p>
-    {{/if}}
-  </div>
-  {{#if currentUser }}
-  <div class="user-table">
-    <div class="wrapper">
-      {{#if showBraintree}}
-        {{billing-braintree leagueLevel=model showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState}}
-      {{else}}
-        {{#if showBilling}}
-          {{billing}}
-        {{/if}}
+    {{#if memberSubscription}}
 
-        {{#if showVerify}}
-          {{verify}}
-        {{/if}}
-      {{/if}} {{!-- showBraintree --}}
-
-      {{#if showCompleted}}
-        <div>{{{i18n 'league.checkout.completed_message'}}}</div>
+    {{else}}
+      <div>{{i18n 'league.member_exists'}}</div>
+    {{/if}} {{!-- memberSubscription --}}
+  {{/if}} {{!-- memberExists --}}
+  {{#if showPayment}}
+    {{checkout-progress state=checkoutState}}
+    <div class="billing-section">
+      {{#if showDescription}}
+        {{#if memberSubscription}}
+          <p>{{{i18n 'legaue.update_billing.description' }}}</p>
+        {{else}}
+          <p>{{{model.0.description_cooked}}}</p>
+        {{/if}} {{!-- memberSubscription --}}
       {{/if}}
     </div>
-  </div>
-  {{else}} {{!-- currentUser --}}
-  <div>{{i18n 'league.checkout.sign_up_message'}}</div>
-  <div class="account-buttons">
-    <span>{{d-button action="showCreateAccount" class="btn-primary sign-up-button" label="sign_up"}}</span>
-    <span>{{#d-button class="btn-primary" action="showLogin"}}{{fa-icon 'user'}} {{i18n 'log_in'}}{{/d-button}}</span>
-  </div>
-  {{/if}} {{!-- currentUser --}}
-  {{/if}} {{!-- memberExists --}}
+    {{#if currentUser }}
+    <div class="user-table">
+      <div class="wrapper">
+        {{#if showBraintree}}
+          {{billing-braintree leagueLevel=model showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=memberSubscription}}
+        {{else}}
+          {{#if showBilling}}
+            {{billing update=memberSubscription}}
+          {{/if}}
+
+          {{#if showVerify}}
+            {{verify}}
+          {{/if}}
+        {{/if}} {{!-- showBraintree --}}
+
+        {{#if showCompleted}}
+          <div>{{{i18n 'league.checkout.completed_message'}}}</div>
+        {{/if}}
+      </div>
+    </div>
+    {{else}} {{!-- currentUser --}}
+    <div>{{i18n 'league.checkout.sign_up_message'}}</div>
+    <div class="account-buttons">
+      <span>{{d-button action="showCreateAccount" class="btn-primary sign-up-button" label="sign_up"}}</span>
+      <span>{{#d-button class="btn-primary" action="showLogin"}}{{fa-icon 'user'}} {{i18n 'log_in'}}{{/d-button}}</span>
+    </div>
+    {{/if}} {{!-- currentUser --}}
+  {{/if}} {{!-- showPayment --}}
 </div>
 {{/conditional-loading-spinner}}

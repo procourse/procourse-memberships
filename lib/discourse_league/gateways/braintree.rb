@@ -48,7 +48,7 @@ module DiscourseLeague
             image: response.transaction.paypal_details.image_url
           }
           league_gateway.store_transaction(response.transaction.id, response.transaction.amount, Time.now(), credit_card, paypal)
-          response
+          return {:response => response}
         else
           return {:success => false, :message => response}
         end
@@ -78,7 +78,7 @@ module DiscourseLeague
               }
               league_gateway.store_transaction(transaction.id, transaction.amount, transaction.created_at, credit_card)
             end
-            subscription
+            return {:response => subscription}
           else
             return {:success => false, :message => subscription.errors.first.message}
           end
@@ -90,6 +90,30 @@ module DiscourseLeague
 
       def unsubscribe(subscription_id, options = {})
         response = Braintree::Subscription.cancel(subscription_id)
+      end
+
+      def update_payment(user_id, product, subscription_id, nonce, options = {})
+        customer = self.customer(user_id)
+        payment = Braintree::PaymentMethod.create(
+          :customer_id => customer.id,
+          :payment_method_nonce => nonce
+        )
+        if payment.success?
+          subscription = Braintree::Subscription.update(
+            subscription_id,
+            :payment_method_token => payment.payment_method.token
+          )
+
+          if subscription.success?
+            league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => user_id, :product_id => product[:id], :token => subscription.subscription.payment_method_token)
+            league_gateway.update_token
+            return {:response => subscription}
+          else
+            return {:response => subscription, :message => subscription.errors.first.message}
+          end
+        else
+          return {:success => false, :message => payment.errors.first.message}
+        end
       end
 
       def customer(user_id)

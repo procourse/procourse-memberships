@@ -13,6 +13,13 @@ export default Discourse.Route.extend({
     else{
       var memberExists = false;
     }
-    controller.setProperties({ model, memberExists: memberExists });
+
+    if (model[0].user_subscribed){
+      var memberSubscription = true;
+    }
+    else{
+      var memberSubscription = false;
+    }
+    controller.setProperties({ model, memberExists: memberExists, memberSubscription: memberSubscription });
   }
 });

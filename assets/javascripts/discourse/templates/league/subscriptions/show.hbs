@@ -1,21 +1,18 @@
 {{#conditional-loading-spinner condition=loading}}
 <div class="league checkout update-billing">
-  {{#if memberExists}}
-  <div>{{i18n 'league.member_exists'}}</div>
-  {{else}}
   {{checkout-progress state=checkoutState}}
   <div class="billing-section">
     {{#if showDescription}}
-    <p>{{{model.0.description_cooked}}}</p>
+    <p>Update your payment method for Discourse League.</p>
     {{/if}}
   </div>
   <div class="user-table">
     <div class="wrapper">
       {{#if showBraintree}}
-        {{billing-braintree leagueLevel=model showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState}}
+        {{billing-braintree leagueLevel=model showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=true}}
       {{else}}
         {{#if showBilling}}
-          {{billing}}
+          {{update-billing}}
         {{/if}}
 
         {{#if showVerify}}
@@ -28,6 +25,5 @@
       {{/if}}
     </div>
   </div>
-  {{/if}} {{!-- memberExists --}}
 </div>
 {{/conditional-loading-spinner}}

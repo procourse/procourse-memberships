@@ -14,35 +14,52 @@ module DiscourseLeague
       products = PluginStore.get("discourse_league", "levels")
       product = products.select{|level| level[:id] == params[:level_id]}
 
-      if product[0][:recurring]
-        response = gateway.subscribe(current_user.id, product[0], params[:nonce])
-      else
-        response = gateway.purchase(current_user.id, product[0], params[:nonce])
-      end
+      if params[:update]
+        subscriptions = PluginStore.get("discourse_league", "subscriptions") || []
+        user_subscription = subscriptions.select{|subscription| subscription[:product_id].to_i == params[:level_id].to_i && subscription[:user_id] == current_user.id} || []
 
-      if response.success?
-        group = Group.find(product[0][:group].to_i)
-        if !group.users.include?(current_user)
-          group.add(current_user)
-          GroupActionLogger.new(current_user, group).log_add_user_to_group(current_user)
-        else
-          return render_json_error I18n.t('groups.errors.member_already_exist', username: current_user.username)
+        if user_subscription.empty?
+          render_json_error("Subscription cannot be found.")
         end
 
-        if group.save
-          PostCreator.create(
-            Discourse.system_user,
-            target_usernames: current_user.username,
-            archetype: Archetype.private_message,
-            title: I18n.t('league.private_messages.sign_up_success.title', {productName: product[0][:name]}),
-            raw: product[0][:welcome_message]
-          )
+        response = gateway.update_payment(current_user.id, product[0], user_subscription[0][:subscription_id], params[:nonce])
+
+        if response[:response].success?
           render json: success_json
         else
-          return render_json_error(group)
+          render_json_error(response[:message])
         end
       else
-        render_json_error(response.message)
+        if product[0][:recurring]
+          response = gateway.subscribe(current_user.id, product[0], params[:nonce])
+        else
+          response = gateway.purchase(current_user.id, product[0], params[:nonce])
+        end
+
+        if response[:response].success?
+          group = Group.find(product[0][:group].to_i)
+          if !group.users.include?(current_user)
+            group.add(current_user)
+            GroupActionLogger.new(current_user, group).log_add_user_to_group(current_user)
+          else
+            return render_json_error I18n.t('groups.errors.member_already_exist', username: current_user.username)
+          end
+
+          if group.save
+            PostCreator.create(
+              Discourse.system_user,
+              target_usernames: current_user.username,
+              archetype: Archetype.private_message,
+              title: I18n.t('league.private_messages.sign_up_success.title', {productName: product[0][:name]}),
+              raw: product[0][:welcome_message]
+            )
+            render json: success_json
+          else
+            return render_json_error(group)
+          end
+        else
+          render_json_error(response.message)
+        end
       end
     end
 

@@ -37,10 +37,26 @@ module DiscourseLeague
           user_id: @options[:user_id],
           product_id: @options[:product_id],
           token: @options[:token],
-          created_at: time
+          created_at: time,
+          updated_at: time
         }
 
         tokens.push(new_token)
+
+        PluginStore.set("discourse_league", "user_payment_tokens", tokens)
+      end
+
+      def update_token
+        tokens = PluginStore.get("discourse_league", "user_payment_tokens") || []
+
+        token = tokens.select{|token| token[:user_id] == @options[:user_id] && token[:product_id] == @options[:product_id]}
+        
+        time = Time.now
+
+        unless token.empty?
+          token[0][:token] = @options[:token]
+          token[0][:updated_at] = time
+        end
 
         PluginStore.set("discourse_league", "user_payment_tokens", tokens)
       end
@@ -62,7 +78,8 @@ module DiscourseLeague
           subscription_id: subscription_id,
           subscription_end_date: subscription_end_date,
           active: true,
-          created_at: time
+          created_at: time,
+          updated_at: time
         }
 
         subscriptions.push(new_subscription)

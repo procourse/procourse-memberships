@@ -45,6 +45,12 @@ export default Ember.Controller.extend({
       this.set('checkoutState', 'billing-payment');
       this.set('showBilling', true);
       this.set('showDescription', true);
+      if (this.get('memberSubscription') || (!this.get('memberExists'))){
+        this.set('showPayment', true);
+      }
+      else{
+        this.set('showPayment', false);
+      };
       this.set('memberDetails', this.get('initMemberDetails'));
       if (Discourse.SiteSettings.league_gateway == "Braintree"){
         this.set('showBraintree', true);
@@ -66,6 +72,7 @@ export default Ember.Controller.extend({
     submitBillingPayment: function() {
       this.set("loading",true);
       var data = this.get("memberDetails");
+      data.user_subscribed = this.get("memberSubscription");
       var success = true;
       return ajax("/league/checkout/billing-payment.json", {
         data: JSON.stringify(data),
@@ -98,6 +105,7 @@ export default Ember.Controller.extend({
       this.set("loading",true);
       var data = this.get("memberDetails");
       data.product_id = product[0].id;
+      data.user_subscribed = product[0].user_subscribed;
       var success = true;
       return ajax("/league/checkout/verify.json", {
         data: JSON.stringify(data),
