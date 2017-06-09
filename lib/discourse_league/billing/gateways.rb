@@ -23,18 +23,10 @@ module DiscourseLeague
       end
 
       def store_token
-        tokens = PluginStore.get("discourse_league", "user_payment_tokens")
-        tokens = [] if tokens.nil?
-        id = SecureRandom.random_number(1000000)
+        tokens = PluginStore.get("discourse_league", "tokens:" + @options[:user_id].to_s) || []
         time = Time.now
 
-        until tokens.select{|token| token[:id] == id}.empty?
-          id = SecureRandom.random_number(1000000)
-        end
-
         new_token = {
-          id: id,
-          user_id: @options[:user_id],
           product_id: @options[:product_id],
           token: @options[:token],
           created_at: time,
@@ -43,13 +35,13 @@ module DiscourseLeague
 
         tokens.push(new_token)
 
-        PluginStore.set("discourse_league", "user_payment_tokens", tokens)
+        PluginStore.set("discourse_league", "tokens:" + @options[:user_id].to_s, tokens)
       end
 
       def update_token
-        tokens = PluginStore.get("discourse_league", "user_payment_tokens") || []
+        tokens = PluginStore.get("discourse_league", "tokens:" + @options[:user_id].to_s) || []
 
-        token = tokens.select{|token| token[:user_id] == @options[:user_id] && token[:product_id] == @options[:product_id]}
+        token = tokens.select{|token| token[:product_id] == @options[:product_id]}
         
         time = Time.now
 
@@ -58,22 +50,14 @@ module DiscourseLeague
           token[0][:updated_at] = time
         end
 
-        PluginStore.set("discourse_league", "user_payment_tokens", tokens)
+        PluginStore.set("discourse_league", "tokens:" + @options[:user_id].to_s, tokens)
       end
 
       def store_subscription(subscription_id, subscription_end_date)
-        subscriptions = PluginStore.get("discourse_league", "subscriptions")
-        subscriptions = [] if subscriptions.nil?
-        id = SecureRandom.random_number(1000000)
+        subscriptions = PluginStore.get("discourse_league", "s:" + @options[:user_id].to_s) || []
         time = Time.now
 
-        until subscriptions.select{|subscription| subscription[:id] == id}.empty?
-          id = SecureRandom.random_number(1000000)
-        end
-
         new_subscription = {
-          id: id,
-          user_id: @options[:user_id],
           product_id: @options[:product_id],
           subscription_id: subscription_id,
           subscription_end_date: subscription_end_date,
@@ -84,22 +68,14 @@ module DiscourseLeague
 
         subscriptions.push(new_subscription)
 
-        PluginStore.set("discourse_league", "subscriptions", subscriptions)
+        PluginStore.set("discourse_league", "s:" + @options[:user_id].to_s, subscriptions)
       end
 
       def store_transaction(transaction_id, transaction_amount, transaction_date, credit_card = {}, paypal = {})
-        transactions = PluginStore.get("discourse_league", "transactions")
-        transactions = [] if transactions.nil?
-        id = SecureRandom.random_number(1000000)
+        transactions = PluginStore.get("discourse_league", "t:" + @options[:user_id].to_s) || []
         time = Time.now
 
-        until transactions.select{|transaction| transaction[:id] == id}.empty?
-          id = SecureRandom.random_number(1000000)
-        end
-
         new_transaction = {
-          id: id,
-          user_id: @options[:user_id],
           product_id: @options[:product_id],
           transaction_id: transaction_id,
           transaction_amount: transaction_amount,
@@ -111,15 +87,15 @@ module DiscourseLeague
 
         transactions.push(new_transaction)
 
-        PluginStore.set("discourse_league", "transactions", transactions)
+        PluginStore.set("discourse_league", "t:" + @options[:user_id].to_s, transactions)
       end
 
-      def unstore_subscription(id)
-        subscriptions = PluginStore.get("discourse_league", "subscriptions")
-        subscription = subscriptions.select{|subscription| subscription[:id] = id.to_i}
+      def unstore_subscription
+        subscriptions = PluginStore.get("discourse_league", "s:" + @options[:user_id].to_s)
+        subscription = subscriptions.select{|subscription| subscription[:product_id] = @options[:product_id].to_i}
 
         subscriptions.delete(subscription[0])
-        PluginStore.set("discourse_league", "subscriptions", subscriptions)
+        PluginStore.set("discourse_league", "s:" + @options[:user_id].to_s, subscriptions)
       end
 
     end

@@ -20,6 +20,19 @@ export default Discourse.Route.extend({
     else{
       var memberSubscription = false;
     }
-    controller.setProperties({ model, memberExists: memberExists, memberSubscription: memberSubscription });
+
+    if (!memberExists){
+        var showPayment = true;
+      }
+      else if (memberExists && memberSubscription){
+        var showPayment = true;
+      }
+      else if (memberExists && !memberSubscription){
+        var showPayment = false;
+      }
+      else{
+        var showPayment = false;
+      };
+    controller.setProperties({ model, memberExists: memberExists, memberSubscription: memberSubscription, showPayment: showPayment });
   }
 });

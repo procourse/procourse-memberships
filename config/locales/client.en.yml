@@ -93,6 +93,7 @@ en:
           completed: "Completed"
         completed_message: '<h2>Success!</h2><p>Thanks for signing up. You should receive a PM shortly with more details about your membership.</p>'
         update_billing:
+          description: 'Enter the billing details below to make changes to your payment method.'
           completed_message: '<h2>Success!</h2><p>Your payment method has been updated.</p>'
       currency:
         CAD: "$"

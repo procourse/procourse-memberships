@@ -11,15 +11,15 @@ module DiscourseLeague
     def submit_payment
       gateway = DiscourseLeague::Billing::Gateways.new.gateway
 
-      products = PluginStore.get("discourse_league", "levels")
+      products = PluginStore.get("discourse_league", "levels") || []
       product = products.select{|level| level[:id] == params[:level_id]}
 
       if params[:update]
-        subscriptions = PluginStore.get("discourse_league", "subscriptions") || []
-        user_subscription = subscriptions.select{|subscription| subscription[:product_id].to_i == params[:level_id].to_i && subscription[:user_id] == current_user.id} || []
+        subscriptions = PluginStore.get("discourse_league", "s:" + current_user.id.to_s) || []
+        user_subscription = subscriptions.select{|subscription| subscription[:product_id].to_i == params[:level_id].to_i} || []
 
         if user_subscription.empty?
-          render_json_error("Subscription cannot be found.")
+          return render_json_error("Subscription cannot be found.")
         end
 
         response = gateway.update_payment(current_user.id, product[0], user_subscription[0][:subscription_id], params[:nonce])

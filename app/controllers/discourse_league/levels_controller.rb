@@ -7,8 +7,8 @@ module DiscourseLeague
         levels = PluginStore.get("discourse_league", "levels")
         level = levels.select{|level| level[:id] == params[:id].to_i}
 
-        subscriptions = PluginStore.get("discourse_league", "subscriptions") || []
-        user_subscription = subscriptions.select{|subscription| subscription[:product_id].to_i == level[0][:id].to_i && subscription[:user_id] == current_user.id} || []
+        subscriptions = PluginStore.get("discourse_league", "s:"  + current_user.id.to_s) || []
+        user_subscription = subscriptions.select{|subscription| subscription[:product_id].to_i == level[0][:id].to_i} || []
 
         if user_subscription.empty?
           level[0][:user_subscribed] = false

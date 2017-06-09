@@ -246,14 +246,24 @@ export default Ember.Component.extend({
     this.set("braintreeLoading", true);
     var result = Payment.submitNonce(this.get('leagueLevel')[0].id, nonce, this.get("update"));
     result.then(response => {
-      console.log(response);
       if (response.success){
         self.set('checkoutState', 'completed');
+        self.set('showBilling', false);
         self.set('showVerify', false);
         self.set('showCompleted', true);
       }
       this.set("braintreeLoading", false);
-    })
+    }).catch(e => {
+        if (e.jqXHR.responseJSON && e.jqXHR.responseJSON.errors) {
+          bootbox.alert(I18n.t("generic_error_with_reason", {error: e.jqXHR.responseJSON.errors.join('. ')}));
+        } else {
+          bootbox.alert(I18n.t("generic_error"));
+        }
+        self.set('checkoutState', 'billing-payment');
+        self.set('showVerify', false);
+        self.set('showBilling', true);
+        this.set("braintreeLoading", false);
+      });
   },
 
   actions: {

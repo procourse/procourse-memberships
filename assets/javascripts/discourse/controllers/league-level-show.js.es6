@@ -45,12 +45,6 @@ export default Ember.Controller.extend({
       this.set('checkoutState', 'billing-payment');
       this.set('showBilling', true);
       this.set('showDescription', true);
-      if (this.get('memberSubscription') || (!this.get('memberExists'))){
-        this.set('showPayment', true);
-      }
-      else{
-        this.set('showPayment', false);
-      };
       this.set('memberDetails', this.get('initMemberDetails'));
       if (Discourse.SiteSettings.league_gateway == "Braintree"){
         this.set('showBraintree', true);
