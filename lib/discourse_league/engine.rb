@@ -29,6 +29,97 @@ module DiscourseLeague
           end
 
         end
+
+        class SubscriptionCanceled < Jobs::Base
+          def execute(args)
+            subscription = PluginStoreRow.where(plugin_name: "discourse_league")
+              .where("key LIKE 's:%'")
+              .where("value LIKE '%" + args[:id] + "%'")
+              .first
+            user_id = subscription.key[2..-1].to_i
+
+            user = User.find(user_id)
+
+            gateway = DiscourseLeague::Billing::Gateways.new.gateway
+            response = gateway.unsubscribe(JSON.parse(subscription.value)[0]["subscription_id"])
+
+            if response.success?
+
+              league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => user_id, :product_id => JSON.parse(subscription.value)[0]["product_id"])
+              league_gateway.unstore_subscription
+
+              levels = PluginStore.get("discourse_league", "levels")
+              level = levels.select{|level| level[:id] == JSON.parse(subscription.value)[0]["product_id"].to_i}
+
+              group = Group.find(level[0][:group].to_i)
+              if group.users.include?(user)
+                group.remove(user)
+                GroupActionLogger.new(user, group).log_remove_user_from_group(user)
+              end
+
+              if group.save
+                PostCreator.create(
+                  Discourse.system_user,
+                  target_usernames: user.username,
+                  archetype: Archetype.private_message,
+                  title: I18n.t('league.private_messages.subscription_canceled.title', {productName: level[0][:name]}),
+                  raw: I18n.t('league.private_messages.subscription_canceled.message', {productName: level[0][:name]})
+                )
+                render json: PluginStore.get("discourse_league", "s:" + user_id.to_s) || []
+              else
+                return render_json_error(group)
+              end
+            else
+              render_json_error(response.message)
+            end
+          end
+        end
+
+        class SubscriptionChargedUnsuccessfully < Jobs::Base
+          def execute(args)
+            subscription = PluginStoreRow.where(plugin_name: "discourse_league")
+              .where("key LIKE 's:%'")
+              .where("value LIKE '%" + args[:id] + "%'")
+              .first
+            user_id = subscription.key[2..-1].to_i
+
+            user = User.find(user_id)
+
+            gateway = DiscourseLeague::Billing::Gateways.new.gateway
+            response = gateway.unsubscribe(JSON.parse(subscription.value)[0]["subscription_id"])
+
+            if response.success?
+
+              league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => user_id, :product_id => JSON.parse(subscription.value)[0]["product_id"])
+              league_gateway.unstore_subscription
+
+              levels = PluginStore.get("discourse_league", "levels")
+              level = levels.select{|level| level[:id] == JSON.parse(subscription.value)[0]["product_id"].to_i}
+
+              group = Group.find(level[0][:group].to_i)
+              if group.users.include?(user)
+                group.remove(user)
+                GroupActionLogger.new(user, group).log_remove_user_from_group(user)
+              end
+
+              if group.save
+                PostCreator.create(
+                  Discourse.system_user,
+                  target_usernames: user.username,
+                  archetype: Archetype.private_message,
+                  title: I18n.t('league.private_messages.subscription_charged_unsuccessfully.title', {productName: level[0][:name]}),
+                  raw: I18n.t('league.private_messages.subscription_charged_unsuccessfully.message', {productName: level[0][:name]})
+                )
+                render json: PluginStore.get("discourse_league", "s:" + user_id.to_s) || []
+              else
+                return render_json_error(group)
+              end
+            else
+              render_json_error(response.message)
+            end
+          end
+        end
+
       end
 
     end

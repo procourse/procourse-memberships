@@ -19,4 +19,6 @@ DiscourseLeague::Engine.routes.draw do
 
   resource :admin_levels, path: '/admin/levels', constraints: AdminConstraint.new
   resource :admin_gateways, path: '/admin/gateways', constraints: AdminConstraint.new
+
+  post '/webhook/braintree' => "webhook#braintree", constraints: LeagueConstraint.new
 end

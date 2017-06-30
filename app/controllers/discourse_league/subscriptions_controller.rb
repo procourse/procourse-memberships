@@ -47,6 +47,13 @@ module DiscourseLeague
         end
 
         if group.save
+          PostCreator.create(
+            Discourse.system_user,
+            target_usernames: current_user.username,
+            archetype: Archetype.private_message,
+            title: I18n.t('league.private_messages.subscription_canceled.title', {productName: level[0][:name]}),
+            raw: I18n.t('league.private_messages.subscription_canceled.message', {productName: level[0][:name]})
+          )
           render json: PluginStore.get("discourse_league", "s:" + current_user.id.to_s) || []
         else
           return render_json_error(group)

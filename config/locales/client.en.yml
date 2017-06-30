@@ -48,8 +48,7 @@ en:
       subscriptions_title: "Subscriptions"
       transactions_title: "Transactions"
       product: "Product"
-      recurring: "Recurring"
-      recurring_item: "Every {{period}} months"
+      paid_through_date: "Paid Through"
       subscription_id: "ID"
       created: "Created"
       actions: "Actions"
@@ -112,3 +111,9 @@ en:
     private_messages:
       sign_up_success:
         title: "Welcome to %{productName}!"
+      subscription_canceled:
+        title: "Subscription to %{productName} canceled"
+        message: "It looks like your subscription to %{productName} was canceled. We're sorry to see you go. If you change your mind you can always sign up again."
+      subscription_charged_unsuccessfully:
+        title: "Subscription to %{productName} canceled"
+        message: "It looks like your subscription to %{productName} was canceled as a result of a faulty card transaction. You're subscription is currently invalid. To resolve the issue, simply try signing up again or contact one of our site admins."

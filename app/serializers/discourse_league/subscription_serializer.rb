@@ -4,6 +4,7 @@ module ::DiscourseLeague
     attributes :id,
      :product,
      :subscription_id,
+     :subscription_end_date,
      :created_at,
      :active
 

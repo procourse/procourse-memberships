@@ -7,7 +7,7 @@
       <tr>
         <th title="Subscription ID" class="title">{{i18n 'league.subscription_id'}}</th>
         <th title="Product" class="title">{{i18n 'league.product'}}</th>
-        <th title="Recurring" class="title">{{i18n 'league.recurring'}}</th>
+        <th title="Paid Through Date" class="title">{{i18n 'league.paid_through_date'}}</th>
         <th title="Created" class="title">{{i18n 'league.created'}}</th>
         <th title="Actions" class="title">{{i18n 'league.actions'}}</th>
       </tr>
@@ -17,7 +17,7 @@
       <tr>
         <td>{{subscription.subscription_id}}</td>
         <td>{{subscription.product.name}}</td>
-        <td>{{i18n 'league.recurring_item' period=subscription.product.recurring_payment_period}}</td>
+        <td>{{format-league-date subscription.subscription_end_date}}</td>
         <td>{{format-league-date subscription.created_at}}</td>
         <td>
           <button {{action "updateBilling" subscription}} class="btn">{{i18n 'league.update_billing'}}</button>
