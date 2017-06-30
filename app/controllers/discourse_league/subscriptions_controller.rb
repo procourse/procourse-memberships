@@ -48,7 +48,7 @@ module DiscourseLeague
 
         if group.save
           PostCreator.create(
-            Discourse.system_user,
+            DiscourseLeague.contact_user,
             target_usernames: current_user.username,
             archetype: Archetype.private_message,
             title: I18n.t('league.private_messages.subscription_canceled.title', {productName: level[0][:name]}),

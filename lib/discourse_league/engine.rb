@@ -1,4 +1,10 @@
 module DiscourseLeague
+
+  def self.contact_user
+    user = User.find_by(username_lower: SiteSetting.league_contact_user.downcase) if SiteSetting.league_contact_user.present?
+    user ||= (Discourse.site_contact_user || User.admins.real.order(:id).first)
+  end
+
   class Engine < ::Rails::Engine
     isolate_namespace DiscourseLeague
 
@@ -59,7 +65,7 @@ module DiscourseLeague
 
               if group.save
                 PostCreator.create(
-                  Discourse.system_user,
+                  DiscourseLeague.contact_user,
                   target_usernames: user.username,
                   archetype: Archetype.private_message,
                   title: I18n.t('league.private_messages.subscription_canceled.title', {productName: level[0][:name]}),
@@ -104,7 +110,7 @@ module DiscourseLeague
 
               if group.save
                 PostCreator.create(
-                  Discourse.system_user,
+                  DiscourseLeague.contact_user,
                   target_usernames: user.username,
                   archetype: Archetype.private_message,
                   title: I18n.t('league.private_messages.subscription_charged_unsuccessfully.title', {productName: level[0][:name]}),
