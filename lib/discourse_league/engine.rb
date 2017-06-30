@@ -71,12 +71,7 @@ module DiscourseLeague
                   title: I18n.t('league.private_messages.subscription_canceled.title', {productName: level[0][:name]}),
                   raw: I18n.t('league.private_messages.subscription_canceled.message', {productName: level[0][:name]})
                 )
-                render json: PluginStore.get("discourse_league", "s:" + user_id.to_s) || []
-              else
-                return render_json_error(group)
               end
-            else
-              render_json_error(response.message)
             end
           end
         end
@@ -116,12 +111,7 @@ module DiscourseLeague
                   title: I18n.t('league.private_messages.subscription_charged_unsuccessfully.title', {productName: level[0][:name]}),
                   raw: I18n.t('league.private_messages.subscription_charged_unsuccessfully.message', {productName: level[0][:name]})
                 )
-                render json: PluginStore.get("discourse_league", "s:" + user_id.to_s) || []
-              else
-                return render_json_error(group)
               end
-            else
-              render_json_error(response.message)
             end
           end
         end
