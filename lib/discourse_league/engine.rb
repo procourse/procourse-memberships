@@ -60,7 +60,6 @@ module DiscourseLeague
               group = Group.find(level[0][:group].to_i)
               if group.users.include?(user)
                 group.remove(user)
-                GroupActionLogger.new(user, group).log_remove_user_from_group(user)
               end
 
               if group.save
@@ -100,7 +99,6 @@ module DiscourseLeague
               group = Group.find(level[0][:group].to_i)
               if group.users.include?(user)
                 group.remove(user)
-                GroupActionLogger.new(user, group).log_remove_user_from_group(user)
               end
 
               if group.save

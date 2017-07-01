@@ -43,7 +43,6 @@ module DiscourseLeague
         group = Group.find(level[0][:group].to_i)
         if group.users.include?(current_user)
           group.remove(current_user)
-          GroupActionLogger.new(current_user, group).log_remove_user_from_group(current_user)
         end
 
         if group.save
