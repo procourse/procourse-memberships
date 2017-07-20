@@ -29,6 +29,29 @@ module DiscourseLeague
           end
 
         end
+
+        class SubscriptionCanceled < Jobs::Base
+          def execute(args)
+            subscription = PluginStoreRow.where(plugin_name: "discourse_league")
+              .where("key LIKE 's:%'")
+              .where("value LIKE '%" + args[:id] + "%'")
+              .first
+            user_id = subscription.key[2..-1].to_i
+            byebug
+          end
+        end
+
+        class SubscriptionChargedUnsuccessfully < Jobs::Base
+          def execute(args)
+            subscriptions = PluginStoreRow.where(plugin_name: "discourse_league")
+              .where("key LIKE 's:%'")
+              .where("value LIKE '%" + args[:id] + "%'")
+              .first
+            user_id = subscription.key[2..-1].to_i
+            byebug
+          end
+        end
+
       end
 
     end

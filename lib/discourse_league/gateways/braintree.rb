@@ -129,6 +129,23 @@ module DiscourseLeague
         end
       end
 
+      def parse_webhook(request)
+        request = Braintree::WebhookTesting.sample_notification(
+          Braintree::WebhookNotification::Kind::SubscriptionChargedUnsuccessfully,
+          "2v8kc6"
+        )
+        notification = Braintree::WebhookNotification.parse(
+          request[:bt_signature],
+          request[:bt_payload]
+        )
+        
+        if notification.kind == "subscription_canceled"
+          Jobs.enqueue(:subscription_canceled, {id: notification.subscription.id})
+        elsif notification.kind == "subscription_charged_unsuccessfully"
+          Jobs.enqueue(:subscription_charged_unsuccessfully, {id: notification.subscription.id})
+        end
+      end
+
     end
   end
 end
