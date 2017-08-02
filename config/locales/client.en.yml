@@ -117,3 +117,6 @@ en:
       subscription_charged_unsuccessfully:
         title: "Subscription to %{productName} canceled"
         message: "It looks like your subscription to %{productName} was canceled as a result of a faulty card transaction. You're subscription is currently invalid. To resolve the issue, simply try signing up again or contact one of our site admins."
+      receipt:
+        title: "Receipt #%{transactionId}"
+        message: 'Thanks! You can see your receipt on the <a href="/my/billing">Billing tab of your profile</a>.'

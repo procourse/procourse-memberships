@@ -138,6 +138,29 @@ module DiscourseLeague
           Jobs.enqueue(:subscription_canceled, {id: notification.subscription.id})
         elsif notification.kind == "subscription_charged_unsuccessfully"
           Jobs.enqueue(:subscription_charged_unsuccessfully, {id: notification.subscription.id})
+        elsif notification.kind == "subscription_charged_successfully"
+          Jobs.enqueue(:subscription_charged_successfully, {
+            id: notification.subscription.id, 
+            options: {
+              paid_through: notification.subscription.billing_period_end_date, 
+              transaction_id: notification.subscription.transactions[0].id,
+              transaction_amount: notification.subscription.transactions[0].amount,
+              transaction_date: notification.subscription.transactions[0].created_at,
+              credit_card: {
+                name: notification.subscription.transactions[0].credit_card_details.cardholder_name,
+                last_4: notification.subscription.transactions[0].credit_card_details.last_4,
+                expiration: notification.subscription.transactions[0].credit_card_details.expiration_date,
+                brand: notification.subscription.transactions[0].credit_card_details.card_type,
+                image: notification.subscription.transactions[0].credit_card_details.image_url
+              },
+              paypal_details: {
+                email: notification.subscription.transactions[0].paypal_details.payer_email,
+                first_name: notification.subscription.transactions[0].paypal_details.payer_first_name,
+                last_name: notification.subscription.transactions[0].paypal_details.payer_last_name,
+                image: notification.subscription.transactions[0].paypal_details.image_url
+              }
+            }
+          })
         end
       end
 

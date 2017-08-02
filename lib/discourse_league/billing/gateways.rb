@@ -88,6 +88,16 @@ module DiscourseLeague
         transactions.push(new_transaction)
 
         PluginStore.set("discourse_league", "t:" + @options[:user_id].to_s, transactions)
+
+        username = User.find(@options[:user_id]).username
+
+        PostCreator.create(
+          DiscourseLeague.contact_user,
+          target_usernames: username,
+          archetype: Archetype.private_message,
+          title: I18n.t('league.private_messages.receipt.title', {transactionId: transaction_id}),
+          raw: I18n.t('league.private_messages.receipt.message')
+        )
       end
 
       def unstore_subscription
