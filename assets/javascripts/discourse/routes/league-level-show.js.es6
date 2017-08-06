@@ -6,7 +6,13 @@ export default Discourse.Route.extend({
   },
 
   setupController(controller, model) {
-    var group = $.grep(this.currentUser.groups, function(group){ return group.id == parseInt(model[0].group); });
+    if (this.currentUser){
+      var group = $.grep(this.currentUser.groups, function(group){ return group.id == parseInt(model[0].group); });  
+    }
+    else{
+      var group = [];
+    }
+
     if (group.length > 0){
       var memberExists = true;
     }
@@ -22,17 +28,17 @@ export default Discourse.Route.extend({
     }
 
     if (!memberExists){
-        var showPayment = true;
-      }
-      else if (memberExists && memberSubscription){
-        var showPayment = true;
-      }
-      else if (memberExists && !memberSubscription){
-        var showPayment = false;
-      }
-      else{
-        var showPayment = false;
-      };
+      var showPayment = true;
+    }
+    else if (memberExists && memberSubscription){
+      var showPayment = true;
+    }
+    else if (memberExists && !memberSubscription){
+      var showPayment = false;
+    }
+    else{
+      var showPayment = false;
+    };
     controller.setProperties({ model, memberExists: memberExists, memberSubscription: memberSubscription, showPayment: showPayment });
   }
 });
