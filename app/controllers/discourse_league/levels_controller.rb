@@ -2,7 +2,10 @@ module DiscourseLeague
   class LevelsController < ApplicationController
 
     def show
-      DiscourseEvent.trigger(:league_level_page_visited, current_user.id, params[:id])
+      if current_user
+        DiscourseEvent.trigger(:league_level_page_visited, current_user.id, params[:id])
+      end
+      
       if params[:id]
         levels = PluginStore.get("discourse_league", "levels")
         level = levels.select{|level| level[:id] == params[:id].to_i}
