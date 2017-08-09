@@ -76,7 +76,6 @@ module DiscourseLeague
                 expiration: transaction.credit_card_details.expiration_date,
                 brand: transaction.credit_card_details.card_type
               }
-              league_gateway.store_transaction(transaction.id, transaction.amount, transaction.created_at, credit_card)
             end
             return {:response => subscription}
           else
