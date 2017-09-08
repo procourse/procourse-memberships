@@ -42,6 +42,9 @@ module DiscourseLeague
               .where("key LIKE 's:%'")
               .where("value LIKE '%" + args[:id] + "%'")
               .first
+            if subscription.nil?
+              return
+            end
             user_id = subscription.key[2..-1].to_i
 
             user = User.find(user_id)
@@ -81,6 +84,9 @@ module DiscourseLeague
               .where("key LIKE 's:%'")
               .where("value LIKE '%" + args[:id] + "%'")
               .first
+            if subscription.nil?
+              return
+            end
             user_id = subscription.key[2..-1].to_i
 
             user = User.find(user_id)
@@ -120,6 +126,9 @@ module DiscourseLeague
               .where("key LIKE 's:%'")
               .where("value LIKE '%" + args[:id] + "%'")
               .first
+            if subscription.nil?
+              return
+            end
             user_id = subscription.key[2..-1].to_i
 
             league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => user_id, :product_id => JSON.parse(subscription.value)[0]["product_id"])
