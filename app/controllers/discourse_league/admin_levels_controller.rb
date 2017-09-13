@@ -4,6 +4,17 @@ module DiscourseLeague
 
     def create
       levels = PluginStore.get("discourse_league", "levels")
+
+      if SiteSetting.league_go_live
+        if !SiteSetting.league_licensed_bronze && !SiteSetting.league_licensed_silver && !SiteSetting.league_licensed_gold
+          return render_json_dump({"errors": I18n.t('league.admin.not_licensed_message')})
+        elsif SiteSetting.league_licensed_bronze && levels.count >= 1
+          return render_json_dump({"errors": I18n.t('league.admin.not_licensed_message')})
+        elsif SiteSetting.league_licensed_silver && levels.count >= 3
+          return render_json_dump({"errors": I18n.t('league.admin.not_licensed_message')})
+        end            
+      end
+
       id = SecureRandom.random_number(10000)
 
       if levels.nil?

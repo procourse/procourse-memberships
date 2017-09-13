@@ -98,6 +98,10 @@ LeagueLevel.reopenClass({
       dataType: 'json',
       contentType: 'application/json'
     }).then(function(result) {
+      if (result.errors){
+        bootbox.alert(result.errors);
+        self.set('saving', false);
+      }
       if(result.id) { self.set('id', result.id); }
       self.set('savingStatus', I18n.t('saved'));
       self.set('saving', false);

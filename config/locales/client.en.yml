@@ -101,6 +101,8 @@ en:
         USD: "$"
 
   league:
+    admin:
+      not_licensed_message: "Your Discourse League license key doesn't allow you to create this membership level."
     errors:
       first_name: "First Name"
       last_name: "Last Name"
