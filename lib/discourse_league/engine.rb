@@ -23,14 +23,32 @@ module DiscourseLeague
           every 1.days
 
           def execute(args)
-            validate_url = "https://discourseleague.com/licenses/validate?id=39973&key=" + SiteSetting.league_license_key
+            validate_url = "https://discourseleague.com/licenses/validate?id=23264&key=" + SiteSetting.league_license_key
             request = Net::HTTP.get(URI.parse(validate_url))
             result = JSON.parse(request)
             
             if result["enabled"]
-              SiteSetting.league_licensed = true
+              if result["license_id"] == 23264
+                SiteSetting.league_licensed_bronze = true
+                SiteSetting.league_licensed_silver = false
+                SiteSetting.league_licensed_gold = false
+              elsif result["license_id"] == 35080
+                SiteSetting.league_licensed_bronze = false
+                SiteSetting.league_licensed_silver = true
+                SiteSetting.league_licensed_gold = false
+              elsif result["license_id"] == 39973
+                SiteSetting.league_licensed_bronze = false
+                SiteSetting.league_licensed_silver = false
+                SiteSetting.league_licensed_gold = true
+              else
+                SiteSetting.league_licensed_bronze = false
+                SiteSetting.league_licensed_silver = false
+                SiteSetting.league_licensed_gold = false
+              end
             else
-              SiteSetting.league_licensed = false
+              SiteSetting.league_licensed_bronze = false
+              SiteSetting.league_licensed_silver = false
+              SiteSetting.league_licensed_gold = false
             end
           end
 
@@ -193,9 +211,11 @@ DiscourseEvent.on(:site_setting_saved) do |site_setting|
   if site_setting.name.to_s == "league_license_key" && site_setting.value_changed?
 
     if site_setting.value.empty?
-      SiteSetting.league_licensed = false
+      SiteSetting.league_licensed_bronze = false
+      SiteSetting.league_licensed_silver = false
+      SiteSetting.league_licensed_gold = false
     else
-      validate_url = "https://discourseleague.com/licenses/validate?id=39973&key=" + site_setting.value
+      validate_url = "https://discourseleague.com/licenses/validate?id=23264&key=" + site_setting.value
       request = Net::HTTP.get(URI.parse(validate_url))
       result = JSON.parse(request)
       
@@ -206,9 +226,27 @@ DiscourseEvent.on(:site_setting_saved) do |site_setting|
       end
 
       if result["enabled"]
-        SiteSetting.league_licensed = true
+        if result["license_id"] == 23264
+          SiteSetting.league_licensed_bronze = true
+          SiteSetting.league_licensed_silver = false
+          SiteSetting.league_licensed_gold = false
+        elsif result["license_id"] ==35080
+          SiteSetting.league_licensed_bronze = false
+          SiteSetting.league_licensed_silver = true
+          SiteSetting.league_licensed_gold = false
+        elsif result["license_id"] == 39973
+          SiteSetting.league_licensed_bronze = false
+          SiteSetting.league_licensed_silver = false
+          SiteSetting.league_licensed_gold = true
+        else
+          SiteSetting.league_licensed_bronze = false
+          SiteSetting.league_licensed_silver = false
+          SiteSetting.league_licensed_gold = false
+        end
       else
-        SiteSetting.league_licensed = false
+        SiteSetting.league_licensed_bronze = false
+        SiteSetting.league_licensed_silver = false
+        SiteSetting.league_licensed_gold = false
       end
     end
 

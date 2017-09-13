@@ -5,7 +5,15 @@ plugins:
   league_license_key:
     default: ""
     client: false
-  league_licensed:
+  league_licensed_bronze:
+    default: false
+    client: true
+    hidden: true
+  league_licensed_silver:
+    default: false
+    client: true
+    hidden: true
+  league_licensed_gold:
     default: false
     client: true
     hidden: true
