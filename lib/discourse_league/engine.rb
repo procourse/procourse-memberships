@@ -23,7 +23,7 @@ module DiscourseLeague
           every 1.days
 
           def execute(args)
-            validate_url = "https://discourseleague.com/licenses/validate?id=23264&key=" + SiteSetting.league_license_key
+            validate_url = "https://discourseleague.com/licenses/validate?base_url=" + Discourse.base_url + "id=23264&key=" + SiteSetting.league_license_key
             request = Net::HTTP.get(URI.parse(validate_url))
             result = JSON.parse(request)
             
@@ -215,7 +215,7 @@ DiscourseEvent.on(:site_setting_saved) do |site_setting|
       SiteSetting.league_licensed_silver = false
       SiteSetting.league_licensed_gold = false
     else
-      validate_url = "https://discourseleague.com/licenses/validate?id=23264&key=" + site_setting.value
+      validate_url = "https://discourseleague.com/licenses/validate?base_url=" + Discourse.base_url + "id=23264&key=" + site_setting.value
       request = Net::HTTP.get(URI.parse(validate_url))
       result = JSON.parse(request)
       
