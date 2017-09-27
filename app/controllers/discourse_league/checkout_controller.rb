@@ -5,7 +5,7 @@ module DiscourseLeague
   class CheckoutController < ApplicationController
 
     def index
-      render nothing: true
+      render body: nil
     end
 
     def submit_payment

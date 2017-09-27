@@ -25,7 +25,7 @@ module DiscourseLeague
       if !level.empty? && level[0][:enabled]
         render_json_dump(level)
       else
-        render nothing: true, status: 404
+        render body: nil, status: 404
       end
 
     end
