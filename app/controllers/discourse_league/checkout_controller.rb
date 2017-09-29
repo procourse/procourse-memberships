@@ -122,7 +122,7 @@ module DiscourseLeague
     def braintree_token
       braintree = DiscourseLeague::Gateways::BraintreeGateway.new()
       token = braintree.client_token
-      render text: token
+      render plain: token
     end
 
     private
