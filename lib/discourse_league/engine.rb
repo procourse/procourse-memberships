@@ -70,7 +70,7 @@ module DiscourseLeague
             gateway = DiscourseLeague::Billing::Gateways.new.gateway
             response = gateway.unsubscribe(JSON.parse(subscription.value)[0]["subscription_id"])
 
-            if response.success?
+            if response.success? && user
 
               league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => user_id, :product_id => JSON.parse(subscription.value)[0]["product_id"])
               league_gateway.unstore_subscription
@@ -112,7 +112,7 @@ module DiscourseLeague
             gateway = DiscourseLeague::Billing::Gateways.new.gateway
             response = gateway.unsubscribe(JSON.parse(subscription.value)[0]["subscription_id"])
 
-            if response.success?
+            if response.success? && user
 
               league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => user_id, :product_id => JSON.parse(subscription.value)[0]["product_id"])
               league_gateway.unstore_subscription
