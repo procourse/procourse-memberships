@@ -45,6 +45,7 @@ LeagueLevel.reopenClass({
             name: leagueLevel.name,
             enabled: leagueLevel.enabled,
             group: leagueLevel.group,
+            trust_level: leagueLevel.trust_level,
             initial_payment: leagueLevel.initial_payment,
             recurring: leagueLevel.recurring,
             recurring_payment: leagueLevel.recurring_payment,
@@ -80,6 +81,7 @@ LeagueLevel.reopenClass({
       var cooked = new Handlebars.SafeString(new PrettyText(getOpts()).cook(object.description_raw));
       data.name = self.name;
       data.group = self.group;
+      data.trust_level = self.trust_level || 0;
       data.initial_payment = self.initial_payment;
       data.recurring = self.recurring;
       data.recurring_payment = self.recurring_payment;

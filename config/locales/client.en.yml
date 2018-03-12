@@ -18,6 +18,8 @@ en:
           new_name: "New League Level"
           id: "ID"
           membership_page: "Public membership page"
+          trust_level: "Users must be at or below this Trust Level in order to purchase this membership."
+          trust_level_option: "(trust level)"
           initial_payment: "Initial Payment"
           initial_payment_description: "The amount charged at the beginning of membership."
           recurring: "Recurring"
@@ -42,6 +44,7 @@ en:
     league:
       title: "Discourse League"
       member_exists: "Looks like you're already a member of the group that this membership level grants. If you feel this is a mistake, please contact one of our admins."
+      member_insufficient_tl: "You currently do not have a sufficient trust level to purchase this membership. If you feel this is a mistake, please contact one of our admins."
       dashboard_default: "TODO"
       billing: "Billing"
       subscriptions_title: "Subscriptions"

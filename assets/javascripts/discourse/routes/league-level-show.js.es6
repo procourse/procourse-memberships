@@ -39,6 +39,15 @@ export default Discourse.Route.extend({
     else{
       var showPayment = false;
     };
-    controller.setProperties({ model, memberExists: memberExists, memberSubscription: memberSubscription, showPayment: showPayment });
+
+    if (model[0].user_insufficient_tl){
+      var memberInsufficientTL = true;
+      var showPayment = false;
+    }
+    else{
+      var memberInsufficientTL = false;
+    }
+
+    controller.setProperties({ model, memberExists: memberExists, memberSubscription: memberSubscription, memberInsufficientTL: memberInsufficientTL, showPayment: showPayment });
   }
 });

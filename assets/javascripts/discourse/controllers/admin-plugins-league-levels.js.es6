@@ -9,6 +9,7 @@ export default Ember.Controller.extend({
     var a = [];
     a.set('name', I18n.t('admin.league.levels.new_name'));
     a.set('enabled', false);
+    a.set('trust_level', 0);
     return a;
   }.property('model.@each.id'),
 
@@ -21,6 +22,7 @@ export default Ember.Controller.extend({
     if (!this.get('originals') || !this.get('selectedItem')) {this.set('disableSave', true); return;}
     if (((this.get('originals').name == this.get('selectedItem').name) &&
       (this.get('originals').group == this.get('selectedItem').group) &&
+      (this.get('originals').trust_level == this.get('selectedItem').trust_level) &&
       (this.get('originals').initial_payment == this.get('selectedItem').initial_payment) &&
       (this.get('originals').recurring == this.get('selectedItem').recurring) &&
       (this.get('originals').recurring_payment == this.get('selectedItem').recurring_payment) &&
@@ -41,7 +43,7 @@ export default Ember.Controller.extend({
       else{
         this.set('disableSave', false);
       }
-  }.observes('selectedItem.name', 'selectedItem.group', 'selectedItem.initial_payment', 
+  }.observes('selectedItem.name', 'selectedItem.group', 'selectedItem.trust_level', 'selectedItem.initial_payment', 
     'selectedItem.recurring', 'selectedItem.recurring_payment', 'selectedItem.recurring_payment_period', 
     'selectedItem.trial', 'selectedItem.trial_period', 'selectedItem.description_raw', 'selectedItem.description_cooked', 
     'selectedItem.welcome_message', 'selectedItem.braintree_plan_id'),
@@ -51,6 +53,7 @@ export default Ember.Controller.extend({
     if (gateway == "Braintree"){
       this.set('braintree', true);
     };
+    this.set('trustLevels', Discourse.Site.current().get('trustLevels'));
   }.on('init'),
 
   actions: {
@@ -62,6 +65,7 @@ export default Ember.Controller.extend({
           name: leagueLevel.name,
           enabled: leagueLevel.enabled,
           group: leagueLevel.group,
+          trust_level: leagueLevel.trust_level,
           initial_payment: leagueLevel.initial_payment,
           recurring: leagueLevel.recurring,
           recurring_payment: leagueLevel.recurring_payment,

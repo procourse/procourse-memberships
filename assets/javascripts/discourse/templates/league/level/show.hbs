@@ -7,6 +7,9 @@
       <div>{{i18n 'league.member_exists'}}</div>
     {{/if}} {{!-- memberSubscription --}}
   {{/if}} {{!-- memberExists --}}
+  {{#if memberInsufficientTL}}
+    <div>{{i18n 'league.member_insufficient_tl'}}</div>
+  {{/if}} {{!-- memberInsufficientTL --}}
   {{#if showPayment}}
     {{checkout-progress state=checkoutState}}
     <div class="billing-section">

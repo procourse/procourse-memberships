@@ -30,6 +30,7 @@ module DiscourseLeague
         name: params[:league_level][:name],
         enabled: params[:league_level][:enabled],
         group: params[:league_level][:group],
+        trust_level: params[:league_level][:trust_level] || 0,
         initial_payment: params[:league_level][:initial_payment],
         recurring: params[:league_level][:recurring],
         recurring_payment: params[:league_level][:recurring_payment],
@@ -58,6 +59,7 @@ module DiscourseLeague
         league_level[0][:name] = params[:league_level][:name] if !params[:league_level][:name].nil?
         league_level[0][:enabled] = params[:league_level][:enabled] if !params[:league_level][:enabled].nil?
         league_level[0][:group] = params[:league_level][:group] if !params[:league_level][:group].nil?
+        league_level[0][:trust_level] = params[:league_level][:trust_level] if !params[:league_level][:trust_level].nil?
         league_level[0][:initial_payment] = params[:league_level][:initial_payment] if !params[:league_level][:initial_payment].nil?
         league_level[0][:recurring] = params[:league_level][:recurring] if !params[:league_level][:recurring].nil?
         league_level[0][:recurring_payment] = params[:league_level][:recurring_payment] if !params[:league_level][:recurring_payment].nil?
@@ -93,7 +95,7 @@ module DiscourseLeague
     private
 
     def league_level_params
-      params.permit(league_level: [:enabled, :name, :group, :initial_payment, :recurring, :recurring_payment, :recurring_payment_period, :trial, :trial_payment, :description_raw, :description_cooked, :welcome_message])[:league_level]
+      params.permit(league_level: [:enabled, :name, :group, :trust_level, :initial_payment, :recurring, :recurring_payment, :recurring_payment_period, :trial, :trial_payment, :description_raw, :description_cooked, :welcome_message])[:league_level]
     end
   end
 end
