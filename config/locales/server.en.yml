@@ -1,7 +1,6 @@
 en:
   site_settings:
     league_enabled: 'Enable the League. All settings are found here at the bottom of the settings category list. All League group and page setup is found at <a href="/admin/plugins/league">/admin/plugins/league</a>.'
-    league_license_key: 'Enter your license key to unlock premium features. Get a license key at <a href="https://discourseleague.com/premium">discourseleague.com/premium</a>.'
     league_go_live: "The League runs in TEST mode until you enable this option. Turn this on when you're ready to go live."
     league_contact_user: "The user account that will be used to send private messages."
     league_currency: "The currency to use for payments. BE CERTAIN THAT GATEWAY DEFAULTS MATCH THIS CURRENCY."

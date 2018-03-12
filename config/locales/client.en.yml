@@ -39,7 +39,6 @@ en:
           delete_confirm: "Delete this League level?"
           no_levels: "Add some levels for your users."
           no_level_selected: "No level selected."
-        unlicensed_message: 'This section requires a valid license key. <a href="https://discourseleague.com/premium" target="_blank">Get your key here</a> and enter it into the <a href="/admin/site_settings/category/all_results?filter=league%20license%20key">plugin settings here</a>.'
     league:
       title: "Discourse League"
       member_exists: "Looks like you're already a member of the group that this membership level grants. If you feel this is a mistake, please contact one of our admins."
@@ -101,8 +100,6 @@ en:
         USD: "$"
 
   league:
-    admin:
-      not_licensed_message: "Your Discourse League license key doesn't allow you to create this membership level."
     errors:
       first_name: "First Name"
       last_name: "Last Name"
