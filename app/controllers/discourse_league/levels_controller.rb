@@ -17,7 +17,10 @@ module DiscourseLeague
             level[0][:user_subscribed] = true
             level[0][:subscription_id] = user_subscription[0][:id]
           end
-          if current_user.trust_level >= level[0]["trust_level"]
+          
+          trust_level = level[0]["trust_level"] || 0
+
+          if current_user.trust_level >= trust_level
             level[0][:user_insufficient_tl] = false
           else
             level[0][:user_insufficient_tl] = true
