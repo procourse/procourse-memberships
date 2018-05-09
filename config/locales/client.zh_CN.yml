@@ -1,0 +1,124 @@
+zh_CN:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_league: "Discourse League"
+  js:
+    admin:
+      league:
+        titles:
+          dashboard: "仪表盘"
+          levels: "级别"
+          gateways: "网关"
+          messages: "信息"
+          advanced: "高级"
+          extras: "附加"
+        levels:
+          new_name: "新的级别"
+          id: "ID"
+          membership_page: "会员页面"
+          trust_level: "用户必须处于或低于该信任级别才能购买此会员资格。"
+          trust_level_option: "(trust level)"
+          initial_payment: "首次付款"
+          initial_payment_description: "在会员开始时收取的金额。"
+          recurring: "定期付款"
+          recurring_description: "这个级别是否有定期付款？"
+          recurring_payment: "定期付款"
+          recurring_payment_description: "每个周期的金额。"
+          recurring_payment_period: "定期付款期限"
+          recurring_payment_period_description: "收费适用的周期。"
+          trial: "试用"
+          trial_description: "你想提供这个级别的试用吗？"
+          trial_period: "试用期"
+          trial_period_description: "试用期限以天为单位。"
+          braintree_plan_id: "Braintree Plan ID"
+          braintree_plan_id_description: 'Braintree 通过在控制面板中创建的“计划”来处理循环订阅，您需要在那里创建计划并在此输入 Plan ID。'
+          description_raw: "级别描述"
+          description_raw_description: "这是显示在结算表单上方的内容，务必澄清客户付款的细节。"
+          welcome_message: "欢迎消息"
+          welcome_message_description: "欢迎信息是私信内容，将在注册后发送给您的客户。"
+          delete_confirm: "删除这个级别？"
+          no_levels: "请为您的用户添加一些级别。"
+          no_level_selected: "没有选择级别。"
+    league:
+      title: "Discourse League"
+      member_exists: "看来你已经是这个分组的会员了。如果您觉得这是一个错误，请联系我们的管理员。"
+      member_insufficient_tl: "您目前没有足够的信任级别来购买此会员资格。 如果您认为这是一个错误，请联系我们的管理员。"
+      dashboard_default: "TODO"
+      billing: "帐单"
+      subscriptions_title: "订阅"
+      transactions_title: "交易"
+      product: "产品"
+      paid_through_date: "支付通过"
+      subscription_id: "ID"
+      created: "创建"
+      actions: "操作"
+      update_billing: "更新帐单"
+      cancel_subscription: "取消"
+      cancel_confirmation: "您确定要取消订阅吗？"
+      transaction_id: "ID"
+      transaction_amount: "数量"
+      transaction_date: "日期"
+      view_receipt: "查看收据"
+      checkout:
+        title: "会员结账"
+        billing_address: "帐单地址"
+        payment_details: "付款详情"
+        credit_card: "信用卡"
+        paypal: "PayPal"
+        paypal_email: "PayPal Email"
+        paypal_name: "名称"
+        sign_up_message: "在您注册之前，您需要登录。您的第一步是登录或创建一个新帐户。"
+        name: "名称"
+        first_name: "名字"
+        last_name: "姓氏"
+        address_1: "地址 1"
+        address_2: "地址 2"
+        city: "城市"
+        state: "州"
+        postal_code: "邮政编码"
+        country: "国家"
+        phone: "电话"
+        card_number: "卡号"
+        expiration_date: "到期日期"
+        cvv: "CVV"
+        continue: "继续"
+        edit_payment: "编辑"
+        submit_checkout: "付款"
+        verify_paypal: "您将被转到PayPal完成付款。 一旦您使用PayPal提交表格，您的付款将被收集。"
+        progress:
+          log_in: "登录"
+          billing_payment: "帐单和付款"
+          verify: "验证"
+          completed: "已完成"
+        completed_message: '<h2>成功！</h2><p>感谢您的注册。 您应该很快收到一份私信，详细了解您的会员资格。</p>'
+        update_billing:
+          description: '请在下方输入结算明细，以更改付款方式。'
+          completed_message: '<h2>成功！</h2><p>您的付款方式已更新。</p>'
+      currency:
+        CAD: "$"
+        EUR: "€"
+        GBP: "£"
+        USD: "$"
+
+  league:
+    errors:
+      first_name: "名字"
+      last_name: "姓氏"
+      card_number: "卡号"
+      expiration_month: "到期月份"
+      expiration_year: "到期年份"
+      cvv: "CVV"
+    private_messages:
+      sign_up_success:
+        title: "欢迎来到 %{productName}!"
+      subscription_canceled:
+        title: "%{productName} 订阅已取消"
+        message: "看起来您订阅的 %{productName} 已被取消。我们很遗憾看到你走了。如果你改变了主意，你可以再次注册。"
+      subscription_charged_unsuccessfully:
+        title: "%{productName} 订阅已取消"
+        message: "看起来您订阅的 %{productName} 因错误的卡片交易而被取消。您的订阅目前是无效的。要解决这个问题，只需尝试再次注册或联系我们的站点管理员。"
+      receipt:
+        title: "收据 #%{transactionId}"
+        message: '谢谢！你可以看到你的收据 <a href="/my/billing">您的个人资料的结算标签</a>.'
