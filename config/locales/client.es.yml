@@ -1,0 +1,124 @@
+en:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_league: "Discourse Liga"
+  js:
+    admin:
+      league:
+        titles:
+          dashboard: "Tablero"
+          levels: "Niveles"
+          gateways: "Enlaces"
+          messages: "Mensajes"
+          advanced: "Avanzado"
+          extras: "Extras"
+        levels:
+          new_name: "Nuevo nivel de liga"
+          id: "ID"
+          membership_page: "Página de afiliación pública"
+          trust_level: "Los usuarios deben estar en el mismo nivel o inferior a este Nivel de Confianza para comprar esta afiliación."
+          trust_level_option: "(nivel de confianza)"
+          initial_payment: "Pago Inicial"
+          initial_payment_description: "La cantidad pagada al principio de la afiliación."
+          recurring: "Recurrente"
+          recurring_description: "¿Este nivel tiene pagos recurrentes?"
+          recurring_payment: "Pago Recurrente"
+          recurring_payment_description: "La cantidad pagada por cada período."
+          recurring_payment_period: "Período de Pago Recurrente"
+          recurring_payment_period_description: "El ciclo donde el pago aplica."
+          trial: "Tiempo de Prueba"
+          trial_description: "¿Quieres ofrecer un tiempo de prueba para este nivel?"
+          trial_period: "Período de Tiempo de Espera"
+          trial_period_description: "El largo del tiempo de espera expresado en días."
+          braintree_plan_id: "Identificación del Plan de Braintree"
+          braintree_plan_id_description: 'Braintree maneja las subscripciones recurrentes mediante "planes" creados dentro del panel de control. Necesitas crear un plan allí e ingresar el PlanID aquí.'
+          description_raw: "Descripción del Nivel"
+          description_raw_description: "Este va a ser el contenido desplegado arriba del formulario de compra. Asegurate de aclarar los detalles del pago a tus clientes."
+          welcome_message: "Mensaje de Bienvenida"
+          welcome_message_description: "El Mensaje de Bienvenida es el cuerpo del Mensaje Privado que va a ser enviado a tus clientes luego de crear una cuenta."
+          delete_confirm: "¿Borrar este Nivel de Liga?"
+          no_levels: "Agrega algunos niveles para tus usuarios."
+          no_level_selected: "No hay ningún nivel seleccionado."
+    league:
+      title: "Discourse Liga"
+      member_exists: "Parece que ya sos miembro del grupo que nivel de afiliación habilita. Si sientes que esto puede ser un error, por favor contacta algún administrador."
+      member_insufficient_tl: "Actualmente no tienes el nivel de confianza suficiente para comprar esta afiliación. Si sientes que esto puede ser un error, por favor contacta algún administrador."
+      dashboard_default: "Para Hacer"
+      billing: "Facturación"
+      subscriptions_title: "Subscripciones"
+      transactions_title: "Transacciones"
+      product: "Producto"
+      paid_through_date: "Pagado Para"
+      subscription_id: "ID"
+      created: "Creado"
+      actions: "Acciones"
+      update_billing: "Actualizar Facturación"
+      cancel_subscription: "Cancelar"
+      cancel_confirmation: "¿Estás seguro que deseas cancelar tu subscripción?"
+      transaction_id: "ID"
+      transaction_amount: "Cantidad"
+      transaction_date: "Fecha"
+      view_receipt: "Ver Recibo"
+      checkout:
+        title: "Compra de Afiliación"
+        billing_address: "Dirección de Facturación"
+        payment_details: "Detalles de Pago"
+        credit_card: "Tarjeta de Crédito"
+        paypal: "PayPal"
+        paypal_email: "Correo Electrónico de PayPal"
+        paypal_name: "Nombre"
+        sign_up_message: "Antes de registrar tu cuenta, necesitas haber iniciaco sesión. Tu primer paso es tanto iniciar sesión o crear una nueva cuenta."
+        name: "Nombre"
+        first_name: "Primer Nombre"
+        last_name: "Apellido"
+        address_1: "Dirección 1"
+        address_2: "Dirección 2"
+        city: "Ciudad"
+        state: "Estado"
+        postal_code: "Código Postal"
+        country: "País"
+        phone: "Teléfono"
+        card_number: "Número de Tarjeta"
+        expiration_date: "Fecha de Expiración"
+        cvv: "CVV"
+        continue: "Continuar"
+        edit_payment: "Editar"
+        submit_checkout: "Pagar"
+        verify_paypal: "Vas a ser direccionado a PayPal para completar el pago. Una vez que envíes el formulario con PayPal tu pago va a ser recibido."
+        progress:
+          log_in: "Iniciar Sesión"
+          billing_payment: "Facuración & Pagos"
+          verify: "Verificar"
+          completed: "Completado"
+        completed_message: '<h2>¡Éxito!</h2><p>Gracias por registrarte. Deberías recivir un MP en breve con más datossobre tu afiliación.</p>'
+        update_billing:
+          description: 'Ingresa los detalles de facturación a continuación para realizar cambios a tu método de pago.'
+          completed_message: '<h2>¡Éxito!</h2><p>Tu método de pago ha sido actualizado.</p>'
+      currency:
+        CAD: "$"
+        EUR: "€"
+        GBP: "£"
+        USD: "$"
+
+  league:
+    errors:
+      first_name: "Primer Nombre"
+      last_name: "Apellido"
+      card_number: "Número de Tarjeta"
+      expiration_month: "Mes de Expiración"
+      expiration_year: "Año de Expiración"
+      cvv: "CVV"
+    private_messages:
+      sign_up_success:
+        title: "Bienvenido a %{productName}!"
+      subscription_canceled:
+        title: "Subscripción a %{productName} cancelada"
+        message: "Parece que tu subscripción a %{productName} fue cancelada. Sentimos verte ir. Si cambias de idea siempre puedes registrarte de nuevo."
+      subscription_charged_unsuccessfully:
+        title: "Subscripción a %{productName} cancelada"
+        message: "Parece que tu subscripción a %{productName} fue cancelada debido a una transacción fallida de tu tarjeta. Tu subscripción es actualmente inválida. Para resolver este problema, simplemente intenta registrarte nuevamente o contacta uno de nuestros administradores del sitio."
+      receipt:
+        title: "Recibo #%{transactionId}"
+        message: '¡Gracias! Puedes ver tu recibo en <a href="/my/billing">la solapa de Facturación de tu perfil</a>.'
