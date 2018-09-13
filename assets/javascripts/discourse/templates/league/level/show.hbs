@@ -26,6 +26,8 @@
       <div class="wrapper">
         {{#if showBraintree}}
           {{billing-braintree leagueLevel=model showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=memberSubscription}}
+        {{else if showPaypalGW}}
+            {{billing-paypal leagueLevel=model showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=memberSubscription}}
         {{else}}
           {{#if showBilling}}
             {{billing update=memberSubscription}}
