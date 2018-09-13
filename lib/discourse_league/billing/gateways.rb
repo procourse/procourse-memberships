@@ -42,7 +42,7 @@ module DiscourseLeague
         tokens = PluginStore.get("discourse_league", "tokens:" + @options[:user_id].to_s) || []
 
         token = tokens.select{|token| token[:product_id] == @options[:product_id]}
-        
+
         time = Time.now
 
         unless token.empty?
@@ -114,3 +114,4 @@ module DiscourseLeague
 end
 
 require_relative "../gateways/braintree"
+require_relative "../gateways/paypal_api"

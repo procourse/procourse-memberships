@@ -1,5 +1,6 @@
 require_relative '../../../lib/discourse_league/billing/gateways'
 require_relative '../../../lib/discourse_league/gateways/braintree'
+require_relative '../../../lib/discourse_league/gateways/paypal_api'
 
 module DiscourseLeague
   class CheckoutController < ApplicationController
@@ -123,6 +124,24 @@ module DiscourseLeague
       braintree = DiscourseLeague::Gateways::BraintreeGateway.new()
       token = braintree.client_token
       render plain: token
+    end
+
+    def create_paypal_payment
+        gateway = DiscourseLeague::Billing::Gateways.new.gateway
+
+        products = PluginStore.get("discourse_league", "levels") || []
+        product = products.select{|level| level[:id] == params[:level_id]}
+
+        response = gateway.purchase(current_user.id, product[0])
+
+        if response.success?
+          render_json_dump(response)
+        else
+          render_json_error(response.message)
+        end
+    end
+
+    def execute_paypal_payment
     end
 
     private
