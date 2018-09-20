@@ -5,8 +5,19 @@ import loadScript from 'discourse/lib/load-script';
 import Payment from '../models/payment';
 
 export default Ember.Component.extend({
+    @computed('showBilling')
+    showSubmitButton(showBilling){
+        return showBilling === true ? 'hidden' : undefined;
+    },
+
+    @computed('showBilling')
+    showContinueButton(showBilling){
+        return showBilling === true ? true : false;
+    },
+    
     @on('init')
     paypal() {
+        var self = this;
         loadScript("https://www.paypalobjects.com/api/checkout.js", { scriptTag: true }).then(() => {
             paypal.Button.render({
 
@@ -21,9 +32,10 @@ export default Ember.Component.extend({
                         // When you have a Payment ID, you need to call the `resolve` method, e.g `resolve(data.paymentID)`
                         // Or, if you have an error from your server side, you need to call `reject`, e.g. `reject(err)`
 
-                        $.post('/league/checkout/paypal-api/create')
-                            .done(function(data) { resolve(data.paymentID); })
-                            .fail(function(err)  { reject(err); });
+                        let result = Payment.submitNonce(1, null, false);
+                        result.then(response => {
+                            console.log(response);
+                        })
                     });
                 },
 
@@ -39,7 +51,7 @@ export default Ember.Component.extend({
                     // At this point, the payment has been authorized, and you will need to call your back-end to complete the
                     // payment. Your back-end should invoke the PayPal Payment Execute api to finalize the transaction.
 
-                    jQuery.post('/league/checkout/paypal-api/execute', { paymentID: data.paymentID, payerID: data.payerID })
+                    jQuery.post('/league/checkout/paypal/execute', { paymentID: data.paymentID, payerID: data.payerID })
                         .done(function(data) { /* Go to a success page */ })
                         .fail(function(err)  { /* Go to an error page  */  });
                 },

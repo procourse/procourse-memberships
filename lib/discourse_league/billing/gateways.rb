@@ -18,10 +18,6 @@ module DiscourseLeague
         DiscourseLeague::Gateways.const_get((SiteSetting.league_gateway + "Gateway").to_sym).new
       end
 
-      def paypal
-        DiscourseLeague::Gateways::PayPalGateway.new
-      end
-
       def store_token
         tokens = PluginStore.get("discourse_league", "tokens:" + @options[:user_id].to_s) || []
         time = Time.now
@@ -114,4 +110,4 @@ module DiscourseLeague
 end
 
 require_relative "../gateways/braintree"
-require_relative "../gateways/paypal_api"
+require_relative "../gateways/paypal"

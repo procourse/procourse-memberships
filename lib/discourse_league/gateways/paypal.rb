@@ -1,20 +1,23 @@
 require_relative '../billing/gateways'
 require "paypal-sdk-rest"
-include PayPal::SDK::REST
-include PayPal::SDK::Core::Logging
 
 module DiscourseLeague
   class Gateways
-    class PayPalAPIGateway
+    class PayPalGateway
 
       def initialize(options = {})
-          environment = PayPal::SandboxEnvironment.new(SiteSetting.league_paypal_api_id, SiteSetting.league_paypal_api_secret)
-          client = PayPal::PayPalHttpClient.new(environment)
+          # environment = PayPal::SandboxEnvironment.new(SiteSetting.league_paypal_api_id, SiteSetting.league_paypal_api_secret)
+          # client = PayPal::PayPalHttpClient.new(environment)
+          PayPal::SDK::REST.set_config(
+            :mode => "sandbox", # "sandbox" or "live"
+            :client_id => SiteSetting.league_paypal_api_id,
+            :client_secret => SiteSetting.league_paypal_api_secret)
       end
 
       def purchase(user_id, product, options = {})
         customer = self.customer(user_id)
-        payment = {
+
+        payment = PayPal::SDK::REST::Payment.new({
           :intent => "sale",
           :transactions => [
             :amount => {
@@ -29,22 +32,14 @@ module DiscourseLeague
           :payer => {
             :payment_method => "paypal"
           }
-        }
-
-
-        request = PaymentCreateRequest.new
-        request.request_body(payment);
-
-        begin
-          response = client.execute(request)
-          puts response.status_code
-          puts response.result
-          return {:success => true, :response => response}
-        rescue BraintreeHttp::HttpError => e
-          puts e.status_code
-          puts e.result
-          return {:message => e}
+        })
+        # request.request_body(payment);
+        if payment.create
+          response = payment.id     # Payment Id
+        else
+          response = payment.error  # Error Hash
         end
+        return {:message => response}
 
       end
 

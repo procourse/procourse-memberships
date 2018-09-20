@@ -1,6 +1,6 @@
 require_relative '../../../lib/discourse_league/billing/gateways'
 require_relative '../../../lib/discourse_league/gateways/braintree'
-require_relative '../../../lib/discourse_league/gateways/paypal_api'
+require_relative '../../../lib/discourse_league/gateways/paypal'
 
 module DiscourseLeague
   class CheckoutController < ApplicationController
