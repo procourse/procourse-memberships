@@ -21,7 +21,7 @@ export default Ember.Component.extend({
                         // When you have a Payment ID, you need to call the `resolve` method, e.g `resolve(data.paymentID)`
                         // Or, if you have an error from your server side, you need to call `reject`, e.g. `reject(err)`
 
-                        $.post('/checkout/paypal_api/create')
+                        $.post('/league/checkout/paypal-api/create')
                             .done(function(data) { resolve(data.paymentID); })
                             .fail(function(err)  { reject(err); });
                     });
@@ -39,7 +39,7 @@ export default Ember.Component.extend({
                     // At this point, the payment has been authorized, and you will need to call your back-end to complete the
                     // payment. Your back-end should invoke the PayPal Payment Execute api to finalize the transaction.
 
-                    jQuery.post('/checkout/paypal_api/execute', { paymentID: data.paymentID, payerID: data.payerID })
+                    jQuery.post('/league/checkout/paypal-api/execute', { paymentID: data.paymentID, payerID: data.payerID })
                         .done(function(data) { /* Go to a success page */ })
                         .fail(function(err)  { /* Go to an error page  */  });
                 },

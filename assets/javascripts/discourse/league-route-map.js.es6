@@ -7,7 +7,7 @@ export default function(){
       });
 		});
     this.route('checkout', {path: '/checkout'}, function(){
-	  this.route('paypal_api', { path: '/paypal_api'}, function() {
+	  this.route('paypal-api', { path: '/paypal-api'}, function() {
 		  this.route('create', {path: '/create'});
           this.route('execute', {path: '/execute'})
 	  });

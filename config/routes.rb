@@ -5,9 +5,9 @@ DiscourseLeague::Engine.routes.draw do
 
   get "/l/:id" => "levels#show", constraints: LeagueConstraint.new
   post '/checkout/submit-payment' => "checkout#submit_payment", constraints: LeagueConstraint.new
-  get '/checkout/paypal_api' => "checkout#index", constraints: LeagueConstraint.new
-  post '/checkout/paypal_api/create' => "checkout#create_paypal_payment", constraints: LeagueConstraint.new
-  post '/checkout/paypal_api/execute' => "checkout#execute_paypal_payment", constraints: LeagueConstraint.new
+  get '/checkout/paypal-api' => "checkout#index", constraints: LeagueConstraint.new
+  post '/checkout/paypal-api/create' => "checkout#create_paypal_payment", constraints: LeagueConstraint.new
+  post '/checkout/paypal-api/execute' => "checkout#execute_paypal_payment", constraints: LeagueConstraint.new
   get '/checkout/braintree-token' => "checkout#braintree_token", constraints: LeagueConstraint.new
   post '/checkout/verify' => "checkout#submit_verify", constraints: LeagueConstraint.new
   get '/checkout/paypal' => "checkout#index", constraints: LeagueConstraint.new
