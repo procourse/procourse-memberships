@@ -46,7 +46,7 @@ export default Ember.Component.extend({
                         // When you have a Payment ID, you need to call the `resolve` method, e.g `resolve(data.paymentID)`
                         // Or, if you have an error from your server side, you need to call `reject`, e.g. `reject(err)`
                         // debugger;
-                        let result = Payment.submitNonce(9725, null, false);
+                        let result = Payment.submitNonce(self.get('leagueLevel')[0].id, null, false);
                         result.then(response => {
                             let id = response.table.id;
                             if (!id) reject(response);
@@ -66,7 +66,7 @@ export default Ember.Component.extend({
 
                     // At this point, the payment has been authorized, and you will need to call your back-end to complete the
                     // payment. Your back-end should invoke the PayPal Payment Execute api to finalize the transaction.
-                    let result = Payment.submitNonce(9725, { paymentID: data.paymentID, payerID: data.payerID }, "execute");
+                    let result = Payment.submitNonce(self.get('leagueLevel')[0].id, { paymentID: data.paymentID, payerID: data.payerID }, "execute");
                     result.then(response => {
                         self._paymentExecuted();
                     })
