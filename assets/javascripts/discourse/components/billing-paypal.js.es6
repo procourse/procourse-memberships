@@ -55,7 +55,15 @@ export default Ember.Component.extend({
                                 resolve(id);
                             }
 
-                        })
+                        }).catch(e => {
+                            if (e.jqXHR.responseJSON && e.jqXHR.responseJSON.errors) {
+                              bootbox.alert(I18n.t("generic_error_with_reason", {error: e.jqXHR.responseJSON.errors.join('. ')}));
+                            } else {
+                              bootbox.alert(I18n.t("generic_error"));
+                            }
+                            self.set('checkoutState', 'billing-payment');
+                            self.set('showBilling', true);
+                          });
                     });
                 },
 
@@ -69,13 +77,21 @@ export default Ember.Component.extend({
                     let result = Payment.submitNonce(self.get('leagueLevel')[0].id, { paymentID: data.paymentID, payerID: data.payerID }, "execute");
                     result.then(response => {
                         self._paymentExecuted();
-                    })
+                    }).catch(e => {
+                        if (e.jqXHR.responseJSON && e.jqXHR.responseJSON.errors) {
+                          bootbox.alert(I18n.t("generic_error_with_reason", {error: e.jqXHR.responseJSON.errors.join('. ')}));
+                        } else {
+                          bootbox.alert(I18n.t("generic_error"));
+                        }
+                        self.set('checkoutState', 'billing-payment');
+                        self.set('showBilling', true);
+                      });
                 },
 
                 // Pass a function to be called when the customer cancels the payment
 
                 onCancel: function(data) {
-
+                    bootbox.alert("The transaction has been cancelled.");
                 }
 
             }, '#paypal-button-container');
