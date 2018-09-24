@@ -14,13 +14,27 @@ export default Ember.Component.extend({
     showContinueButton(showBilling){
         return showBilling === true ? true : false;
     },
-    
+    @computed('showPaypal')
+    showPaypalButton(showPaypal){
+        return showPaypal === true ? true : false;
+    },
+
     @on('init')
     paypal() {
         var self = this;
+
         loadScript("https://www.paypalobjects.com/api/checkout.js", { scriptTag: true }).then(() => {
             paypal.Button.render({
+                env: 'sandbox',
+                // env: function() {
+                //     debugger;
+                //     const liveSetting = Discourse.SiteSettings.discourse_league.league_go_live;
+                //     if (liveSetting) return 'production';
+                //     else return 'sandbox';
+                // }, // sandbox | production
 
+                // Show the buyer a 'Pay Now' button in the checkout flow
+                commit: true,
                 // Set up a getter to create a Payment ID using the payments api, on your server side:
 
                 payment: function() {
@@ -31,10 +45,16 @@ export default Ember.Component.extend({
 
                         // When you have a Payment ID, you need to call the `resolve` method, e.g `resolve(data.paymentID)`
                         // Or, if you have an error from your server side, you need to call `reject`, e.g. `reject(err)`
-
-                        let result = Payment.submitNonce(1, null, false);
+                        // debugger;
+                        let result = Payment.submitNonce(9725, null, false);
                         result.then(response => {
-                            console.log(response);
+                            let id = response.table.id;
+                            if (!id) reject(response);
+                            else {
+                                id = id.replace(/"/g,"");
+                                resolve(id);
+                            }
+
                         })
                     });
                 },
@@ -44,28 +64,27 @@ export default Ember.Component.extend({
 
                 onAuthorize: function(data) {
 
-                    console.log('The payment was authorized!');
-                    console.log('Payment ID = ',   data.paymentID);
-                    console.log('PayerID = ', data.payerID);
-
                     // At this point, the payment has been authorized, and you will need to call your back-end to complete the
                     // payment. Your back-end should invoke the PayPal Payment Execute api to finalize the transaction.
-
-                    jQuery.post('/league/checkout/paypal/execute', { paymentID: data.paymentID, payerID: data.payerID })
-                        .done(function(data) { /* Go to a success page */ })
-                        .fail(function(err)  { /* Go to an error page  */  });
+                    let result = Payment.submitNonce(9725, { paymentID: data.paymentID, payerID: data.payerID }, "execute");
+                    result.then(response => {
+                        self._paymentExecuted();
+                    })
                 },
 
                 // Pass a function to be called when the customer cancels the payment
 
                 onCancel: function(data) {
 
-                    console.log('The payment was cancelled!');
-                    console.log('Payment ID = ', data.paymentID);
                 }
 
             }, '#paypal-button-container');
         });
 
+    },
+    _paymentExecuted(){
+        this.set("showCompleted", true);
+        this.set('checkoutState', 'completed');
+        this.set('showPaypal', false);
     }
 });

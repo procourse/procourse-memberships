@@ -24,20 +24,18 @@
     {{#if currentUser }}
     <div class="user-table">
       <div class="wrapper">
-        {{#if showBraintree}}
-          {{billing-braintree leagueLevel=model showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=memberSubscription}}
-        {{else}}
-          {{#if showPaypal}}
-            {{billing-paypal leagueLevel=model showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=memberSubscription}}
-          {{/if}}
-          {{#if showBilling}}
-            {{billing update=memberSubscription}}
-          {{/if}}
-
-          {{#if showVerify}}
-            {{verify}}
-          {{/if}}
-        {{/if}} {{!-- showBraintree --}}
+          {{#if showBraintree}}
+            {{billing-braintree leagueLevel=model showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=memberSubscription}}
+          {{else if showPaypal}}
+            {{billing-paypal leagueLevel=model showPaypal=showPaypal showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=memberSubscription}}
+          {{else}}
+              {{#if showBilling}}
+                {{billing update=memberSubscription}}
+              {{/if}}
+              {{#if showVerify}}
+                {{verify}}
+              {{/if}}
+          {{/if}} <!-- showBraintree -->
 
         {{#if showCompleted}}
           <div>{{{i18n 'league.checkout.completed_message'}}}</div>

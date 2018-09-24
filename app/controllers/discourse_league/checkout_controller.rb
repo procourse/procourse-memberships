@@ -14,8 +14,32 @@ module DiscourseLeague
 
       products = PluginStore.get("discourse_league", "levels") || []
       product = products.select{|level| level[:id] == params[:level_id]}
+      if params[:update] == "execute" #upon execution of PayPal payment
+          response = gateway.execute(current_user.id, product[0], params[:nonce]["paymentID"], params[:nonce]["payerID"])
+          if response[:response].success == true
+            group = Group.find(product[0][:group].to_i)
+            if !group.users.include?(current_user)
+              group.add(current_user)
+            else
+              return render_json_error I18n.t('groups.errors.member_already_exist', username: current_user.username)
+            end
 
-      if params[:update]
+            if group.save
+              PostCreator.create(
+                DiscourseLeague.contact_user,
+                target_usernames: current_user.username,
+                archetype: Archetype.private_message,
+                title: I18n.t('league.private_messages.sign_up_success.title', {productName: product[0][:name]}),
+                raw: product[0][:welcome_message]
+              )
+              render json: success_json
+            else
+              return render_json_error(group)
+            end
+          else
+            render_json_error(response.message)
+          end
+      elsif params[:update] == true
         subscriptions = PluginStore.get("discourse_league", "s:" + current_user.id.to_s) || []
         user_subscription = subscriptions.select{|subscription| subscription[:product_id].to_i == params[:level_id].to_i} || []
 
@@ -36,8 +60,11 @@ module DiscourseLeague
         else
           response = gateway.purchase(current_user.id, product[0], params[:nonce])
         end
-
-        if response[:response].success?
+        if response[:response].success == true
+          if response[:response].payer.payment_method == "paypal" # stops group processing before PayPal payment gets authorized
+              render json: response[:response]
+              return
+          end
           group = Group.find(product[0][:group].to_i)
           if !group.users.include?(current_user)
             group.add(current_user)
@@ -124,24 +151,6 @@ module DiscourseLeague
       braintree = DiscourseLeague::Gateways::BraintreeGateway.new()
       token = braintree.client_token
       render plain: token
-    end
-
-    def create_paypal_payment
-        gateway = DiscourseLeague::Billing::Gateways.new.gateway
-
-        products = PluginStore.get("discourse_league", "levels") || []
-        product = products.select{|level| level[:id] == params[:level_id]}
-
-        response = gateway.purchase(current_user.id, product[0])
-
-        if response.success?
-          render_json_dump(response)
-        else
-          render_json_error(response.message)
-        end
-    end
-
-    def execute_paypal_payment
     end
 
     private
