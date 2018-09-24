@@ -18,20 +18,20 @@ export default Ember.Component.extend({
     showPaypalButton(showPaypal){
         return showPaypal === true ? true : false;
     },
-
+    @on('init')
+    goLiveSetting(){
+        debugger;
+        const liveSetting = Discourse.SiteSettings.league_go_live;
+        if (liveSetting) this.set('goLiveSetting', 'production');
+        else this.set('goLiveSetting', 'sandbox');
+    },
     @on('init')
     paypal() {
         var self = this;
 
         loadScript("https://www.paypalobjects.com/api/checkout.js", { scriptTag: true }).then(() => {
             paypal.Button.render({
-                env: 'sandbox',
-                // env: function() {
-                //     debugger;
-                //     const liveSetting = Discourse.SiteSettings.discourse_league.league_go_live;
-                //     if (liveSetting) return 'production';
-                //     else return 'sandbox';
-                // }, // sandbox | production
+                env: self.get('goLiveSetting'),
 
                 // Show the buyer a 'Pay Now' button in the checkout flow
                 commit: true,
