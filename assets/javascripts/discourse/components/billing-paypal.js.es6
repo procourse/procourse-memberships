@@ -20,7 +20,6 @@ export default Ember.Component.extend({
     },
     @on('init')
     goLiveSetting(){
-        debugger;
         const liveSetting = Discourse.SiteSettings.league_go_live;
         if (liveSetting) this.set('goLiveSetting', 'production');
         else this.set('goLiveSetting', 'sandbox');
