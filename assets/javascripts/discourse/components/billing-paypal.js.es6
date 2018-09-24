@@ -90,7 +90,7 @@ export default Ember.Component.extend({
                 // Pass a function to be called when the customer cancels the payment
 
                 onCancel: function(data) {
-                    bootbox.alert("The transaction has been cancelled.");
+                    bootbox.alert(I18n.t("league.checkout.cancel_message"));
                 }
 
             }, '#paypal-button-container');
