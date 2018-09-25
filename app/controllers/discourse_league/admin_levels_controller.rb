@@ -104,12 +104,45 @@ module DiscourseLeague
     end
 
     def update
+      if SiteSetting.league_go_live?
+          environment = PayPal::LiveEnvironment.new(SiteSetting.league_paypal_api_id, SiteSetting.league_paypal_api_secret)
+      else
+          environment = PayPal::SandboxEnvironment.new(SiteSetting.league_paypal_api_id, SiteSetting.league_paypal_api_secret)
+      end
+      client = PayPal::PayPalHttpClient.new(environment)
       levels = PluginStore.get("discourse_league", "levels")
       league_level = levels.select{|level| level[:id] == params[:league_level][:id]}
 
       if league_level.empty?
         render_json_error(league_level)
       else
+          if (league_level[0][:enabled] == false || league_level[0][:enabled] == nil) && params[:league_level][:enabled] == true
+              if league_level[0][:paypal_plan_status] == "CREATED"
+                  activation = PlanUpdateRequest.new(league_level[0][:paypal_plan_id])
+                  activation.request_body([{
+                    "op": "replace",
+                    "path": "/",
+                    "value":
+                    {
+                      "state": "ACTIVE"
+                    }
+                  }])
+
+                  begin
+                      activation_response = client.execute(activation)
+                      puts activation_response.status_code
+                      puts activation_response.result
+                      league_level[0][:paypal_plan_status] = "ACTIVE"
+                  rescue BraintreeHttp::HttpError => e
+                      puts e.status_code
+                      puts e.result
+                      render_json_error(e)
+                      return
+                  end
+              end
+
+          end
+
         league_level[0][:name] = params[:league_level][:name] if !params[:league_level][:name].nil?
         league_level[0][:enabled] = params[:league_level][:enabled] if !params[:league_level][:enabled].nil?
         league_level[0][:group] = params[:league_level][:group] if !params[:league_level][:group].nil?
@@ -151,5 +184,6 @@ module DiscourseLeague
     def league_level_params
       params.permit(league_level: [:enabled, :name, :group, :trust_level, :initial_payment, :recurring, :recurring_payment, :recurring_payment_period, :trial, :trial_payment, :description_raw, :description_cooked, :welcome_message])[:league_level]
     end
+
   end
 end
