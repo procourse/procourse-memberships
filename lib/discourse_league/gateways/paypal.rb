@@ -7,7 +7,11 @@ module DiscourseLeague
     class PayPalGateway
 
       def initialize(options = {})
-          @@environment = PayPal::SandboxEnvironment.new(SiteSetting.league_paypal_api_id, SiteSetting.league_paypal_api_secret)
+          if SiteSetting.league_go_live?
+              @@environment = PayPal::LiveEnvironment.new(SiteSetting.league_paypal_api_id, SiteSetting.league_paypal_api_secret)
+          else
+              @@environment = PayPal::SandboxEnvironment.new(SiteSetting.league_paypal_api_id, SiteSetting.league_paypal_api_secret)
+          end
           @@client = PayPal::PayPalHttpClient.new(@@environment)
 
       end
