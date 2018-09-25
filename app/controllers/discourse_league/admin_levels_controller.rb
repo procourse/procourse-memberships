@@ -1,3 +1,6 @@
+require "paypal-sdk-rest"
+include PayPal::V1::BillingPlans
+
 module DiscourseLeague
   class AdminLevelsController < Admin::AdminController
     requires_plugin 'discourse-league'
@@ -32,6 +35,67 @@ module DiscourseLeague
         welcome_message: params[:league_level][:welcome_message],
         braintree_plan_id: params[:league_level][:braintree_plan_id]
       }
+      if SiteSetting.league_gateway == "PayPal" && new_level[:recurring] == true
+          if SiteSetting.league_go_live?
+              environment = PayPal::LiveEnvironment.new(SiteSetting.league_paypal_api_id, SiteSetting.league_paypal_api_secret)
+          else
+              environment = PayPal::SandboxEnvironment.new(SiteSetting.league_paypal_api_id, SiteSetting.league_paypal_api_secret)
+          end
+
+          request = PlanCreateRequest.new
+          body = {
+              :name => new_level[:name],
+              :description => new_level[:description_raw],
+              :type => "infinite",
+              :payment_definitions => [{
+                :name => "Regular payment definition",
+                :type => "REGULAR",
+                :frequency => "MONTH",
+                :frequency_interval => new_level[:recurring_payment_period],
+                :amount =>
+                {
+                  :value => new_level[:recurring_payment],
+                  :currency => SiteSetting.league_currency
+                },
+                :cycles => "0"
+              }],
+              :merchant_preferences => {
+                :return_url => "#{Discourse.base_url}/league/l/#{new_level[:id]}",
+                :cancel_url => "#{Discourse.base_url}",
+                :auto_bill_amount => "YES",
+                :initial_fail_amount_action => "CONTINUE",
+                :max_fail_attempts => "0"
+              }
+          }
+          if new_level[:trial] == true
+              trial = {
+                :name => "Trial",
+                :type => "trial",
+                :frequency => "day",
+                :frequency_interval => "1",
+                :amount =>
+                {
+                  :value => "0.00",
+                  :currency => SiteSetting.league_currency
+                },
+                :cycles => new_level[:trial_period]
+              }
+              body[:payment_definitions] << trial
+          end
+          request.request_body(body)
+          begin
+            response = client.execute(request)
+            puts response.status_code
+            puts response.result
+            new_level.merge!({ :paypal_plan_id => response[:result][:id], :paypal_plan_status => response[:result][:state] })
+            binding.pry
+          rescue BraintreeHttp::HttpError => e
+            puts e.status_code
+            puts e.result
+            render_json_error(e)
+            return
+          end
+      end
 
       levels.push(new_level)
       PluginStore.set("discourse_league", "levels", levels)
