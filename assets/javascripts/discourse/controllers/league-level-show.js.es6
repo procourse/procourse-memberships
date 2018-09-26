@@ -49,6 +49,9 @@ export default Ember.Controller.extend({
       if (Discourse.SiteSettings.league_gateway == "Braintree"){
         this.set('showBraintree', true);
       }
+      else if (Discourse.SiteSettings.league_gateway == "PayPal"){
+          this.set('showPaypal', true);
+      }
       else{
         this.set('showPaypal', false);
         if (Discourse.SiteSettings.league_include_paypal){

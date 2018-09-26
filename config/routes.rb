@@ -7,9 +7,6 @@ DiscourseLeague::Engine.routes.draw do
   post '/checkout/submit-payment' => "checkout#submit_payment", constraints: LeagueConstraint.new
   get '/checkout/braintree-token' => "checkout#braintree_token", constraints: LeagueConstraint.new
   post '/checkout/verify' => "checkout#submit_verify", constraints: LeagueConstraint.new
-  get '/checkout/paypal' => "checkout#index", constraints: LeagueConstraint.new
-  post '/checkout/paypal' => "checkout#submit_paypal", constraints: LeagueConstraint.new
-  post '/checkout/paypal/success' => "checkout#paypal_success", constraints: LeagueConstraint.new
   get '/subscriptions/:user_id' => "subscriptions#all", constraints: LeagueConstraint.new
   get '/subscriptions/:user_id/:id' => "subscriptions#show", constraints: LeagueConstraint.new
   put '/subscriptions/:id' => "subscriptions#update", constraints: LeagueConstraint.new
