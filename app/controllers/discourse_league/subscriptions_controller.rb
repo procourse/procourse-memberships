@@ -32,7 +32,9 @@ module DiscourseLeague
       gateway = DiscourseLeague::Billing::Gateways.new.gateway
       response = gateway.unsubscribe(subscription[0][:subscription_id])
 
-      if response.success?
+      binding.pry
+
+      if response.success == true || response.success?
 
         league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => current_user.id, :product_id => subscription[0][:product_id])
         league_gateway.unstore_subscription

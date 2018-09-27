@@ -81,7 +81,12 @@ module DiscourseLeague
                 subscription = response.result
                 billing_begin_date = Date.parse response.result.start_date
                 billing_interval = subscription.plan.payment_definitions[0].frequency_interval.to_i #assumed months
-                trial_interval = subscription.plan.payment_definitions[1].frequency_interval.to_i #assumed days
+                binding.pry
+                if subscription.plan.payment_definitions[1]
+                    trial_interval = subscription.plan.payment_definitions[1].frequency_interval.to_i  #assumed days
+                else
+                    trial_interval = 0
+                end
                 billing_end_date = billing_begin_date + trial_interval.days + billing_interval.months
                 league_gateway.store_subscription(subscription.id, billing_end_date)
             else
@@ -131,7 +136,10 @@ module DiscourseLeague
 
       def unsubscribe(subscription_id, options = {})
           request = AgreementCancelRequest.new(subscription_id)
-
+          request.request_body({
+              :note => "Canceling the subscription."
+          })
+          binding.pry
           begin
             response = @@client.execute(request)
             puts response
