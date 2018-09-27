@@ -60,7 +60,7 @@ module DiscourseLeague
         else
           response = gateway.purchase(current_user.id, product[0], params[:nonce])
         end
-        if response[:response].success == true
+        if response[:response].success == true || response[:response].success?
           if response[:response].payer.payment_method == "paypal" # stops group processing before PayPal payment gets authorized
               render json: response[:response]
               return
