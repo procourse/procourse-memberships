@@ -86,6 +86,7 @@ en:
         continue: "Continue"
         edit_payment: "Edit"
         submit_checkout: "Pay"
+        subscribe: "Subscribe"
         verify_paypal: "You will be directed to PayPal to complete payment. Once you submit the form with PayPal your payment will be collected."
         progress:
           log_in: "Log In"

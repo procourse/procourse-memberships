@@ -41,6 +41,7 @@ module DiscourseLeague
           else
               environment = PayPal::SandboxEnvironment.new(SiteSetting.league_paypal_api_id, SiteSetting.league_paypal_api_secret)
           end
+          client = PayPal::PayPalHttpClient.new(environment)
 
           request = PlanCreateRequest.new
           body = {
@@ -88,7 +89,6 @@ module DiscourseLeague
             puts response.status_code
             puts response.result
             new_level.merge!({ :paypal_plan_id => response[:result][:id], :paypal_plan_status => response[:result][:state] })
-            binding.pry
           rescue BraintreeHttp::HttpError => e
             puts e.status_code
             puts e.result

@@ -15,7 +15,12 @@ module DiscourseLeague
       products = PluginStore.get("discourse_league", "levels") || []
       product = products.select{|level| level[:id] == params[:level_id]}
       if params[:update] == "execute" #upon execution of PayPal payment
-          response = gateway.execute(current_user.id, product[0], params[:nonce]["paymentID"], params[:nonce]["payerID"])
+          if params[:nonce]["paymentID"]
+              response = gateway.execute(current_user.id, product[0], params[:nonce]["paymentID"], params[:nonce]["payerID"])
+          else
+              response = gateway.execute(current_user.id, product[0], params[:nonce], nil)
+          end
+
           if response[:response].success == true
             group = Group.find(product[0][:group].to_i)
             if !group.users.include?(current_user)
@@ -23,7 +28,7 @@ module DiscourseLeague
             else
               return render_json_error I18n.t('groups.errors.member_already_exist', username: current_user.username)
             end
-
+            binding.pry
             if group.save
               PostCreator.create(
                 DiscourseLeague.contact_user,
@@ -60,8 +65,11 @@ module DiscourseLeague
         else
           response = gateway.purchase(current_user.id, product[0], params[:nonce])
         end
+        # binding.pry
         if response[:response].success == true
-          if response[:response].payer.payment_method == "paypal" # stops group processing before PayPal payment gets authorized
+            binding.pry
+          if response[:response]["gateway"] == "paypal"   # stops group processing before PayPal payment gets authorized
+              puts response[:response]
               render json: response[:response]
               return
           end
