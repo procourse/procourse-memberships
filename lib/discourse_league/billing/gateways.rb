@@ -14,6 +14,10 @@ module DiscourseLeague
         !SiteSetting.league_go_live
       end
 
+      def self.name
+        SiteSetting.league_gateway.gsub(/\s+/, "").downcase
+      end
+
       def gateway
         DiscourseLeague::Gateways.const_get((SiteSetting.league_gateway + "Gateway").to_sym).new
       end
