@@ -136,15 +136,13 @@ module DiscourseLeague
 
       def unsubscribe(subscription_id, options = {})
           request = AgreementCancelRequest.new(subscription_id)
-          request.request_body({
-              :note => "Canceling the subscription."
-          })
-          binding.pry
+          request.request_body(:note => "Canceling the subscription.")
+
           begin
             response = @@client.execute(request)
             puts response
-            response.success = true
-            return response
+            response.result = {"success": true}
+            return {:response => response.result}
           rescue BraintreeHttp::HttpError => e
             puts e.status_code
             puts e.result

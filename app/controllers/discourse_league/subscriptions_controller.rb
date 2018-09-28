@@ -32,9 +32,14 @@ module DiscourseLeague
       gateway = DiscourseLeague::Billing::Gateways.new.gateway
       response = gateway.unsubscribe(subscription[0][:subscription_id])
 
-      binding.pry
+     
+      if DiscourseLeague::Billing::Gateways.name == "paypal"
+        success = response[:response][:success] == true
+      else
+        success = response[:response].success?
+      end
 
-      if response.success == true || response.success?
+      if success
 
         league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => current_user.id, :product_id => subscription[0][:product_id])
         league_gateway.unstore_subscription

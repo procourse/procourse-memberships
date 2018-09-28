@@ -28,7 +28,7 @@ module DiscourseLeague
             else
               return render_json_error I18n.t('groups.errors.member_already_exist', username: current_user.username)
             end
-            # binding.pry
+            
             if group.save
               PostCreator.create(
                 DiscourseLeague.contact_user,
@@ -65,10 +65,10 @@ module DiscourseLeague
         else
           response = gateway.purchase(current_user.id, product[0], params[:nonce])
         end
-        
+       
         if DiscourseLeague::Billing::Gateways.name == "paypal"
           success = response[:response].success == true
-          if response[:response].payer && response[:response].payer.payment_method == "paypal" # stops group processing before PayPal payment gets authorized
+          if (response[:response].payer && response[:response].payer.payment_method == "paypal") || response[:response].gateway == "paypal" # stops group processing before PayPal payment gets authorized
               render json: response[:response]
               return
           end
