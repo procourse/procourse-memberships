@@ -81,7 +81,7 @@ module DiscourseLeague
                 subscription = response.result
                 billing_begin_date = Date.parse response.result.start_date
                 billing_interval = subscription.plan.payment_definitions[0].frequency_interval.to_i #assumed months
-                binding.pry
+                
                 if subscription.plan.payment_definitions[1]
                     trial_interval = subscription.plan.payment_definitions[1].frequency_interval.to_i  #assumed days
                 else
@@ -116,7 +116,7 @@ module DiscourseLeague
                   :id => product[:paypal_plan_id]
               }
           )
-          # binding.pry
+          
           begin
             response = @@client.execute(request)
             puts response.status_code
@@ -124,7 +124,7 @@ module DiscourseLeague
 
             response["result"]["success"] = true
             response["result"]["gateway"] = "paypal"
-            # binding.pry
+            
             response.result
             return {:response => response.result}
           rescue BraintreeHttp::HttpError => e
