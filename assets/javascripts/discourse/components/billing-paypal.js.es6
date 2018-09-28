@@ -150,6 +150,7 @@ export default Ember.Component.extend({
                 let result = Payment.submitNonce(this.get('leagueLevel')[0].id, null, false);
                 result.then(response => {
                     this.set("paypalLoading", false);
+                    bootbox.alert("Please wait while you're redirected to Paypal.");
                     document.location = response.table.links[0].table.href;
 
                 }).catch(e => {
