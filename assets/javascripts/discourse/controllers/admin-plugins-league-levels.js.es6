@@ -18,7 +18,13 @@ export default Ember.Controller.extend({
     this.set('selectedItem', null);
   },
 
+  paypalSubscriptionActive: function() {
+    if (this.get("selectedItem.paypal_plan_status") === "ACTIVE") return true;
+    else return false;
+  }.property(),
+
   changed: function(){
+    console.log(this);
     if (!this.get('originals') || !this.get('selectedItem')) {this.set('disableSave', true); return;}
     if (((this.get('originals').name == this.get('selectedItem').name) &&
       (this.get('originals').group == this.get('selectedItem').group) &&
@@ -35,6 +41,7 @@ export default Ember.Controller.extend({
       (this.get('originals').trial_period == this.get('selectedItem').trial_period)) ||
       (!this.get('selectedItem').group) ||
       (!this.get('selectedItem').name) ||
+      (this.get('selectedItem.paypal_plan_status') === "ACTIVE") ||
       ((this.get('selectedItem').initial_payment == 0) && (this.get('selectedItem').recurring == false))
       ) {
         this.set('disableSave', true); 

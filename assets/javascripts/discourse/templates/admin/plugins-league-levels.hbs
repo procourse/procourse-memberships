@@ -33,6 +33,11 @@
           <button {{action "destroy"}} class='btn btn-danger'><i class="fa fa-trash-o"></i> {{i18n 'admin.customize.delete'}}</button>
           <span class="saving {{unless selectedItem.savingStatus 'hidden'}}">{{selectedItem.savingStatus}}</span>
         </div>
+        {{#if paypalSubscriptionActive}}
+          <div class="notification-message">
+            {{i18n 'admin.league.levels.paypal_active_message'}}
+          </div>
+        {{/if}}
         </div>
         <br>
         <form class="form-horizontal">

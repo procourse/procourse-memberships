@@ -55,7 +55,8 @@ LeagueLevel.reopenClass({
             description_raw: leagueLevel.description_raw,
             description_cooked: leagueLevel.description_cooked,
             welcome_message: leagueLevel.welcome_message,
-            braintree_plan_id: leagueLevel.braintree_plan_id
+            braintree_plan_id: leagueLevel.braintree_plan_id,
+            paypal_plan_status: leagueLevel.paypal_plan_status
           }));
         });
       };

@@ -41,6 +41,7 @@ en:
           delete_confirm: "Delete this League level?"
           no_levels: "Add some levels for your users."
           no_level_selected: "No level selected."
+          paypal_active_message: "Active PayPal billing plans cannot be modified."
     league:
       title: "Discourse League"
       member_exists: "Looks like you're already a member of the group that this membership level grants. If you feel this is a mistake, please contact one of our admins."
