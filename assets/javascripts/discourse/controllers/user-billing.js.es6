@@ -22,7 +22,16 @@ export default Ember.Controller.extend({
     },
 
     updateBilling: function(subscription){
-      window.location.href = "/league/l/" + subscription.product.id;
+      if (Discourse.SiteSettings.league_gateway === "PayPal") {
+        const liveSetting = Discourse.SiteSettings.league_go_live;
+        let paypal_url = "";
+        if (liveSetting) { paypal_url = "www.paypal.com"; }
+        else { paypal_url = "www.sandbox.paypal.com"; }
+        window.location.href = `https://${paypal_url}/cgi-bin/webscr?cmd=_profile-recurring-payments&encrypted_profile_id=${subscription.subscription_id}&return_to=txn_details`
+      }
+      else {
+        window.location.href = "/league/l/" + subscription.product.id;
+      }
     }
   }
 })
