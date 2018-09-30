@@ -168,7 +168,6 @@ module DiscourseLeague
     private
 
       def validate_card
-        byebug
         @credit_card = DiscourseLeague::Billing::CreditCard.new(
           :number => params[:card_number],
           :month => params[:expiration_month],
