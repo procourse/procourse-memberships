@@ -37,8 +37,7 @@ export default Ember.Component.extend({
         let pathArray = window.location.pathname.split('/');
         level.findById(pathArray[3]).then((result) => {
             this.set('paypalLoading', false);
-
-            if (result.recurring) {
+            if (result[0].recurring) {
                 this.set('subscriptionProduct', true);
             }
             else {
