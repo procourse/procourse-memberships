@@ -3,6 +3,7 @@ import { observes, on } from 'ember-addons/ember-computed-decorators';
 import { ajax } from 'discourse/lib/ajax';
 import loadScript from 'discourse/lib/load-script';
 import Payment from '../models/payment';
+import level from '../models/level';
 
 const { computed: { alias }, observer } = Ember;
 
@@ -10,6 +11,7 @@ export default Ember.Component.extend({
     classNameBindings: ['showFormClass', 'showLoadingSpinner'],
     routing: Ember.inject.service('-routing'),
     params: alias('routing.router.currentState.routerJsState.fullQueryParams'),
+    subscriptionProduct: false,
     @computed('showBilling')
     showSubmitButton(showBilling){
         return showBilling === true ? 'hidden' : undefined;
@@ -26,6 +28,27 @@ export default Ember.Component.extend({
     @computed('paypalLoading')
     showLoading(paypalLoading){
       return paypalLoading;
+    },
+    init(){
+        this._super();
+        this.set('paypalLoading', true);
+        // this.set('subscriptionProduct', false);
+
+        let pathArray = window.location.pathname.split('/');
+        level.findById(pathArray[3]).then((result) => {
+            this.set('paypalLoading', false);
+
+            if (result.recurring) {
+                this.set('subscriptionProduct', true);
+            }
+            else {
+                this.set('subscriptionProduct', false);
+                this.paypal();
+            }
+            
+        });
+            
+  
     },
     @on('init')
     subscriptionProduct(){
@@ -59,7 +82,6 @@ export default Ember.Component.extend({
               });
         }
     },
-    @on('init')
     paypal() {
 
         var self = this;
