@@ -26,6 +26,7 @@ discourse_league:
     choices:
       - "Braintree"
       - "PayPal"
+      - "Stripe"
   league_include_paypal:
     default: false
     client: true
@@ -51,5 +52,11 @@ discourse_league:
     default: ""
     client: false
   league_paypal_api_secret:
+    default: ""
+    client: false
+  league_stripe_publishable_key: 
+    default: ""
+    client: false
+  league_stripe_secret_key: 
     default: ""
     client: false

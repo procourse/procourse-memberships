@@ -13,6 +13,7 @@ register_asset "stylesheets/discourse-league.scss"
 gem 'braintree', '2.50.0'
 gem 'braintreehttp', '0.5.0'
 gem 'paypal-sdk-rest', '2.0.0.rc2'
+gem 'stripe', '3.28.0'
 
 Discourse::Application.routes.append do
 	get '/admin/plugins/league' => 'admin/plugins#index', constraints: StaffConstraint.new

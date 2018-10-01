@@ -115,3 +115,4 @@ end
 
 require_relative "../gateways/braintree"
 require_relative "../gateways/paypal"
+require_relative "../gateways/stripe"
