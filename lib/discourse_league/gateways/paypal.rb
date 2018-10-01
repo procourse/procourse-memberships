@@ -107,7 +107,7 @@ module DiscourseLeague
           time = Time.now + 60*60*27
           request.request_body(
               :name => product[:name],
-              :description => product[:description_raw],
+              :description => product[:name],
               :start_date => time.iso8601,
               :payer => {
                   :payment_method => "paypal"

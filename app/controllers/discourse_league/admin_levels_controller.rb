@@ -46,7 +46,7 @@ module DiscourseLeague
           request = PlanCreateRequest.new
           body = {
               :name => new_level[:name],
-              :description => new_level[:description_raw],
+              :description => new_level[:name],
               :type => "infinite",
               :payment_definitions => [{
                 :name => "Regular payment definition",
