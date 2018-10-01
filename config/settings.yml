@@ -56,7 +56,7 @@ discourse_league:
     client: false
   league_stripe_publishable_key: 
     default: ""
-    client: false
+    client: true
   league_stripe_secret_key: 
     default: ""
     client: false
