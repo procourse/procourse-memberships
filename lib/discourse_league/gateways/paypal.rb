@@ -107,7 +107,7 @@ module DiscourseLeague
           time = Time.now + 60*60*27
           request.request_body(
               :name => product[:name],
-              :description => product[:description_raw],
+              :description => "Description: " + product[:name],
               :start_date => time.iso8601,
               :payer => {
                   :payment_method => "paypal"
@@ -160,6 +160,22 @@ module DiscourseLeague
       end
 
       def parse_webhook(request)
+        puts request
+        actual_signature = request.headers["Paypal-Transmission-Sig"]
+        auth_algo        = request.headers["Paypal-Auth-Algo"]
+        auth_algo.sub!(/withRSA/i, "")
+        cert_url         = request.headers["Paypal-Cert-Url"]
+        transmission_id  = request.headers["Paypal-Transmission-Id"]
+        timestamp        = request.headers["Paypal-Transmission-Time"]
+        webhook_id       = ENV['PAYPAL_WEBHOOK_ID'] #The webhook_id provided by PayPal when webhook is created on the PayPal developer site
+        event_body       = request.params["paypal"].to_json
+
+        if event_body.event_type == "PAYMENT.SALE.COMPLETED"
+            Jobs.enqueue(:subscription_charged_successfully)
+        elsif event_body.event_type == ""
+        elsif event_body.event_type == ""
+        end
+
 
       end
 

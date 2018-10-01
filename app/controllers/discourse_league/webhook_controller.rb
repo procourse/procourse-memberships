@@ -1,4 +1,6 @@
 require_relative '../../../lib/discourse_league/gateways/braintree'
+require_relative '../../../lib/discourse_league/gateways/paypal'
+
 
 module DiscourseLeague
   class WebhookController < ApplicationController
@@ -9,6 +11,11 @@ module DiscourseLeague
     def braintree
       braintree = DiscourseLeague::Gateways::BraintreeGateway.new()
       braintree.parse_webhook(request)
+      render body: nil
+    end
+    def paypal
+      paypal = DiscourseLeague::Gateways::BraintreeGateway.new()
+      paypal.parse_webhook(request)
       render body: nil
     end
 

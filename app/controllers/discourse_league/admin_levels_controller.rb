@@ -46,7 +46,7 @@ module DiscourseLeague
           request = PlanCreateRequest.new
           body = {
               :name => new_level[:name],
-              :description => new_level[:description_raw],
+              :description => new_level[:name],
               :type => "infinite",
               :payment_definitions => [{
                 :name => "Regular payment definition",
@@ -65,7 +65,7 @@ module DiscourseLeague
                 :cancel_url => "#{Discourse.base_url}",
                 :auto_bill_amount => "YES",
                 :initial_fail_amount_action => "CONTINUE",
-                :max_fail_attempts => "0"
+                :max_fail_attempts => "1"
               }
           }
           if new_level[:trial] == true

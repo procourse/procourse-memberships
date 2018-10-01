@@ -18,4 +18,5 @@ DiscourseLeague::Engine.routes.draw do
   resource :admin_gateways, path: '/admin/gateways', constraints: AdminConstraint.new
 
   post '/webhook/braintree' => "webhook#braintree", constraints: LeagueConstraint.new
+  post '/webhook/paypal' => "webhook#paypal", constraints: LeagueConstraint.new
 end
