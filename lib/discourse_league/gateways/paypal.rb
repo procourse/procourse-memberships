@@ -160,25 +160,53 @@ module DiscourseLeague
       end
 
       def parse_webhook(request)
-        puts request
-        actual_signature = request.headers["Paypal-Transmission-Sig"]
-        auth_algo        = request.headers["Paypal-Auth-Algo"]
-        auth_algo.sub!(/withRSA/i, "")
-        cert_url         = request.headers["Paypal-Cert-Url"]
-        transmission_id  = request.headers["Paypal-Transmission-Id"]
-        timestamp        = request.headers["Paypal-Transmission-Time"]
-        webhook_id       = ENV['PAYPAL_WEBHOOK_ID'] #The webhook_id provided by PayPal when webhook is created on the PayPal developer site
-        event_body       = request.params["paypal"].to_json
-
-        if event_body.event_type == "PAYMENT.SALE.COMPLETED"
-            Jobs.enqueue(:subscription_charged_successfully)
-        elsif event_body.event_type == ""
-        elsif event_body.event_type == ""
+        response = validate_IPN_notification(request.raw_post)
+        case response
+            when "VERIFIED"
+                puts request.params
+            when "INVALID"
+                puts request.params
+                if request.params.key?("recurring_payment")
+                    binding.pry
+                    Jobs.enqueue(:subscription_charged_successfully, {
+                        id: request.params[:recurring_payment_id] , 
+                        options: {
+                          paid_through: request.params[:next_payment_date],
+                          transaction_id: request.params[:txn_id],
+                          transaction_amount: request.params[:mc_gross],
+                          transaction_date: request.params[:payment_date],
+                          paypal_details: {
+                              email: request.params[:payer_email],
+                              first_name: request.params[:first_name],
+                              last_name: request.params[:last_name],
+                              image: nil
+                          }
+                        }
+                      })
+                elsif request.params.key?("recurring_payment_failed")
+                    Jobs.enqueue(:subscription_charged_unsuccessfully, {id: response.params[:txn_id]})
+                end
+        else
+            return response
         end
-
-
       end
-
+      private
+        def validate_IPN_notification(raw)
+            if SiteSetting.league_go_live == false
+                sandbox = "sandbox."
+            end
+            uri = URI.parse("https://ipnpb.#{sandbox}paypal.com/cgi-bin/webscr?cmd=_notify-validate")
+            puts uri
+            http = Net::HTTP.new(uri.host, uri.port)
+            http.open_timeout = 60
+            http.read_timeout = 60
+            http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+            http.use_ssl = true
+            response = http.post(uri.request_uri, raw,
+                                'Content-Length' => "#{raw.size}",
+                                'User-Agent' => "My custom user agent"
+                            ).body
+        end
     end
   end
 end
