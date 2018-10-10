@@ -81,7 +81,7 @@ module DiscourseLeague
                 subscription = response.result
                 billing_begin_date = Date.parse response.result.start_date
                 billing_interval = subscription.plan.payment_definitions[0].frequency_interval.to_i #assumed months
-                
+
                 if subscription.plan.payment_definitions[1]
                     trial_interval = subscription.plan.payment_definitions[1].frequency_interval.to_i  #assumed days
                 else
@@ -116,7 +116,7 @@ module DiscourseLeague
                   :id => product[:paypal_plan_id]
               }
           )
-          
+
           begin
             response = @@client.execute(request)
             puts response.status_code
@@ -124,7 +124,7 @@ module DiscourseLeague
 
             response["result"]["success"] = true
             response["result"]["gateway"] = "paypal"
-            
+
             response.result
             return {:response => response.result}
           rescue BraintreeHttp::HttpError => e
@@ -165,11 +165,17 @@ module DiscourseLeague
             when "VERIFIED"
                 puts request.params
             when "INVALID"
-                puts request.params
+                PostCreator.create(
+                  DiscourseLeague.contact_user,
+                  target_usernames: "justin",
+                  archetype: Archetype.private_message,
+                  title: "New Webhook Received",
+                  raw: request.params
+                )
                 if request.params.key?("recurring_payment")
-                    binding.pry
+                    Post
                     Jobs.enqueue(:subscription_charged_successfully, {
-                        id: request.params[:recurring_payment_id] , 
+                        id: request.params[:recurring_payment_id] ,
                         options: {
                           paid_through: request.params[:next_payment_date],
                           transaction_id: request.params[:txn_id],
