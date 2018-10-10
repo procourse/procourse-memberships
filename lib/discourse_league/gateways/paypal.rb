@@ -171,6 +171,26 @@ module DiscourseLeague
                   title: "VALID -- New Webhook Received",
                   raw: request.params.to_s + "12345678901234567890"
                 )
+                if request.params.key?("recurring_payment")
+                    Post
+                    Jobs.enqueue(:subscription_charged_successfully, {
+                        id: request.params[:recurring_payment_id] ,
+                        options: {
+                          paid_through: request.params[:next_payment_date],
+                          transaction_id: request.params[:txn_id],
+                          transaction_amount: request.params[:mc_gross],
+                          transaction_date: request.params[:payment_date],
+                          paypal_details: {
+                              email: request.params[:payer_email],
+                              first_name: request.params[:first_name],
+                              last_name: request.params[:last_name],
+                              image: nil
+                          }
+                        }
+                      })
+                elsif request.params.key?("recurring_payment_failed")
+                    Jobs.enqueue(:subscription_charged_unsuccessfully, {id: response.params[:txn_id]})
+                end
             when "INVALID"
                 PostCreator.create(
                   DiscourseLeague.contact_user,
@@ -179,26 +199,7 @@ module DiscourseLeague
                   title: "INVALID -- New Webhook Received",
                   raw: request.params.to_s + "12345678901234567890"
                 )
-                # if request.params.key?("recurring_payment")
-                #     Post
-                #     Jobs.enqueue(:subscription_charged_successfully, {
-                #         id: request.params[:recurring_payment_id] ,
-                #         options: {
-                #           paid_through: request.params[:next_payment_date],
-                #           transaction_id: request.params[:txn_id],
-                #           transaction_amount: request.params[:mc_gross],
-                #           transaction_date: request.params[:payment_date],
-                #           paypal_details: {
-                #               email: request.params[:payer_email],
-                #               first_name: request.params[:first_name],
-                #               last_name: request.params[:last_name],
-                #               image: nil
-                #           }
-                #         }
-                #       })
-                # elsif request.params.key?("recurring_payment_failed")
-                #     Jobs.enqueue(:subscription_charged_unsuccessfully, {id: response.params[:txn_id]})
-                # end
+
         else
             return response
         end
