@@ -169,7 +169,7 @@ module DiscourseLeague
                   target_usernames: "justin",
                   archetype: Archetype.private_message,
                   title: "VALID -- New Webhook Received",
-                  raw: request.params + "12345678901234567890"
+                  raw: request.params.to_s + "12345678901234567890"
                 )
             when "INVALID"
                 PostCreator.create(
@@ -177,7 +177,7 @@ module DiscourseLeague
                   target_usernames: "justin",
                   archetype: Archetype.private_message,
                   title: "INVALID -- New Webhook Received",
-                  raw: request.params + "12345678901234567890"
+                  raw: request.params.to_s + "12345678901234567890"
                 )
                 # if request.params.key?("recurring_payment")
                 #     Post
