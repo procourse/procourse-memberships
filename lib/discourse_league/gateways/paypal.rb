@@ -172,7 +172,6 @@ module DiscourseLeague
                   raw: request.params.to_s + "12345678901234567890"
                 )
                 if request.params.key?("recurring_payment")
-                    Post
                     Jobs.enqueue(:subscription_charged_successfully, {
                         id: request.params[:recurring_payment_id] ,
                         options: {
