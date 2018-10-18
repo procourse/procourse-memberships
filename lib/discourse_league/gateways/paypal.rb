@@ -171,7 +171,7 @@ module DiscourseLeague
                   title: "VALID -- New Webhook Received",
                   raw: request.params.to_s + "12345678901234567890"
                 )
-                if request.params.key?("recurring_payment")
+                if request.params[:txn_type] == "recurring_payment"
                     Jobs.enqueue(:subscription_charged_successfully, {
                         id: request.params[:recurring_payment_id] ,
                         options: {
@@ -187,7 +187,7 @@ module DiscourseLeague
                           }
                         }
                       })
-                elsif request.params.key?("recurring_payment_failed")
+                elsif request.params[:txn_type] == "recurring_payment_failed"
                     Jobs.enqueue(:subscription_charged_unsuccessfully, {id: response.params[:txn_id]})
                 end
             when "INVALID"
