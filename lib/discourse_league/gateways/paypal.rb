@@ -163,14 +163,6 @@ module DiscourseLeague
         response = validate_IPN_notification(request.raw_post)
         case response
             when "VERIFIED"
-                puts request.params
-                PostCreator.create(
-                  DiscourseLeague.contact_user,
-                  target_usernames: "justin",
-                  archetype: Archetype.private_message,
-                  title: "VALID -- New Webhook Received",
-                  raw: request.params.to_s + "12345678901234567890"
-                )
                 if request.params[:txn_type] == "recurring_payment"
                     Jobs.enqueue(:subscription_charged_successfully, {
                         id: request.params[:recurring_payment_id] ,
