@@ -183,13 +183,7 @@ module DiscourseLeague
                     Jobs.enqueue(:subscription_charged_unsuccessfully, {id: response.params[:txn_id]})
                 end
             when "INVALID"
-                PostCreator.create(
-                  DiscourseLeague.contact_user,
-                  target_usernames: "justin",
-                  archetype: Archetype.private_message,
-                  title: "INVALID -- New Webhook Received",
-                  raw: request.params.to_s + "12345678901234567890"
-                )
+                Rails.logger.warn("Invalid PayPal Webhook Received: " + request.params.to_s)
 
         else
             return response
