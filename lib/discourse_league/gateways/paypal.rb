@@ -171,7 +171,7 @@ module DiscourseLeague
                           transaction_id: request.params[:txn_id],
                           transaction_amount: request.params[:mc_gross],
                           transaction_date: request.params[:payment_date],
-                          paypal_details: {
+                          paypal: {
                               email: request.params[:payer_email],
                               first_name: request.params[:first_name],
                               last_name: request.params[:last_name],
