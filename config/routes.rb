@@ -18,4 +18,5 @@ ProcourseMemberships::Engine.routes.draw do
   resource :admin_gateways, path: '/admin/gateways', constraints: AdminConstraint.new
 
   post '/webhook/braintree' => "webhook#braintree", constraints: MembershipsConstraint.new
+  post '/webhook/paypal' => "webhook#paypal", constraints: MembershipsConstraint.new
 end

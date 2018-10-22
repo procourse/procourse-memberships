@@ -81,7 +81,7 @@ module ProcourseMemberships
                 subscription = response.result
                 billing_begin_date = Date.parse response.result.start_date
                 billing_interval = subscription.plan.payment_definitions[0].frequency_interval.to_i #assumed months
-                
+
                 if subscription.plan.payment_definitions[1]
                     trial_interval = subscription.plan.payment_definitions[1].frequency_interval.to_i  #assumed days
                 else
@@ -107,7 +107,7 @@ module ProcourseMemberships
           time = Time.now + 60*60*27
           request.request_body(
               :name => product[:name],
-              :description => product[:name],
+              :description => "Description: " + product[:name],
               :start_date => time.iso8601,
               :payer => {
                   :payment_method => "paypal"
@@ -116,7 +116,7 @@ module ProcourseMemberships
                   :id => product[:paypal_plan_id]
               }
           )
-          
+
           begin
             response = @@client.execute(request)
             puts response.status_code
@@ -124,7 +124,7 @@ module ProcourseMemberships
 
             response["result"]["success"] = true
             response["result"]["gateway"] = "paypal"
-            
+
             response.result
             return {:response => response.result}
           rescue BraintreeHttp::HttpError => e
@@ -160,9 +160,52 @@ module ProcourseMemberships
       end
 
       def parse_webhook(request)
+        response = validate_IPN_notification(request.raw_post)
+        case response
+            when "VERIFIED"
+                if request.params[:txn_type] == "recurring_payment"
+                    Jobs.enqueue(:subscription_charged_successfully, {
+                        id: request.params[:recurring_payment_id] ,
+                        options: {
+                          paid_through: request.params[:next_payment_date],
+                          transaction_id: request.params[:txn_id],
+                          transaction_amount: request.params[:mc_gross],
+                          transaction_date: request.params[:payment_date],
+                          paypal: {
+                              email: request.params[:payer_email],
+                              first_name: request.params[:first_name],
+                              last_name: request.params[:last_name],
+                              image: nil
+                          }
+                        }
+                      })
+                elsif request.params[:txn_type] == "recurring_payment_failed"
+                    Jobs.enqueue(:subscription_charged_unsuccessfully, {id: response.params[:txn_id]})
+                end
+            when "INVALID"
+                Rails.logger.warn("Invalid PayPal Webhook Received: " + request.params.to_s)
 
+        else
+            return response
+        end
       end
-
+      private
+        def validate_IPN_notification(raw)
+            if SiteSetting.league_go_live == false
+                sandbox = "sandbox."
+            end
+            uri = URI.parse("https://ipnpb.#{sandbox}paypal.com/cgi-bin/webscr?cmd=_notify-validate")
+            puts uri
+            http = Net::HTTP.new(uri.host, uri.port)
+            http.open_timeout = 60
+            http.read_timeout = 60
+            http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+            http.use_ssl = true
+            response = http.post(uri.request_uri, raw,
+                                'Content-Length' => "#{raw.size}",
+                                'User-Agent' => "My custom user agent"
+                            ).body
+        end
     end
   end
 end
