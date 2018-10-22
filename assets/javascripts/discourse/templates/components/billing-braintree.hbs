@@ -3,8 +3,8 @@
 {{/if}}
 <div class="{{{formClass}}} {{{checkoutState}}}">
   <div class="{{{hidePayPalVerify}}}">
-    <p>{{i18n 'league.checkout.verify_paypal'}}</p>
-    <center>{{d-button label="league.checkout.continue" id="continue-paypal" class="btn"}}</center>
+    <p>{{I18n 'memberships.checkout.verify_paypal'}}</p>
+    <center>{{d-button label="memberships.checkout.continue" id="continue-paypal" class="btn"}}</center>
   </div>
   <div id="paypal-checkout" {{action "submitPayPal"}} class="{{{hidePayPalButton}}}">
     <script src="https://www.paypalobjects.com/api/button.js?"
@@ -21,7 +21,7 @@
   </div>
   <hr class="{{{hidePayPalButton}}}">
   <div>
-    <form id="checkout-form" class="form-horizontal {{{hideCreditCardFields}}}" action="/league/checkout/submit-payment" method="post">
+    <form id="checkout-form" class="form-horizontal {{{hideCreditCardFields}}}" action="/memberships/checkout/submit-payment" method="post">
       <div id="error-message"></div>
 
       <label class="control-label" for="card-number">Card Number</label>
@@ -37,9 +37,9 @@
 
       <center>
         {{#if showContinueButton}}
-        {{d-button action="submitPayment" disabled=continueDisabled label="league.checkout.continue" id="continue-checkout" class="btn"}}
+        {{d-button action="submitPayment" disabled=continueDisabled label="memberships.checkout.continue" id="continue-checkout" class="btn"}}
         {{/if}}
-        <input type="submit" value="{{i18n 'league.checkout.submit_checkout'}}" class="btn btn-primary {{{showSubmitButton}}}" disabled>
+        <input type="submit" value="{{I18n 'memberships.checkout.submit_checkout'}}" class="btn btn-primary {{{showSubmitButton}}}" disabled>
       </center>
     </form>
   </div>

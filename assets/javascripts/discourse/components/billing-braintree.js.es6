@@ -61,7 +61,7 @@ export default Ember.Component.extend({
   braintree(){
     var self = this;
     this.set("braintreeLoading", true);
-    ajax('/league/checkout/braintree-token', {dataType: "text"}).then(result => {
+    ajax('/memberships/checkout/braintree-token', {dataType: "text"}).then(result => {
       var form = document.querySelector('#checkout-form');
       var continueButton = document.querySelector('#continue-checkout');
       var submit = document.querySelector('input[type="submit"]');
@@ -244,7 +244,7 @@ export default Ember.Component.extend({
   _submitNonce(nonce){
     var self = this;
     this.set("braintreeLoading", true);
-    var result = Payment.submitNonce(this.get('leagueLevel')[0].id, nonce, this.get("update"));
+    var result = Payment.submitNonce(this.get('membershipsLevel')[0].id, nonce, this.get("update"));
     result.then(response => {
       if (response.success){
         self.set('checkoutState', 'completed');

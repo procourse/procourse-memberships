@@ -1,3 +1,3 @@
 export function licensed() {
-  return Discourse.SiteSettings.league_licensed;
+  return Discourse.SiteSettings.memberships_licensed;
 }
