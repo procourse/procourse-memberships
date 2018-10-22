@@ -55,7 +55,7 @@ export default Ember.Component.extend({
     },
     @on('init')
     goLiveSetting(){
-        const liveSetting = Discourse.SiteSettings.league_go_live;
+        const liveSetting = Discourse.SiteSettings.memberships_go_live;
         if (liveSetting) this.set('goLiveSetting', 'production');
         else this.set('goLiveSetting', 'sandbox');
     },
@@ -64,7 +64,7 @@ export default Ember.Component.extend({
         const params = this.get("params");
         if (params.token) {
             this.set('subscriptionProduct', false);
-            let result = Payment.submitNonce(this.get('leagueLevel')[0].id, params.token , "execute");
+            let result = Payment.submitNonce(this.get('membershipsLevel')[0].id, params.token , "execute");
             result.then(response => {
                 this._paymentExecuted();
                 this.set("paypalLoading", false);
@@ -101,7 +101,7 @@ export default Ember.Component.extend({
 
                             // When you have a Payment ID, you need to call the `resolve` method, e.g `resolve(data.paymentID)`
                             // Or, if you have an error from your server side, you need to call `reject`, e.g. `reject(err)`
-                            let result = Payment.submitNonce(self.get('leagueLevel')[0].id, null, false);
+                            let result = Payment.submitNonce(self.get('membershipsLevel')[0].id, null, false);
                             result.then(response => {
                                 let id = response.table.id;
                                 if (!id) reject(response);
@@ -129,7 +129,7 @@ export default Ember.Component.extend({
 
                         // At this point, the payment has been authorized, and you will need to call your back-end to complete the
                         // payment. Your back-end should invoke the PayPal Payment Execute api to finalize the transaction.
-                        let result = Payment.submitNonce(self.get('leagueLevel')[0].id, { paymentID: data.paymentID, payerID: data.payerID }, "execute");
+                        let result = Payment.submitNonce(self.get('membershipsLevel')[0].id, { paymentID: data.paymentID, payerID: data.payerID }, "execute");
                         result.then(response => {
                             self._paymentExecuted();
                         }).catch(e => {
@@ -146,7 +146,7 @@ export default Ember.Component.extend({
                     // Pass a function to be called when the customer cancels the payment
 
                     onCancel: function(data) {
-                        bootbox.alert(I18n.t("league.checkout.cancel_message"));
+                        bootbox.alert(I18n.t("memberships.checkout.cancel_message"));
                     }
 
                 }, '#paypal-button-container');
@@ -164,7 +164,7 @@ export default Ember.Component.extend({
         submitPayment(){
             this.set("paypalLoading", true);
 
-                let result = Payment.submitNonce(this.get('leagueLevel')[0].id, null, false);
+                let result = Payment.submitNonce(this.get('membershipsLevel')[0].id, null, false);
                 result.then(response => {
                     this.set("paypalLoading", false);
                     bootbox.alert("Please wait while you're redirected to Paypal.");

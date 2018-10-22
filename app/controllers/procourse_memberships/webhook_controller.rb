@@ -1,0 +1,16 @@
+require_relative '../../../lib/procourse_memberships/gateways/braintree'
+
+module ProcourseMemberships
+  class WebhookController < ApplicationController
+    skip_before_action :redirect_to_login_if_required
+    layout false
+    skip_before_action :check_xhr
+    skip_before_action :verify_authenticity_token, only: [:braintree]
+    def braintree
+      braintree = ProcourseMemberships::Gateways::BraintreeGateway.new()
+      braintree.parse_webhook(request)
+      render body: nil
+    end
+
+  end
+end

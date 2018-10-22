@@ -1,0 +1,279 @@
+.memberships.admin{
+  label {
+    margin-top: 25px;
+  }
+  input[type="number"]{
+    max-width: 40px;
+  }
+
+  .help{
+    color: #919191;
+    padding-top: 3px;
+    font-size: 85%;
+    line-height: 1.4em;
+    margin: 0px;
+    font-weight: normal;
+  }
+
+  .raw-bio {
+    margin-top: 20px;
+  }
+
+}
+.memberships.checkout{
+  max-width: 500px;
+  margin: 0px auto;
+
+  h1{
+    text-align: center;
+  }
+
+  .billing-section{
+    h3{
+      margin:20px 0px;
+      text-align: center;
+    }
+  }
+  .radio-field-choice{
+    text-align: center;
+    margin-bottom: 20px;
+
+    input{
+      margin:0px 5px 0px 10px;
+    }
+    span{
+      margin:0px 10px 0px 5px;
+    }
+  }
+
+  .controls input{
+    width: calc(100% - 10px);
+  }
+  .control-label{
+    line-height: 42px;
+  }
+  .hosted-field{
+    display: inline-block;
+    height: 30px;
+    margin: 0px 0px 20px 20px;
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid #e9e9e9;
+    border-radius: 3px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.3);
+  }
+  .hosted-field.disabled{
+    border: none;
+    box-shadow: none;
+  }
+  .verify {
+    .control-label{
+      line-height: 20px;
+      padding-top: 5px;
+    }
+    .hosted-field{
+      border: none;
+      box-shadow: none;
+      height: 20px;
+      margin: 0px 0px 0px 20px;
+    }
+  }
+  #continue-checkout, .btn, .btn-primary{
+    margin: 0px auto;
+    font-size: 1.3rem;
+    padding: 12px 25px;
+  }
+  #paypal-checkout{
+    text-align: center;
+    margin-bottom: 25px;
+  }
+  .expiration > span{
+    float: left;
+    font-size: 1.5em;
+    line-height: 1.5em;
+  }
+  .expiration-month, .expiration-year{
+    float: left;
+  }
+  .expiration-month{
+    min-width: 75px;
+    width: 75px;
+   margin-right: 10px; 
+  }
+  .expiration-year{
+    min-width: 100px;
+    width: 100px;
+    margin-left: 10px;
+  }
+  .account-buttons{
+    text-align: center;
+    margin-top: 20px;
+  }
+  #checkout-progress{
+    margin: 30px 0px;
+
+    #line{
+      min-height: 3px;
+      background-color: #ccc;
+    }
+    #states-wrapper{
+      margin: 0px auto;
+      color: #666;
+      font-size: 0.9em;
+    }
+    .state{
+      display: inline-block;
+      width: calc(25% - 3px);
+      text-align: center;
+    }
+    .indicator{
+      height: 10px;
+      width: 10px;
+      border: 2px solid #cccccc;
+      background: #cccccc;
+      border-radius: 100%;
+      position: relative;
+      top: 8px;
+      left: calc(50% - 6px);
+    }
+    .sign-in-state{
+      #sign-in .indicator{
+        background: #ffffff;
+      }
+      #billing-payment .indicator{
+        background: #cccccc;
+      }
+      #verify .indicator{
+        background: #cccccc;
+      }
+      #completed .indicator{
+        background: #cccccc;
+      }
+    }
+    .billing-payment-state{
+      #sign-in .indicator{
+        background: #cccccc;
+      }
+      #billing-payment .indicator{
+        background: #ffffff;
+      }
+      #verify .indicator{
+        background: #cccccc;
+      }
+      #completed .indicator{
+        background: #cccccc;
+      }
+    }
+    .verify-state{
+      #sign-in .indicator{
+        background: #cccccc;
+      }
+      #billing-payment .indicator{
+        background: #cccccc;
+      }
+      #verify .indicator{
+        background: #ffffff;
+      }
+      #completed .indicator{
+        background: #cccccc;
+      }
+    }
+    .completed-state{
+      #sign-in .indicator{
+        background: #cccccc;
+      }
+      #billing-payment .indicator{
+        background: #cccccc;
+      }
+      #verify .indicator{
+        background: #cccccc;
+      }
+      #completed .indicator{
+        background: #ffffff;
+      }
+    }
+  }
+  #verify-state{
+    .control-group{
+      margin-bottom: 0px;
+    }
+    .expiration > span {
+      font-size: 1em;
+      line-height: 1.3em;
+    }
+    .btn-primary{
+      margin-left: 30px;
+    }
+  }
+}
+.memberships.checkout.receipt .controls {
+    margin-top: 12px;
+}
+
+.memberships.memberships-page{
+  max-width: 700px;
+  margin: 0px auto;
+}
+
+.nav-pills > span > li {
+    float: left;
+    margin-right: 5px;
+}
+.nav-pills > span > li > a {
+    border: none;
+    padding: 5px 12px;
+    font-size: 1.143em;
+    line-height: 20px;
+    transition: background .15s;
+}
+.nav-pills>span>li>a .d-icon {
+    margin-right: 5px;
+    opacity: .65;
+}
+.nav-pills > span > li > a {
+    display: block;
+    text-decoration: none;
+}
+.nav-pills > span > li > a:hover {
+    color: #e45735;
+    background-color: #f7cdc2;
+}
+.nav-pills > span > li > a.active {
+    color: white;
+    background-color: #e45735;
+}
+
+.admin-contents {
+    position: relative;
+    margin-left: -10px;
+    margin-right: -10px;
+}
+.dashboard-stats {
+    margin-bottom: 30px;
+    margin-right: 40px;
+}
+.dashboard-stats table {
+    width: 100%;
+    margin-top: 10px;
+}
+.admin-contents table tr {
+    text-align: left;
+}
+.dashboard-stats table th.title {
+    text-align: left;
+}
+.dashboard-stats table th {
+    font-weight: normal;
+    text-align: center;
+    background: #e9e9e9;
+}
+.admin-contents table td, .admin-contents table th {
+    padding: 8px;
+}
+.admin-contents table td {
+    border-bottom: 1px solid #e9e9e9;
+    border-top: 1px solid #e9e9e9;
+}
+.admin-contents table td, .admin-contents table th {
+    padding: 8px;
+}

@@ -1,27 +1,34 @@
-# name: discourse-league
+# name: procourse-memberships
 # about: Adds the ability to sell memberships to groups.
 # version: 0.1
 # author: Joe Buhlig joebuhlig.com
+# contributors: Justin DiRose justindirose.com
 # url: https://www.github.com/discourseleague/discourse-league
 
-enabled_site_setting :league_enabled
+enabled_site_setting :memberships_enabled
 
-add_admin_route 'league.title', 'league'
+add_admin_route 'memberships.title', 'memberships'
 
-register_asset "stylesheets/discourse-league.scss"
+register_asset "stylesheets/procourse-memberships.scss"
 
 gem 'braintree', '2.50.0'
 gem 'braintreehttp', '0.5.0'
 gem 'paypal-sdk-rest', '2.0.0.rc2'
 
-Discourse::Application.routes.append do
-	get '/admin/plugins/league' => 'admin/plugins#index', constraints: StaffConstraint.new
-	get '/admin/plugins/league/levels' => 'admin/plugins#index', constraints: StaffConstraint.new
-	get '/admin/plugins/league/gateways' => 'admin/plugins#index', constraints: StaffConstraint.new
-	get '/admin/plugins/league/messages' => 'admin/plugins#index', constraints: StaffConstraint.new
-	get '/admin/plugins/league/advanced' => 'admin/plugins#index', constraints: StaffConstraint.new
-	get '/admin/plugins/league/extras' => 'admin/plugins#index', constraints: StaffConstraint.new
-  get "u/:username/billing" => "users#show", constraints: {username: USERNAME_ROUTE_FORMAT}
-end
+load File.expand_path('../lib/procourse_memberships/engine.rb', __FILE__)
 
-load File.expand_path('../lib/discourse_league/engine.rb', __FILE__)
+after_initialize do
+
+	Discourse::Application.routes.append do
+		get '/admin/plugins/memberships' => 'admin/plugins#index', constraints: StaffConstraint.new
+		get '/admin/plugins/memberships/levels' => 'admin/plugins#index', constraints: StaffConstraint.new
+		get '/admin/plugins/memberships/gateways' => 'admin/plugins#index', constraints: StaffConstraint.new
+		get '/admin/plugins/memberships/messages' => 'admin/plugins#index', constraints: StaffConstraint.new
+		get '/admin/plugins/memberships/advanced' => 'admin/plugins#index', constraints: StaffConstraint.new
+		get '/admin/plugins/memberships/extras' => 'admin/plugins#index', constraints: StaffConstraint.new
+	  get "u/:username/billing" => "users#show", constraints: {username: USERNAME_ROUTE_FORMAT}
+	end
+
+	load File.expand_path('../app/jobs/onceoff/migrate_memberships_plugin.rb', __FILE__)
+
+end
