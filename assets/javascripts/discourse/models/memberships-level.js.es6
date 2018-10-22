@@ -39,9 +39,6 @@ MembershipsLevel.reopenClass({
     var membershipsLevels = MembershipsLevels.create({ content: [], loading: true });
     ajax('/memberships/admin/levels.json').then(function(levels) {
       if (levels){
-          if( typeof levels === 'string'){
-              levels = JSON.parse(levels);
-          }
         _.each(levels, function(membershipsLevel){
           membershipsLevels.pushObject(MembershipsLevel.create({
             id: membershipsLevel.id,
