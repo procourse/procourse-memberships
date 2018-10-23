@@ -26,7 +26,7 @@ export default Ember.Component.extend({
 
         loadScript("https://js.stripe.com/v3/", {scriptTag: true}).then(() => {
             self.set("showLoading", false);
-            var stripe = Stripe(Discourse.SiteSettings.league_stripe_publishable_key);
+            var stripe = Stripe(Discourse.SiteSettings.memberships_stripe_publishable_key);
             var elements = stripe.elements();
 
             var card = elements.create('card');
@@ -59,7 +59,7 @@ export default Ember.Component.extend({
         });
     },
     submitStripe(params){
-        let result = Payment.submitNonce(self.get('leagueLevel')[0].id, params, false);
+        let result = Payment.submitNonce(self.get('membershipsLevel')[0].id, params, false);
         this.set('showLoading', true);
         result.then((response) => {
             this.set("showCompleted", true);

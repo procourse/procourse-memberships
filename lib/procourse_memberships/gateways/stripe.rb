@@ -1,7 +1,7 @@
 require_relative '../billing/gateways'
 require 'stripe'
 
-module DiscourseLeague
+module ProcourseMemberships
   class Gateways
     class StripeGateway
 
@@ -19,7 +19,7 @@ module DiscourseLeague
             source: token,
         })
         if charge.success?
-            league_gateway = DiscourseLeague::Billing::Gateways.new(:user_id => user_id, :product_id => product[:id], :token => charge.source.fingerprint)
+            league_gateway = ProcourseMemberships::Billing::Gateways.new(:user_id => user_id, :product_id => product[:id], :token => charge.source.fingerprint)
             league_gateway.store_token
 
             credit_card = {

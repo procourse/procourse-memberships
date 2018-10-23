@@ -54,9 +54,9 @@ procourse_memberships:
   memberships_paypal_api_secret:
     default: ""
     client: false
-  league_stripe_publishable_key:
+  memberships_stripe_publishable_key:
     default: ""
     client: true
-  league_stripe_secret_key:
+  memberships_stripe_secret_key:
     default: ""
     client: false

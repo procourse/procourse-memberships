@@ -14,3 +14,5 @@ en:
     memberships_braintree_private_key: "Braintree Private Key"
     memberships_paypal_api_id: "PayPal API ID - PayPal Gateway"
     memberships_paypal_api_secret: "PayPal API Secret - PayPal Gateway"
+    memberships_stripe_publishable_key: "Stripe API Publishable Key"
+    memberships_stripe_secret_key: "Stripe API Secret Key"
