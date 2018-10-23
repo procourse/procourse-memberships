@@ -24,11 +24,10 @@ export default Ember.Controller.extend({
   showCompleted: false,
   currentMember: false,
   isPayPal: function() {
-    const gateway = SiteSettings.memberships_gateway;
-
+    const gateway = Discourse.SiteSettings.memberships_gateway;
     if (gateway === "PayPal") return true;
     else return false;
-  }.property,
+  }.property(),
 
   paymentTypeChanged: function(){
     if (this.get('paymentType') == "paypal"){
