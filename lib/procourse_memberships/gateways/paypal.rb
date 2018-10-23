@@ -191,7 +191,7 @@ module ProcourseMemberships
       end
       private
         def validate_IPN_notification(raw)
-            if SiteSetting.league_go_live == false
+            if SiteSetting.memberships_go_live == false
                 sandbox = "sandbox."
             end
             uri = URI.parse("https://ipnpb.#{sandbox}paypal.com/cgi-bin/webscr?cmd=_notify-validate")
