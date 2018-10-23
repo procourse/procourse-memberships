@@ -28,8 +28,21 @@ export default Ember.Component.extend({
             self.set("showLoading", false);
             var stripe = Stripe(Discourse.SiteSettings.memberships_stripe_publishable_key);
             var elements = stripe.elements();
-
-            var card = elements.create('card');
+            var style = {
+                base: {
+                    color: "grey",
+                    lineHeight: "30px",
+                    fontSmoothing: "antialiased",
+                    fontSize: "1.2rem",
+                    '::placeholder': {
+                        color: "#CDCDCD"
+                    }
+                },
+                invalid: {
+                    color: "red"
+                }
+            }
+            var card = elements.create('card', {style});
             card.mount('#card-element');
 
             card.addEventListener('change', function(event) {
