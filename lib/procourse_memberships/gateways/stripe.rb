@@ -6,7 +6,7 @@ module ProcourseMemberships
     class StripeGateway
 
       def initialize(options = {})
-         Stripe.api_key = SiteSetting.league_stripe_secret_key
+         Stripe.api_key = SiteSetting.memberships_stripe_secret_key
       end
 
       def purchase(user_id, product, nonce, options = {})
@@ -14,7 +14,7 @@ module ProcourseMemberships
 
         charge = Stripe::Charge.create({
             amount: product[:initial_payment],
-            currency: SiteSetting.league_currency.downcase,
+            currency: SiteSetting.memberships_currency.downcase,
             description: product[:description],
             source: token,
         })
