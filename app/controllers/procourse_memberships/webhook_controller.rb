@@ -13,7 +13,7 @@ module ProcourseMemberships
       render body: nil
     end
     def paypal
-      paypal = DiscourseLeague::Gateways::PayPalGateway.new()
+      paypal = ProcourseMemberships::Gateways::PayPalGateway.new()
       paypal.parse_webhook(request)
       render body: nil
     end
