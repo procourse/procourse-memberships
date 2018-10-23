@@ -23,6 +23,12 @@ export default Ember.Controller.extend({
   showVerify: false,
   showCompleted: false,
   currentMember: false,
+  isPayPal: function() {
+    const gateway = SiteSettings.memberships_gateway;
+
+    if (gateway === "PayPal") return true;
+    else return false;
+  }.property,
 
   paymentTypeChanged: function(){
     if (this.get('paymentType') == "paypal"){
@@ -147,6 +153,10 @@ export default Ember.Controller.extend({
           window.location = incoming;
         }
       });
+    },
+
+    goToBilling() {
+      document.location.href = "/my/billing";
     }
   }
 });

@@ -2,14 +2,15 @@
 <div>
   <div>
       <center>
-
-      {{#if subscriptionProduct}}
-          <div id="subscription-button-container">
-              {{d-button action="submitPayment" label="memberships.checkout.subscribe" id="subscription-checkout" class="btn-primary"}}
-          </div>
-      {{else}}
-          <div id="paypal-button-container"></div>
-      {{/if}}
+      {{#unless showBilling}}
+        {{#if subscriptionProduct}}
+            <div id="subscription-button-container">
+                {{d-button action="submitPayment" label="memberships.checkout.subscribe" id="subscription-checkout" class="btn-primary"}}
+            </div>
+        {{else}}
+            <div id="paypal-button-container"></div>
+        {{/if}}
+      {{/unless}}
       </center>
 
   </div>

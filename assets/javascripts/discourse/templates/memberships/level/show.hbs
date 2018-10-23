@@ -15,7 +15,12 @@
     <div class="billing-section">
       {{#if showDescription}}
         {{#if memberSubscription}}
-          <p>{{{I18n 'memberships.checkout.update_billing.description' }}}</p>
+          {{#if isPayPal}}
+            <p>{{{I18n 'memberships.checkout.update_billing.paypal_description'}}}</p>
+            <center>{{d-button action="goToBilling" class="btn" label="memberships.billing"}}</center>
+          {{else}}
+            <p>{{{I18n 'memberships.checkout.update_billing.description' }}}</p>
+          {{/if}}
         {{else}}
           <p>{{{model.0.description_cooked}}}</p>
         {{/if}} {{!-- memberSubscription --}}

@@ -97,6 +97,7 @@ en:
         cancel_message: "The transaction has been cancelled."
         completed_message: '<h2>Success!</h2><p>Thanks for signing up. You should receive a PM shortly with more details about your membership.</p>'
         update_billing:
+          paypal_description: "Change payment method and billing info over on the Billing page of your profile."
           description: 'Enter the billing details below to make changes to your payment method.'
           completed_message: '<h2>Success!</h2><p>Your payment method has been updated.</p>'
       currency:
