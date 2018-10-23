@@ -10,30 +10,31 @@ module ProcourseMemberships
       end
 
       def purchase(user_id, product, nonce, options = {})
-        token = nonce[:stripeToken]
+        token = nonce[:id]
 
         charge = Stripe::Charge.create({
-            amount: product[:initial_payment],
+            amount: product[:initial_payment].to_i * 100,
             currency: SiteSetting.memberships_currency.downcase,
             description: product[:description],
             source: token,
         })
-        if charge.success?
-            league_gateway = ProcourseMemberships::Billing::Gateways.new(:user_id => user_id, :product_id => product[:id], :token => charge.source.fingerprint)
-            league_gateway.store_token
-
+        if charge.status == "succeeded"
+            memberships_gateway = ProcourseMemberships::Billing::Gateways.new(:user_id => user_id, :product_id => product[:id], :token => charge.source.fingerprint)
+            memberships_gateway.store_token
+            
             credit_card = {
-                name: charge.source.name
-                last_4: charge.source.last4
-                expiration: charge.source.exp_month + "/" + charge.source.exp_year
-                brand: charge.source.brand
-                image: 
+                name: charge.source.name,
+                last_4: charge.source.last4,
+                expiration: charge.source.exp_month.to_s + "/" + charge.source.exp_year.to_s,
+                brand: charge.source.brand,
+                image: nil
             }
-            league_gateway.store_transaction(charge.transaction.id, charge.transaction.amount, Time.now(), credit_card, nil)
-
+            memberships_gateway.store_transaction(charge.id, charge.amount / 100, Time.now(), credit_card, nil)
+            charge.success = true
             return {:response => charge}
         else
-            return {:success => false, :message => charge}
+            charge.success = false
+            return {:message => charge}
         end
       end
 

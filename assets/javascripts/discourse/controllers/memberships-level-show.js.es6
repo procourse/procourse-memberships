@@ -53,7 +53,7 @@ export default Ember.Controller.extend({
       else if (Discourse.SiteSettings.memberships_gateway == "PayPal"){
           this.set('showPaypal', true);
       }
-      else if (Discourse.SiteSettings.league_gateway == "Stripe"){
+      else if (Discourse.SiteSettings.memberships_gateway == "Stripe"){
         this.set('showStripe', true);
       }
       else{
