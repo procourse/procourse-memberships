@@ -10,7 +10,8 @@ module ProcourseMemberships
 
     config.after_initialize do
   		Discourse::Application.routes.append do
-  			mount ::ProcourseMemberships::Engine, at: "/memberships"
+        mount ::ProcourseMemberships::Engine, at: "/memberships"
+        get '/league/(*path)', to: redirect("/memberships/%{path}")
   		end
 
       require_dependency 'current_user_serializer'
