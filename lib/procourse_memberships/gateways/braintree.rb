@@ -89,6 +89,7 @@ module ProcourseMemberships
 
       def unsubscribe(subscription_id, options = {})
         response = Braintree::Subscription.cancel(subscription_id)
+        return response
       end
 
       def update_payment(user_id, product, subscription_id, nonce, options = {})

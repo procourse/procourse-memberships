@@ -36,9 +36,9 @@ module ProcourseMemberships
       if ProcourseMemberships::Billing::Gateways.name == "paypal"
         success = response[:response][:success] == true
       else
-        success = response[:response].success?
+        success = response.success?
       end
-
+      
       if success
 
         memberships_gateway = ProcourseMemberships::Billing::Gateways.new(:user_id => current_user.id, :product_id => subscription[0][:product_id])
