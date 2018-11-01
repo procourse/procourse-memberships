@@ -1,4 +1,5 @@
 require "paypal-sdk-rest"
+require 'stripe'
 include PayPal::V1::BillingPlans
 
 module ProcourseMemberships
@@ -95,6 +96,15 @@ module ProcourseMemberships
             render_json_error(e)
             return
           end
+      elsif SiteSetting.memberships_gateway == "Stripe" && new_level[:recurring] == true
+        Stripe.api_key = SiteSetting.memberships_stripe_secret_key
+        product = Stripe::Product.create({
+          name: params[:memberships_level][:name],
+          type: 'service',
+          active: false
+        })
+
+        new_level[:stripe_product_id] = product["id"]
       end
 
       levels.push(new_level)
@@ -104,45 +114,68 @@ module ProcourseMemberships
     end
 
     def update
-      if SiteSetting.memberships_go_live?
+      if SiteSetting.memberships_gateway == "PayPal"
+      
+        if SiteSetting.memberships_go_live?
           environment = PayPal::LiveEnvironment.new(SiteSetting.memberships_paypal_api_id, SiteSetting.memberships_paypal_api_secret)
-      else
-          environment = PayPal::SandboxEnvironment.new(SiteSetting.memberships_paypal_api_id, SiteSetting.memberships_paypal_api_secret)
+        else
+            environment = PayPal::SandboxEnvironment.new(SiteSetting.memberships_paypal_api_id, SiteSetting.memberships_paypal_api_secret)
+        end
+        client = PayPal::PayPalHttpClient.new(environment)
+      elsif SiteSetting.memberships_gateway == "Stripe"
+        Stripe.api_key = SiteSetting.memberships_stripe_secret_key
       end
-      client = PayPal::PayPalHttpClient.new(environment)
+      
       levels = PluginStore.get("procourse_memberships", "levels")
       memberships_level = levels.select{|level| level[:id] == params[:memberships_level][:id]}
 
       if memberships_level.empty?
         render_json_error(memberships_level)
       else
+        if SiteSetting.memberships_gateway == 'PayPal' && memberships_level[0][:recurring] == true
           if (memberships_level[0][:enabled] == false || memberships_level[0][:enabled] == nil) && params[:memberships_level][:enabled] == true
-              if memberships_level[0][:paypal_plan_status] == "CREATED"
-                  activation = PlanUpdateRequest.new(memberships_level[0][:paypal_plan_id])
-                  activation.request_body([{
-                    "op": "replace",
-                    "path": "/",
-                    "value":
-                    {
-                      "state": "ACTIVE"
-                    }
-                  }])
+            if memberships_level[0][:paypal_plan_status] == "CREATED"
+                activation = PlanUpdateRequest.new(memberships_level[0][:paypal_plan_id])
+                activation.request_body([{
+                  "op": "replace",
+                  "path": "/",
+                  "value":
+                  {
+                    "state": "ACTIVE"
+                  }
+                }])
 
-                  begin
-                      activation_response = client.execute(activation)
-                      puts activation_response.status_code
-                      puts activation_response.result
-                      memberships_level[0][:paypal_plan_status] = "ACTIVE"
-                  rescue BraintreeHttp::HttpError => e
-                      puts e.status_code
-                      puts e.result
-                      render_json_error(e)
-                      return
-                  end
-              end
-
+                begin
+                    activation_response = client.execute(activation)
+                    puts activation_response.status_code
+                    puts activation_response.result
+                    memberships_level[0][:paypal_plan_status] = "ACTIVE"
+                rescue BraintreeHttp::HttpError => e
+                    puts e.status_code
+                    puts e.result
+                    render_json_error(e)
+                    return
+                end
+            end
           end
+        elsif SiteSetting.memberships_gateway == "Stripe" && memberships_level[0][:recurring] == true
+            binding.pry
+            product = Stripe::Product.retrieve(memberships_level[0][:stripe_product_id])
 
+            if product["name"] != params[:memberships_level][:name]
+              product["name"] = params[:memberships_level][:name]
+              changed = true
+            end
+            if product["active"]  != params[:memberships_level][:enabled]
+              product["active"] = params[:memberships_level][:enabled]
+              changed = true
+            end
+
+            if changed == true
+              product.save
+            end
+        end
+        
         memberships_level[0][:name] = params[:memberships_level][:name] if !params[:memberships_level][:name].nil?
         memberships_level[0][:enabled] = params[:memberships_level][:enabled] if !params[:memberships_level][:enabled].nil?
         memberships_level[0][:group] = params[:memberships_level][:group] if !params[:memberships_level][:group].nil?
@@ -157,6 +190,7 @@ module ProcourseMemberships
         memberships_level[0][:description_cooked] = params[:memberships_level][:description_cooked] if !params[:memberships_level][:description_cooked].nil?
         memberships_level[0][:welcome_message] = params[:memberships_level][:welcome_message] if !params[:memberships_level][:welcome_message].nil?
         memberships_level[0][:braintree_plan_id] = params[:memberships_level][:braintree_plan_id] if !params[:memberships_level][:braintree_plan_id].nil?
+        memberships_level[0][:stripe_product_id] = product["id"] if product.nil?
 
         PluginStore.set("procourse_memberships", "levels", levels)
 
@@ -167,6 +201,14 @@ module ProcourseMemberships
     def destroy
       levels = PluginStore.get("procourse_memberships", "levels")
       memberships_level = levels.select{|level| level[:id] == params[:memberships_level][:id].to_i}
+
+      if SiteSetting.memberships_gateway == "Stripe" && memberships_level[0][:recurring] == true
+        Stripe.api_key = SiteSetting.memberships_stripe_secret_key
+        if !memberships_level[0][:stripe_product_id].nil?
+          product = Stripe::Product.retrieve(memberships_level[0][:stripe_product_id])
+          product.delete
+        end
+      end
 
       levels.delete(memberships_level[0])
       PluginStore.set("procourse_memberships", "levels", levels)
