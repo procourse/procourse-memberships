@@ -42,6 +42,7 @@ en:
           no_levels: "Add some levels for your users."
           no_level_selected: "No level selected."
           paypal_active_message: "Active PayPal billing plans cannot be modified."
+          stripe_active_message: "Stripe billing plans cannot be modified once created."
     memberships:
       title: "ProCourse Memberships"
       member_exists: "Looks like you're already a member of the group that this membership level grants. If you feel this is a mistake, please contact one of our admins."

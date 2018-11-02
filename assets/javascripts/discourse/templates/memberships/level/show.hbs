@@ -33,6 +33,8 @@
             {{billing-braintree membershipsLevel=model showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=memberSubscription}}
           {{else if showPaypal}}
             {{billing-paypal membershipsLevel=model showPaypal=showPaypal showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=memberSubscription}}
+          {{else if showStripe}}  
+            {{billing-stripe membershipsLevel=model showStripe=showStripe showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=memberSubscription}}
           {{else}}
               {{#if showBilling}}
                 {{billing update=memberSubscription}}

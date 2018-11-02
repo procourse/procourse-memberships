@@ -26,6 +26,7 @@ procourse_memberships:
     choices:
       - "Braintree"
       - "PayPal"
+      - "Stripe"
   memberships_include_paypal:
     default: false
     client: true
@@ -51,5 +52,14 @@ procourse_memberships:
     default: ""
     client: false
   memberships_paypal_api_secret:
+    default: ""
+    client: false
+  memberships_stripe_publishable_key:
+    default: ""
+    client: true
+  memberships_stripe_secret_key:
+    default: ""
+    client: false
+  memberships_stripe_webhook_secret:
     default: ""
     client: false

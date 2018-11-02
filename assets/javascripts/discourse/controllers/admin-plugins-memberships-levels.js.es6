@@ -36,6 +36,7 @@ export default Ember.Controller.extend({
       (!this.get('selectedItem').group) ||
       (!this.get('selectedItem').name) ||
       (this.get('selectedItem.paypal_plan_status') === "ACTIVE") ||
+      (this.get('selectedItem.stripe_plan_id')) ||
       ((this.get('selectedItem').initial_payment == 0) && (this.get('selectedItem').recurring == false))
       ) {
         this.set('disableSave', true); 
@@ -79,8 +80,10 @@ export default Ember.Controller.extend({
         });
         this.set('disableSave', true);
         this.set("paypalSubscriptionActive", false);
+        this.set("stripePlanExists", false);
         this.set('selectedItem', membershipsLevel);
         if (membershipsLevel.paypal_plan_status === "ACTIVE") this.set("paypalSubscriptionActive", true);
+        if (membershipsLevel.stripe_plan_id) this.set("stripePlanExists", true);
         membershipsLevel.set('savingStatus', null);
         membershipsLevel.set('selected', true);
       });

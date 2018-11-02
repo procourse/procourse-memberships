@@ -19,6 +19,7 @@ export default Ember.Controller.extend({
 
   showBraintree: false,
   showPaypal: false,
+  showStripe: false,
   showBilling: false,
   showVerify: false,
   showCompleted: false,
@@ -56,6 +57,9 @@ export default Ember.Controller.extend({
       }
       else if (Discourse.SiteSettings.memberships_gateway == "PayPal"){
           this.set('showPaypal', true);
+      }
+      else if (Discourse.SiteSettings.memberships_gateway == "Stripe"){
+        this.set('showStripe', true);
       }
       else{
         this.set('showPaypal', false);

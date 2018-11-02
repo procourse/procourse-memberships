@@ -78,6 +78,7 @@
       margin: 0px 0px 0px 20px;
     }
   }
+
   #continue-checkout, .btn, .btn-primary{
     margin: 0px auto;
     font-size: 1.3rem;
@@ -204,6 +205,21 @@
     .btn-primary{
       margin-left: 30px;
     }
+  }
+}
+#payment-form{
+  height: 75px;
+  .payment-form-label {
+    font-size: .8rem;
+  }
+  #card-element {
+    margin: 0px 0px 20px 0px;
+    height: 30px;
+  }
+  #card-errors {
+    color: red;
+    font-size: .9rem;
+    margin-bottom: 20px;
   }
 }
 .memberships.checkout.receipt .controls {
