@@ -60,3 +60,6 @@ procourse_memberships:
   memberships_stripe_secret_key:
     default: ""
     client: false
+  memberships_stripe_webhook_secret:
+    default: ""
+    client: false

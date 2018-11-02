@@ -19,4 +19,5 @@ ProcourseMemberships::Engine.routes.draw do
 
   post '/webhook/braintree' => "webhook#braintree", constraints: MembershipsConstraint.new
   post '/webhook/paypal' => "webhook#paypal", constraints: MembershipsConstraint.new
+  post '/webhook/stripe' => "webhook#stripe", constraints: MembershipsConstraint.new
 end

@@ -105,7 +105,51 @@ module ProcourseMemberships
       end
 
       def parse_webhook(request)
+        endpoint_secret = SiteSetting.memberships_stripe_webhook_secret
 
+        payload = request.body.read
+        sig_header = request.env['HTTP_STRIPE_SIGNATURE']
+        event = nil
+
+        begin
+          event = Stripe::Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+          )
+        rescue JSON::ParserError => e
+          status 400
+          return
+        rescue Stripe::SignatureVerificationError => e
+          status 400
+          return
+        end
+
+        if request["type"] == "customer.subscription.deleted"
+          Jobs.enqueue(:subscription_canceled, {id: request["id"]})
+        elsif request["type"] == "invoice.payment_failed"
+            Jobs.enqueue(:subscription_charged_unsuccessfully, {id: request["subscription"]})
+        elsif request["type"] == "invoice.payment_succeeded"
+
+          ch = Stripe::Charge.retrieve(request["charge"])
+          sub = Stripe::Subscription.retrieve(request["subscription"])
+
+          Jobs.enqueue(:subscription_charged_successfully, {
+            id: request["subscription"], 
+            options: {
+              paid_through: sub["current_period_end"], 
+              transaction_id: request["charge"],
+              transaction_amount: request["lines"]["data"][0]["amount"].to_i / 100,
+              transaction_date: Time.at(request["date"]),
+              credit_card: {
+                name: ch["source"]["name"],
+                last_4: ch["source"]["last4"],
+                expiration: ch["source"]["exp_month"].to_s + "/" + ch["source"]["exp_year"].to_s,
+                brand: ch["source"]["brand"],
+              }
+            }
+          })
+        end
+
+        status 200
       end
 
     end
