@@ -20,7 +20,7 @@ module ProcourseMemberships
     end
 
     def stripe
-      stripe = ProCourseMemberships::Gateways::StripeGateway.new()
+      stripe = ProcourseMemberships::Gateways::StripeGateway.new()
       stripe.parse_webhook(request)
       render body: nil
     end
