@@ -117,7 +117,9 @@ module ProcourseMemberships
           status 400
           return
         end
-        puts request
+
+        Rails.logger.info(request)
+
         if request["type"] == "customer.subscription.deleted"
           Jobs.enqueue(:subscription_canceled, {id: request["id"]})
         elsif request["type"] == "invoice.payment_failed"
