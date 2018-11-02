@@ -98,26 +98,30 @@ module ProcourseMemberships
           end
       elsif SiteSetting.memberships_gateway == "Stripe" && new_level[:recurring] == true
         Stripe.api_key = SiteSetting.memberships_stripe_secret_key
-        product = Stripe::Product.create({
-          name: params[:memberships_level][:name],
-          type: 'service',
-          active: false
-        })
+        begin
+          product = Stripe::Product.create({
+            name: params[:memberships_level][:name],
+            type: 'service',
+            active: false
+          })
 
-        new_level[:stripe_product_id] = product["id"]
+          new_level[:stripe_product_id] = product["id"]
 
-        plan = Stripe::Plan.create({
-          product: product["id"],
-          nickname: params[:memberships_level][:name] + " " + SiteSetting.memberships_currency,
-          amount: params[:memberships_level][:recurring_payment].to_i * 100,
-          currency: SiteSetting.memberships_currency,
-          interval: 'month',
-          interval_count: params[:memberships_level][:recurring_payment_period],
-          trial_period_days: params[:memberships_level][:trial_period],
-          active: false
-        })
+          plan = Stripe::Plan.create({
+            product: product["id"],
+            nickname: params[:memberships_level][:name] + " " + SiteSetting.memberships_currency,
+            amount: params[:memberships_level][:recurring_payment].to_i * 100,
+            currency: SiteSetting.memberships_currency,
+            interval: 'month',
+            interval_count: params[:memberships_level][:recurring_payment_period],
+            trial_period_days: params[:memberships_level][:trial_period],
+            active: false
+          })
 
-        new_level[:stripe_plan_id] = plan["id"]
+          new_level[:stripe_plan_id] = plan["id"]
+        rescue => e
+          render_json_error(e)
+        end
       end
 
       levels.push(new_level)
@@ -172,6 +176,7 @@ module ProcourseMemberships
             end
           end
         elsif SiteSetting.memberships_gateway == "Stripe" && memberships_level[0][:recurring] == true
+          begin
             product = Stripe::Product.retrieve(memberships_level[0][:stripe_product_id])
             plan = Stripe::Plan.retrieve(memberships_level[0][:stripe_plan_id])
 
@@ -181,9 +186,9 @@ module ProcourseMemberships
 
             plan["active"] =  params[:memberships_level][:enabled]if !params[:memberships_level][:enabled].nil?
             plan.save
-
-            # TODO - error handling
-
+          rescue => e
+            render_json_error(e)
+          end
         end
         
         memberships_level[0][:name] = params[:memberships_level][:name] if !params[:memberships_level][:name].nil?
@@ -214,17 +219,20 @@ module ProcourseMemberships
 
       if SiteSetting.memberships_gateway == "Stripe" && memberships_level[0][:recurring] == true
         Stripe.api_key = SiteSetting.memberships_stripe_secret_key
+        begin
+          if !memberships_level[0][:stripe_plan_id].nil?
+            plan = Stripe::Plan.retrieve(memberships_level[0][:stripe_plan_id])
+            plan.delete
+          end
 
-        if !memberships_level[0][:stripe_plan_id].nil?
-          plan = Stripe::Plan.retrieve(memberships_level[0][:stripe_plan_id])
-          plan.delete
+          if !memberships_level[0][:stripe_product_id].nil?
+            product = Stripe::Product.retrieve(memberships_level[0][:stripe_product_id])
+            product.delete
+          end
+        rescue => e
+          render_json_error(e)
         end
-
-        if !memberships_level[0][:stripe_product_id].nil?
-          product = Stripe::Product.retrieve(memberships_level[0][:stripe_product_id])
-          product.delete
-        end
-        
+          
       end
 
       levels.delete(memberships_level[0])
