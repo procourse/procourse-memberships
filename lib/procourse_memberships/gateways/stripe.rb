@@ -18,12 +18,12 @@ module ProcourseMemberships
               description: product[:description],
               source: token,
           })
-          membershps_gateway = ProcourseMemberships::Billing::Gateways.new(:user_id => user_id, :product_id => product[:id], :token => charge.source.fingerprint)
+          memberships_gateway = ProcourseMemberships::Billing::Gateways.new(:user_id => user_id, :product_id => product[:id], :token => charge.source.fingerprint)
           memberships_gateway.store_token
           
           credit_card = {
               name: charge.source.name,
-              last_4:i charge.source.last4,
+              last_4: charge.source.last4,
               expiration: charge.source.exp_month.to_s + "/" + charge.source.exp_year.to_s,
               brand: charge.source.brand,
               image: nil
