@@ -39,11 +39,47 @@ module ProcourseMemberships
       end
 
       def subscribe(user_id, product, nonce, options = {})
-    
+        customer = Stripe::Customer.create(
+          :description => user_id,
+          :source => nonce[:id]
+        )
+        
+        subscription = Stripe::Subscription.create({
+          customer: customer["id"],
+          trial_from_plan: product[:trial],
+          items: [{
+            plan: product[:stripe_plan_id]
+          }]
+        })
+
+        if subscription.status == "active"
+          memberships_gateway = ProcourseMemberships::Billing::Gateways.new(:user_id => user_id, :product_id => product[:id], :token => { :customer_id => customer["id"], :subscription_id => subscription["id"]})
+          memberships_gateway.store_token
+
+          memberships_gateway.store_subscription(subscription["id"], Time.at(subscription["current_period_end"]))
+
+          subscription.success = true
+
+          return {:response => subscription}
+
+        else
+          subscription.success = false
+          return {:message => subscription}
+        end
+
       end
 
       def unsubscribe(subscription_id, options = {})
+        sub = Stripe::Subscription.retrieve(subscription_id)
+        sub.delete
 
+        if sub["status"] == "canceled"
+          sub.success = true
+          return {:response => sub}
+        else
+          sub.success = false
+          return {:message => sub}
+        end
       end
 
       def update_payment(user_id, product, subscription_id, nonce, options = {})
