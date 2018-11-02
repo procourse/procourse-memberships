@@ -68,10 +68,9 @@ module ProcourseMemberships
       end
 
       def unsubscribe(subscription_id, options = {})
-
         begin
-          sub = Stripe::Subscription.retrieve(subscription_id)
-          sub.delete
+          subscription = Stripe::Subscription.retrieve(subscription_id)
+          subscription.delete
           return {:response => {:success => true}}
         rescue => e
           return {:message => e}
