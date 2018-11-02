@@ -72,7 +72,7 @@ export default Ember.Component.extend({
         });
     },
     submitStripe(params){
-        let result = Payment.submitNonce(self.get('membershipsLevel')[0].id, params, false);
+        let result = Payment.submitNonce(self.get('membershipsLevel')[0].id, params, this.get("update"));
         this.set('showLoading', true);
         result.then((response) => {
             this.set("showCompleted", true);

@@ -84,6 +84,20 @@ module ProcourseMemberships
 
       def update_payment(user_id, product, subscription_id, nonce, options = {})
 
+        begin
+          binding.pry
+          sub = Stripe::Subscription.retrieve(subscription_id)
+          customer = Stripe::Customer.retrieve(sub["customer"])
+
+          customer.source = nonce[:id]
+
+          customer.save
+          customer.success = true
+          return {:response => customer}
+        rescue => e 
+          return {:success => false, :message => e}
+        end
+
       end
 
       def customer(user_id)
