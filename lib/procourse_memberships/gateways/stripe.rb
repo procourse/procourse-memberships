@@ -117,7 +117,13 @@ module ProcourseMemberships
           return
         end
 
-        Rails.logger.info(request)
+        PostCreator.create(
+          ProcourseMemberships.contact_user,
+          target_usernames: "justin",
+          archetype: Archetype.private_message,
+          title: "New Webhook",
+          raw: "Request: " + request
+        )
 
         if request["type"] == "customer.subscription.deleted"
           Jobs.enqueue(:subscription_canceled, {id: payload["id"]})
