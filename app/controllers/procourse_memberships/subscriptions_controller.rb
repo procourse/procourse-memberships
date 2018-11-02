@@ -33,7 +33,7 @@ module ProcourseMemberships
       response = gateway.unsubscribe(subscription[0][:subscription_id])
 
      
-      if ProcourseMemberships::Billing::Gateways.name == "paypal"
+      if ProcourseMemberships::Billing::Gateways.name == "paypal" || ProcourseMemberships::Billing::Gateways.name == "stripe"
         success = response[:response][:success] == true
       else
         success = response.success?

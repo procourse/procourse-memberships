@@ -72,8 +72,7 @@ module ProcourseMemberships
         begin
           sub = Stripe::Subscription.retrieve(subscription_id)
           sub.delete
-          sub.success = true
-          return {:response => sub}
+          return {:response => {:success => true}}
         rescue => e
           return {:message => e}
         end
@@ -118,7 +117,7 @@ module ProcourseMemberships
           status 400
           return
         end
-
+        puts request
         if request["type"] == "customer.subscription.deleted"
           Jobs.enqueue(:subscription_canceled, {id: request["id"]})
         elsif request["type"] == "invoice.payment_failed"
