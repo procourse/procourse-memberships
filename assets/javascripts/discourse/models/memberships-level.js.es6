@@ -56,7 +56,8 @@ MembershipsLevel.reopenClass({
             description_cooked: membershipsLevel.description_cooked,
             welcome_message: membershipsLevel.welcome_message,
             braintree_plan_id: membershipsLevel.braintree_plan_id,
-            paypal_plan_status: membershipsLevel.paypal_plan_status
+            paypal_plan_status: membershipsLevel.paypal_plan_status,
+            stripe_plan_id: membershipsLevel.stripe_plan_id
           }));
         });
       };

@@ -38,6 +38,11 @@
             {{i18n 'admin.memberships.levels.paypal_active_message'}}
           </div>
         {{/if}}
+        {{#if stripePlanExists}}
+          <div class="notification-message">
+            {{i18n 'admin.memberships.levels.stripe_active_message'}}
+          </div>
+        {{/if}}
         </div>
         <br>
         <form class="form-horizontal">

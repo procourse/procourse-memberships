@@ -39,7 +39,7 @@ module ProcourseMemberships
       end
 
       def subscribe(user_id, product, nonce, options = {})
-
+    
       end
 
       def unsubscribe(subscription_id, options = {})
