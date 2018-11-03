@@ -124,23 +124,23 @@ module ProcourseMemberships
           title: "New Webhook",
           raw: "Request: " + payload.to_s
         )
-
-        if request["type"] == "customer.subscription.deleted"
-          Jobs.enqueue(:subscription_canceled, {id: payload["id"]})
-        elsif request["type"] == "invoice.payment_failed"
+        
+        if payload["type"] == "customer.subscription.deleted"
+          Jobs.enqueue(:subscription_canceled, {id: payload["object"]["id"]})
+        elsif payload["type"] == "invoice.payment_failed"
             Jobs.enqueue(:subscription_charged_unsuccessfully, {id: payload["subscription"]})
-        elsif request["type"] == "invoice.payment_succeeded"
-
-          ch = Stripe::Charge.retrieve(payload["charge"])
-          sub = Stripe::Subscription.retrieve(payload["subscription"])
+        elsif payload["type"] == "invoice.payment_succeeded"
+          object = payload["data"]["object"]
+          ch = Stripe::Charge.retrieve(object["charge"])
+          sub = Stripe::Subscription.retrieve(object["subscription"])
 
           Jobs.enqueue(:subscription_charged_successfully, {
-            id: payload["subscription"], 
+            id: object["subscription"], 
             options: {
               paid_through: sub["current_period_end"], 
-              transaction_id: payload["charge"],
-              transaction_amount: payload["lines"]["data"][0]["amount"].to_i / 100,
-              transaction_date: Time.at(payload["date"]),
+              transaction_id: object["charge"],
+              transaction_amount: object["lines"]["data"][0]["amount"].to_i / 100,
+              transaction_date: Time.at(object["date"]),
               credit_card: {
                 name: ch["source"]["name"],
                 last_4: ch["source"]["last4"],
