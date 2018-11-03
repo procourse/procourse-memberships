@@ -131,7 +131,7 @@ module ProcourseMemberships
             Jobs.enqueue(:subscription_charged_unsuccessfully, {id: payload["subscription"]})
         elsif payload["type"] == "invoice.payment_succeeded"
           object = payload["data"]["object"]
-          if object["charge"] != null
+          if !object["charge"].blank?
             Rails.logger.warn("Charge Found -- " + object)
             ch = Stripe::Charge.retrieve(object["charge"])
             sub = Stripe::Subscription.retrieve(object["subscription"])
