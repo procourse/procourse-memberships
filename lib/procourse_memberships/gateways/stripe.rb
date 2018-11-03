@@ -132,6 +132,7 @@ module ProcourseMemberships
         elsif payload["type"] == "invoice.payment_succeeded"
           object = payload["data"]["object"]
           if !object["charge"].nil?
+            Rails.logger.warn("Charge Found -- " + object)
             ch = Stripe::Charge.retrieve(object["charge"])
             sub = Stripe::Subscription.retrieve(object["subscription"])
 
