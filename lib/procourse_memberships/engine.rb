@@ -37,10 +37,11 @@ module ProcourseMemberships
             gateway = ProcourseMemberships::Billing::Gateways.new.gateway
             response = gateway.unsubscribe(JSON.parse(subscription.value)[0]["subscription_id"])
 
-            if response.success?
-              success = true
-            elsif response[:response][:success] == true
-              success = true
+
+            if ProcourseMemberships::Billing::Gateways.name == "braintree"
+              success = response.success?
+            else
+              success = response[:response][:success] == true     
             end
 
             if success && user
@@ -85,10 +86,10 @@ module ProcourseMemberships
             gateway = ProcourseMemberships::Billing::Gateways.new.gateway
             response = gateway.unsubscribe(JSON.parse(subscription.value)[0]["subscription_id"])
 
-            if response.success?
-              success = true
-            elsif response[:response][:success] == true
-              success = true
+            if ProcourseMemberships::Billing::Gateways.name == "braintree"
+              success = response.success?
+            else
+              success = response[:response][:success] == true     
             end
 
             if success && user
