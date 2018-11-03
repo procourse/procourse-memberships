@@ -110,10 +110,10 @@ module ProcourseMemberships
             payload, sig_header, endpoint_secret
           )
         rescue JSON::ParserError => e
-          status 400
+          head 400
           return
         rescue Stripe::SignatureVerificationError => e
-          status 400
+          head 400
           return
         end
 
@@ -153,7 +153,7 @@ module ProcourseMemberships
           end
         end
 
-        status 200
+        head 200
       end
 
     end
