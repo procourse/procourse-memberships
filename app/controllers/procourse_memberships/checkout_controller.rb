@@ -1,6 +1,7 @@
 require_relative '../../../lib/procourse_memberships/billing/gateways'
 require_relative '../../../lib/procourse_memberships/gateways/braintree'
 require_relative '../../../lib/procourse_memberships/gateways/paypal'
+require_relative '../../../lib/procourse_memberships/gateways/stripe'
 
 module ProcourseMemberships
   class CheckoutController < ApplicationController

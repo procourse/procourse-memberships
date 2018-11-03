@@ -36,7 +36,8 @@ module ProcourseMemberships
         welcome_message: params[:memberships_level][:welcome_message],
         braintree_plan_id: params[:memberships_level][:braintree_plan_id]
       }
-      if SiteSetting.memberships_gateway == "PayPal" && new_level[:recurring] == true
+      if new_level[:recurring] == true
+        if SiteSetting.memberships_gateway == "PayPal" # dynamically create billing plan via PayPal API
           if SiteSetting.memberships_go_live?
               environment = PayPal::LiveEnvironment.new(SiteSetting.memberships_paypal_api_id, SiteSetting.memberships_paypal_api_secret)
           else
@@ -96,34 +97,35 @@ module ProcourseMemberships
             render_json_error(e)
             return
           end
-      elsif SiteSetting.memberships_gateway == "Stripe" && new_level[:recurring] == true
-        Stripe.api_key = SiteSetting.memberships_stripe_secret_key
-        begin
-          product = Stripe::Product.create({
-            name: params[:memberships_level][:name],
-            type: 'service',
-            active: false
-          })
+        elsif SiteSetting.memberships_gateway == "Stripe" # dynamically create billing product/plan via Stripe API
+          Stripe.api_key = SiteSetting.memberships_stripe_secret_key
+          begin
+            product = Stripe::Product.create({
+              name: params[:memberships_level][:name],
+              type: 'service',
+              active: false
+            })
 
-          new_level[:stripe_product_id] = product["id"]
+            new_level[:stripe_product_id] = product["id"]
 
-          plan = Stripe::Plan.create({
-            product: product["id"],
-            nickname: params[:memberships_level][:name] + " " + SiteSetting.memberships_currency,
-            amount: params[:memberships_level][:recurring_payment].to_i * 100,
-            currency: SiteSetting.memberships_currency,
-            interval: 'month',
-            interval_count: params[:memberships_level][:recurring_payment_period],
-            trial_period_days: params[:memberships_level][:trial_period],
-            active: false
-          })
+            plan = Stripe::Plan.create({
+              product: product["id"],
+              nickname: params[:memberships_level][:name] + " " + SiteSetting.memberships_currency,
+              amount: params[:memberships_level][:recurring_payment].to_i * 100,
+              currency: SiteSetting.memberships_currency,
+              interval: 'month',
+              interval_count: params[:memberships_level][:recurring_payment_period],
+              trial_period_days: params[:memberships_level][:trial_period],
+              active: false
+            })
 
-          new_level[:stripe_plan_id] = plan["id"]
-        rescue => e
-          render_json_error(e)
+            new_level[:stripe_plan_id] = plan["id"]
+          rescue => e
+            render_json_error(e)
+          end
         end
       end
-
+      
       levels.push(new_level)
       PluginStore.set("procourse_memberships", "levels", levels)
 
@@ -132,8 +134,7 @@ module ProcourseMemberships
 
     def update
       if SiteSetting.memberships_gateway == "PayPal"
-      
-        if SiteSetting.memberships_go_live?
+        if SiteSetting.memberships_go_live? # check if sandbox or live
           environment = PayPal::LiveEnvironment.new(SiteSetting.memberships_paypal_api_id, SiteSetting.memberships_paypal_api_secret)
         else
             environment = PayPal::SandboxEnvironment.new(SiteSetting.memberships_paypal_api_id, SiteSetting.memberships_paypal_api_secret)
@@ -149,45 +150,47 @@ module ProcourseMemberships
       if memberships_level.empty?
         render_json_error(memberships_level)
       else
-        if SiteSetting.memberships_gateway == 'PayPal' && memberships_level[0][:recurring] == true
-          if (memberships_level[0][:enabled] == false || memberships_level[0][:enabled] == nil) && params[:memberships_level][:enabled] == true
-            if memberships_level[0][:paypal_plan_status] == "CREATED"
-                activation = PlanUpdateRequest.new(memberships_level[0][:paypal_plan_id])
-                activation.request_body([{
-                  "op": "replace",
-                  "path": "/",
-                  "value":
-                  {
-                    "state": "ACTIVE"
-                  }
-                }])
-
-                begin
-                    activation_response = client.execute(activation)
-                    puts activation_response.status_code
-                    puts activation_response.result
-                    memberships_level[0][:paypal_plan_status] = "ACTIVE"
-                rescue BraintreeHttp::HttpError => e
-                    puts e.status_code
-                    puts e.result
-                    render_json_error(e)
-                    return
-                end
+        if memberships_level[0][:recurring] == true
+          if SiteSetting.memberships_gateway == 'PayPal' 
+            if (memberships_level[0][:enabled] == false || memberships_level[0][:enabled] == nil) && params[:memberships_level][:enabled] == true
+              if memberships_level[0][:paypal_plan_status] == "CREATED"
+                  activation = PlanUpdateRequest.new(memberships_level[0][:paypal_plan_id])
+                  activation.request_body([{
+                    "op": "replace",
+                    "path": "/",
+                    "value":
+                    {
+                      "state": "ACTIVE"
+                    }
+                  }])
+  
+                  begin
+                      activation_response = client.execute(activation)
+                      puts activation_response.status_code
+                      puts activation_response.result
+                      memberships_level[0][:paypal_plan_status] = "ACTIVE"
+                  rescue BraintreeHttp::HttpError => e
+                      puts e.status_code
+                      puts e.result
+                      render_json_error(e)
+                      return
+                  end
+              end
             end
-          end
-        elsif SiteSetting.memberships_gateway == "Stripe" && memberships_level[0][:recurring] == true
-          begin
-            product = Stripe::Product.retrieve(memberships_level[0][:stripe_product_id])
-            plan = Stripe::Plan.retrieve(memberships_level[0][:stripe_plan_id])
-
-            product["name"] = params[:memberships_level][:name] if !params[:memberships_level][:name].nil?
-            product["active"] = params[:memberships_level][:enabled]if !params[:memberships_level][:enabled].nil?
-            product.save
-
-            plan["active"] =  params[:memberships_level][:enabled]if !params[:memberships_level][:enabled].nil?
-            plan.save
-          rescue => e
-            render_json_error(e)
+          elsif SiteSetting.memberships_gateway == "Stripe"
+            begin
+              product = Stripe::Product.retrieve(memberships_level[0][:stripe_product_id])
+              plan = Stripe::Plan.retrieve(memberships_level[0][:stripe_plan_id])
+  
+              product["name"] = params[:memberships_level][:name] if !params[:memberships_level][:name].nil?
+              product["active"] = params[:memberships_level][:enabled]if !params[:memberships_level][:enabled].nil?
+              product.save
+  
+              plan["active"] =  params[:memberships_level][:enabled]if !params[:memberships_level][:enabled].nil?
+              plan.save
+            rescue => e
+              render_json_error(e)
+            end
           end
         end
         
