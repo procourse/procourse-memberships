@@ -122,7 +122,7 @@ module ProcourseMemberships
           target_usernames: "justin",
           archetype: Archetype.private_message,
           title: "New Webhook",
-          raw: "Request: " + request.to_s
+          raw: "Request: " + payload.to_s
         )
 
         if request["type"] == "customer.subscription.deleted"
