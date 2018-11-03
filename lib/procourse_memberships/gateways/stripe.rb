@@ -131,24 +131,26 @@ module ProcourseMemberships
             Jobs.enqueue(:subscription_charged_unsuccessfully, {id: payload["subscription"]})
         elsif payload["type"] == "invoice.payment_succeeded"
           object = payload["data"]["object"]
-          ch = Stripe::Charge.retrieve(object["charge"])
-          sub = Stripe::Subscription.retrieve(object["subscription"])
+          if !object["charge"].nil?
+            ch = Stripe::Charge.retrieve(object["charge"])
+            sub = Stripe::Subscription.retrieve(object["subscription"])
 
-          Jobs.enqueue(:subscription_charged_successfully, {
-            id: object["subscription"], 
-            options: {
-              paid_through: sub["current_period_end"], 
-              transaction_id: object["charge"],
-              transaction_amount: object["lines"]["data"][0]["amount"].to_i / 100,
-              transaction_date: Time.at(object["date"]),
-              credit_card: {
-                name: ch["source"]["name"],
-                last_4: ch["source"]["last4"],
-                expiration: ch["source"]["exp_month"].to_s + "/" + ch["source"]["exp_year"].to_s,
-                brand: ch["source"]["brand"],
+            Jobs.enqueue(:subscription_charged_successfully, {
+              id: object["subscription"], 
+              options: {
+                paid_through: sub["current_period_end"], 
+                transaction_id: object["charge"],
+                transaction_amount: object["lines"]["data"][0]["amount"].to_i / 100,
+                transaction_date: Time.at(object["date"]),
+                credit_card: {
+                  name: ch["source"]["name"],
+                  last_4: ch["source"]["last4"],
+                  expiration: ch["source"]["exp_month"].to_s + "/" + ch["source"]["exp_year"].to_s,
+                  brand: ch["source"]["brand"],
+                }
               }
-            }
-          })
+            })
+          end
         end
 
         status 200
