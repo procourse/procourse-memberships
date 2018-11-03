@@ -45,7 +45,7 @@ module ProcourseMemberships
           else
             render_json_error(response.message)
           end
-      elsif params[:update] == true
+      elsif params[:update] == true  # update billing information
         subscriptions = PluginStore.get("procourse_memberships", "s:" + current_user.id.to_s) || []
         user_subscription = subscriptions.select{|subscription| subscription[:product_id].to_i == params[:level_id].to_i} || []
 
