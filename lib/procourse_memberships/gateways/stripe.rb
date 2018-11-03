@@ -105,44 +105,35 @@ module ProcourseMemberships
         sig_header = request.env['HTTP_STRIPE_SIGNATURE']
         event = nil
 
+        # validate webook
         begin
           event = Stripe::Webhook.construct_event(
             payload, sig_header, endpoint_secret
           )
         rescue JSON::ParserError => e
           return 400
-          return
         rescue Stripe::SignatureVerificationError => e
           return 400
-          return
         end
 
-        PostCreator.create(
-          ProcourseMemberships.contact_user,
-          target_usernames: "justin",
-          archetype: Archetype.private_message,
-          title: "New Webhook",
-          raw: "Request: " + payload.to_s
-        )
-        
-        if payload["type"] == "customer.subscription.deleted"
-          Jobs.enqueue(:subscription_canceled, {id: payload["object"]["id"]})
-        elsif payload["type"] == "invoice.payment_failed"
-            Jobs.enqueue(:subscription_charged_unsuccessfully, {id: payload["subscription"]})
-        elsif payload["type"] == "invoice.payment_succeeded"
-          object = payload["data"]["object"]
-          if !object["charge"].blank?
-            Rails.logger.warn("Charge Found -- " + object)
-            ch = Stripe::Charge.retrieve(object["charge"])
-            sub = Stripe::Subscription.retrieve(object["subscription"])
+        if event["type"] == "customer.subscription.deleted"
+          Jobs.enqueue(:subscription_canceled, {id: event["data"]["object"]["id"]})
+        elsif event["type"] == "invoice.payment_failed"
+            Jobs.enqueue(:subscription_charged_unsuccessfully, {id: event["data"]["object"]["subscription"]})
+        elsif event["type"] == "invoice.payment_succeeded"
+
+          if !event["data"]["object"]["charge"].blank?  # check for cases where there is a zero balance payment
+
+            ch = Stripe::Charge.retrieve(event["data"]["object"]["charge"]) # get charge information not included on invoice
+            sub = Stripe::Subscription.retrieve(event["data"]["object"]["subscription"]) # get subscription information not included on invoice
 
             Jobs.enqueue(:subscription_charged_successfully, {
-              id: object["subscription"], 
+              id: event["data"]["object"]["subscription"], 
               options: {
-                paid_through: sub["current_period_end"], 
-                transaction_id: object["charge"],
-                transaction_amount: object["lines"]["data"][0]["amount"].to_i / 100,
-                transaction_date: Time.at(object["date"]),
+                paid_through: Time.at(sub["current_period_end"]), 
+                transaction_id: event["data"]["object"]["charge"],
+                transaction_amount: event["data"]["object"]["lines"]["data"][0]["amount"].to_i / 100,
+                transaction_date: Time.at(event["data"]["object"]["date"]),
                 credit_card: {
                   name: ch["source"]["name"],
                   last_4: ch["source"]["last4"],

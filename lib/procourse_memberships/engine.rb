@@ -183,3 +183,5 @@ module ProcourseMemberships
 
   end
 end
+
+require_relative '../../lib/procourse_memberships/billing/gateways'
