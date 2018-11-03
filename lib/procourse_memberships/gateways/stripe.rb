@@ -73,7 +73,7 @@ module ProcourseMemberships
           subscription.delete
           return {:response => {:success => true}}
         rescue => e
-          return {:message => e}
+          return {:response => {:success => false}, :message => e}
         end
       end
 
