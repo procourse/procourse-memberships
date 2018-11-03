@@ -37,7 +37,7 @@ module ProcourseMemberships
             gateway = ProcourseMemberships::Billing::Gateways.new.gateway
             response = gateway.unsubscribe(JSON.parse(subscription.value)[0]["subscription_id"])
 
-            if response.success? && user
+            if (response.success? || response[:response][:success] == true) && user
 
               memberships_gateway = ProcourseMemberships::Billing::Gateways.new(:user_id => user_id, :product_id => JSON.parse(subscription.value)[0]["product_id"])
               memberships_gateway.unstore_subscription
