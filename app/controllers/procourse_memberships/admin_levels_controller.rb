@@ -208,7 +208,7 @@ module ProcourseMemberships
         memberships_level[0][:description_cooked] = params[:memberships_level][:description_cooked] if !params[:memberships_level][:description_cooked].nil?
         memberships_level[0][:welcome_message] = params[:memberships_level][:welcome_message] if !params[:memberships_level][:welcome_message].nil?
         memberships_level[0][:braintree_plan_id] = params[:memberships_level][:braintree_plan_id] if !params[:memberships_level][:braintree_plan_id].nil?
-        memberships_level[0][:stripe_product_id] = product["id"] if product.nil?
+        memberships_level[0][:stripe_product_id] = product["id"] if !product.nil?
 
         PluginStore.set("procourse_memberships", "levels", levels)
 
