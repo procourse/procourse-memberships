@@ -27,13 +27,14 @@
       {{/if}}
     </div>
     {{#if currentUser }}
-      {{#unless memberSubscription}}
       <div class="user-table">
         <div class="wrapper">
             {{#if showBraintree}}
               {{billing-braintree membershipsLevel=model showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=memberSubscription}}
             {{else if showPaypal}}
-              {{billing-paypal membershipsLevel=model showPaypal=showPaypal showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=memberSubscription}}
+              {{#unless memberSubscription}}
+                {{billing-paypal membershipsLevel=model showPaypal=showPaypal showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=memberSubscription}}
+              {{/unless}}
             {{else if showStripe}}  
               {{billing-stripe membershipsLevel=model showStripe=showStripe showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=memberSubscription}}
             {{else}}
@@ -50,7 +51,6 @@
           {{/if}}
         </div>
       </div>
-      {{/unless}}
     {{else}} {{!-- currentUser --}}
     <div>{{I18n 'memberships.checkout.sign_up_message'}}</div>
     <div class="account-buttons">
