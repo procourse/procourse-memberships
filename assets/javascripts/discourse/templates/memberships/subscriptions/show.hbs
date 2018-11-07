@@ -1,0 +1,29 @@
+{{#conditional-loading-spinner condition=loading}}
+<div class="memberships checkout update-billing">
+  {{checkout-progress state=checkoutState}}
+  <div class="billing-section">
+    {{#if showDescription}}
+    <p>Update your payment method for ProCourse Memberships.</p>
+    {{/if}}
+  </div>
+  <div class="user-table">
+    <div class="wrapper">
+      {{#if showBraintree}}
+        {{billing-braintree membershipsLevel=model showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=true}}
+      {{else}}
+        {{#if showBilling}}
+          {{update-billing}}
+        {{/if}}
+
+        {{#if showVerify}}
+          {{verify}}
+        {{/if}}
+      {{/if}} {{!-- showBraintree --}}
+
+      {{#if showCompleted}}
+        <div>{{{I18n 'memberships.checkout.update_billing.completed_message'}}}</div>
+      {{/if}}
+    </div>
+  </div>
+</div>
+{{/conditional-loading-spinner}}

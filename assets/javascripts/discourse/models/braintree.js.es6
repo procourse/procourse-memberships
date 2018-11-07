@@ -2,6 +2,6 @@ import { ajax } from 'discourse/lib/ajax';
 
 export default {
   clientToken() {
-    return ajax('/league/checkout/braintree-token', {dataType: "text"});
+    return ajax('/memberships/checkout/braintree-token', {dataType: "text"});
   }
 };

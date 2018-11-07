@@ -1,0 +1,63 @@
+{{#conditional-loading-spinner condition=loading}}
+<div class="memberships checkout">
+  {{#if memberExists}}
+    {{#if memberSubscription}}
+
+    {{else}}
+      <div>{{I18n 'memberships.member_exists'}}</div>
+    {{/if}} {{!-- memberSubscription --}}
+  {{/if}} {{!-- memberExists --}}
+  {{#if memberInsufficientTL}}
+    <div>{{I18n 'memberships.member_insufficient_tl'}}</div>
+  {{/if}} {{!-- memberInsufficientTL --}}
+  {{#if showPayment}}
+    {{checkout-progress state=checkoutState}}
+    <div class="billing-section">
+      {{#if showDescription}}
+        {{#if memberSubscription}}
+          {{#if isPayPal}}
+            <p>{{{I18n 'memberships.checkout.update_billing.paypal_description'}}}</p>
+            <center>{{d-button action="goToBilling" class="btn" label="memberships.billing"}}</center>
+          {{else}}
+            <p>{{{I18n 'memberships.checkout.update_billing.description' }}}</p>
+          {{/if}}
+        {{else}}
+          <p>{{{model.0.description_cooked}}}</p>
+        {{/if}} {{!-- memberSubscription --}}
+      {{/if}}
+    </div>
+    {{#if currentUser }}
+      <div class="user-table">
+        <div class="wrapper">
+            {{#if showBraintree}}
+              {{billing-braintree membershipsLevel=model showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=memberSubscription}}
+            {{else if showPaypal}}
+              {{#unless memberSubscription}}
+                {{billing-paypal membershipsLevel=model showPaypal=showPaypal showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=memberSubscription}}
+              {{/unless}}
+            {{else if showStripe}}  
+              {{billing-stripe membershipsLevel=model showStripe=showStripe showBilling=showBilling showVerify=showVerify showCompleted=showCompleted checkoutState=checkoutState update=memberSubscription}}
+            {{else}}
+                {{#if showBilling}}
+                  {{billing update=memberSubscription}}
+                {{/if}}
+                {{#if showVerify}}
+                  {{verify}}
+                {{/if}}
+            {{/if}} <!-- showBraintree -->
+
+          {{#if showCompleted}}
+            <div>{{{I18n 'memberships.checkout.completed_message'}}}</div>
+          {{/if}}
+        </div>
+      </div>
+    {{else}} {{!-- currentUser --}}
+    <div>{{I18n 'memberships.checkout.sign_up_message'}}</div>
+    <div class="account-buttons">
+      <span>{{d-button action="showCreateAccount" class="btn-primary sign-up-button" label="sign_up"}}</span>
+      <span>{{#d-button class="btn-primary" action="showLogin"}}{{fa-icon 'user'}} {{i18n 'log_in'}}{{/d-button}}</span>
+    </div>
+    {{/if}} {{!-- currentUser --}}
+  {{/if}} {{!-- showPayment --}}
+</div>
+{{/conditional-loading-spinner}}
