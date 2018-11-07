@@ -29,29 +29,22 @@ export default Ember.Component.extend({
     showLoading(paypalLoading){
       return paypalLoading;
     },
-    init(){
-        this._super();
-        this.set('paypalLoading', true);
-        // this.set('subscriptionProduct', false);
+    @on('init')
+    checkSubscriptionStatus(){
+        this.set('showPaypal', true);
+        this.set('subscriptionProduct', false);
 
-        let pathArray = window.location.pathname.split('/');
-        level.findById(pathArray[3]).then((result) => {
-            this.set('paypalLoading', false);
-            if (result[0].recurring) {
-                this.set('subscriptionProduct', true);
-            }
-            else {
-                this.set('subscriptionProduct', false);
-                this.paypal();
-            }
-            
-        });
+        const recurringLevel = this.get('membershipsLevel')[0].recurring;
+        if (recurringLevel) {
+            this.set('subscriptionProduct', true);
+        }
+        else {
+            this.set('subscriptionProduct', false);
+            this.paypal();
+        }
+
             
   
-    },
-    @on('init')
-    subscriptionProduct(){
-        this.set("subscriptionProduct", true)
     },
     @on('init')
     goLiveSetting(){
@@ -64,6 +57,7 @@ export default Ember.Component.extend({
         const params = this.get("params");
         if (params.token) {
             this.set('subscriptionProduct', false);
+            this.set('paypalLoading', true);
             let result = Payment.submitNonce(this.get('membershipsLevel')[0].id, params.token , "execute");
             result.then(response => {
                 this._paymentExecuted();
