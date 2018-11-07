@@ -45,7 +45,7 @@ module ProcourseMemberships
 
           response["result"]["success"] = true
           response["result"]["gateway"] = "paypal"
-          return {:response => response.result}
+          return {:success => true, :response => response.result}
         rescue BraintreeHttp::HttpError => e
           puts e.status_code
           puts e.result
@@ -94,7 +94,7 @@ module ProcourseMemberships
                 memberships_gateway.store_transaction(transaction.id, transaction.amount.total, Time.now(), nil, paypal)
             end
             response.result.success = true
-            return {:response => response.result}
+            return {:success => true, :response => response.result}
           rescue BraintreeHttp::HttpError => e
             puts e.status_code
             puts e.result
@@ -119,17 +119,11 @@ module ProcourseMemberships
 
           begin
             response = @@client.execute(request)
-            puts response.status_code
-            puts response.result
 
-            response["result"]["success"] = true
             response["result"]["gateway"] = "paypal"
 
-            response.result
-            return {:response => response.result}
+            return {:success => true, :response => response.result}
           rescue BraintreeHttp::HttpError => e
-            puts e.status_code
-            puts e.result
             return {:success => false, :message => e}
           end
       end
@@ -140,14 +134,9 @@ module ProcourseMemberships
 
           begin
             response = @@client.execute(request)
-            puts response
-            response.result = {"success": true}
-            return {:response => response.result}
+            return {:success => true, :response => response.result}
           rescue BraintreeHttp::HttpError => e
-            puts e.status_code
-            puts e.result
-            response.message = e
-            return response
+            return {:success => false, :message => e}
           end
       end
 

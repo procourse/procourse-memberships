@@ -22,7 +22,7 @@ module ProcourseMemberships
               response = gateway.execute(current_user.id, product[0], params[:nonce], nil)
           end
 
-          if response[:response].success == true
+          if response[:success] == true
             group = Group.find(product[0][:group].to_i)
             if !group.users.include?(current_user)
               group.add(current_user)
@@ -43,7 +43,7 @@ module ProcourseMemberships
               return render_json_error(group)
             end
           else
-            render_json_error(response.message)
+            render_json_error(response[:message])
           end
       elsif params[:update] == true  # update billing information
         subscriptions = PluginStore.get("procourse_memberships", "s:" + current_user.id.to_s) || []
@@ -55,7 +55,7 @@ module ProcourseMemberships
 
         response = gateway.update_payment(current_user.id, product[0], user_subscription[0][:subscription_id], params[:nonce])
 
-        if response[:response].success?
+        if response[:success]
           render json: success_json
         else
           render_json_error(response[:message])
@@ -68,16 +68,12 @@ module ProcourseMemberships
         end
        
         if ProcourseMemberships::Billing::Gateways.name == "paypal"
-          success = response[:response].success == true
           if (response[:response].payer && response[:response].payer.payment_method == "paypal") || response[:response].gateway == "paypal" # stops group processing before PayPal payment gets authorized
               render json: response[:response]
               return
           end
-        else
-          success = response[:response].success?
         end
-
-        if success
+        if response[:success]
           group = Group.find(product[0][:group].to_i)
           if !group.users.include?(current_user)
             group.add(current_user)
@@ -98,7 +94,7 @@ module ProcourseMemberships
             return render_json_error(group)
           end
         else
-          render_json_error(response.message)
+          render_json_error(response[:message])
         end
       end
     end

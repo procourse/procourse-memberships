@@ -48,7 +48,7 @@ module ProcourseMemberships
             image: response.transaction.paypal_details.image_url
           }
           memberships_gateway.store_transaction(response.transaction.id, response.transaction.amount, Time.now(), credit_card, paypal)
-          return {:response => response}
+          return {:success => true, :response => response}
         else
           return {:success => false, :message => response}
         end
@@ -77,7 +77,7 @@ module ProcourseMemberships
                 brand: transaction.credit_card_details.card_type
               }
             end
-            return {:response => subscription}
+            return {:success => true, :response => subscription}
           else
             return {:success => false, :message => subscription.errors.first.message}
           end
@@ -88,8 +88,12 @@ module ProcourseMemberships
       end
 
       def unsubscribe(subscription_id, options = {})
-        response = Braintree::Subscription.cancel(subscription_id)
-        return response
+        begin
+          response = Braintree::Subscription.cancel(subscription_id)
+          return {:success => true, :response => response}
+        rescue => e
+          return {:success => false, :message => e}
+        end
       end
 
       def update_payment(user_id, product, subscription_id, nonce, options = {})
@@ -107,9 +111,9 @@ module ProcourseMemberships
           if subscription.success?
             memberships_gateway = ProcourseMemberships::Billing::Gateways.new(:user_id => user_id, :product_id => product[:id], :token => subscription.subscription.payment_method_token)
             memberships_gateway.update_token
-            return {:response => subscription}
+            return {:success => true, :response => subscription}
           else
-            return {:response => subscription, :message => subscription.errors.first.message}
+            return {:success => false, :response => subscription, :message => subscription.errors.first.message}
           end
         else
           return {:success => false, :message => payment.errors.first.message}

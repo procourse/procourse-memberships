@@ -29,10 +29,9 @@ module ProcourseMemberships
               image: nil
           }
           memberships_gateway.store_transaction(charge.id, charge.amount / 100, Time.now(), credit_card, nil)
-          charge.success = true
-          return {:response => charge}
+          return {:success => true, :response => charge}
         rescue => e
-          return {:message => e}
+          return {:success => false, :message => e}
         end
       end
 
@@ -57,12 +56,11 @@ module ProcourseMemberships
 
           memberships_gateway.store_subscription(subscription["id"], Time.at(subscription["current_period_end"]))
 
-          subscription.success = true
-
-          return {:response => subscription}
+          return {:success => true, :response => subscription}
 
         rescue => e
-          return {:message => e}
+          binding.pry
+          return {:success => false, :message => e}
         end
 
       end
@@ -71,9 +69,9 @@ module ProcourseMemberships
         begin
           subscription = Stripe::Subscription.retrieve(subscription_id)
           subscription.delete
-          return {:response => {:success => true}}
+          return {:success => true, :response => subscription}
         rescue => e
-          return {:response => {:success => false}, :message => e}
+          return {:success => false, :message => e}
         end
       end
 
@@ -86,8 +84,7 @@ module ProcourseMemberships
           customer.source = nonce[:id]
 
           customer.save
-          customer.success = true
-          return {:response => customer}
+          return {:success => true, :response => customer}
         rescue => e 
           return {:success => false, :message => e}
         end
