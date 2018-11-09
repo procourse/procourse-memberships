@@ -37,14 +37,7 @@ module ProcourseMemberships
             gateway = ProcourseMemberships::Billing::Gateways.new.gateway
             response = gateway.unsubscribe(JSON.parse(subscription.value)[0]["subscription_id"])
 
-
-            if ProcourseMemberships::Billing::Gateways.name == "braintree"
-              success = response.success?
-            else
-              success = response[:response][:success] == true     
-            end
-
-            if success && user
+            if response[:success] && user
 
               memberships_gateway = ProcourseMemberships::Billing::Gateways.new(:user_id => user_id, :product_id => JSON.parse(subscription.value)[0]["product_id"])
               memberships_gateway.unstore_subscription
@@ -86,13 +79,7 @@ module ProcourseMemberships
             gateway = ProcourseMemberships::Billing::Gateways.new.gateway
             response = gateway.unsubscribe(JSON.parse(subscription.value)[0]["subscription_id"])
 
-            if ProcourseMemberships::Billing::Gateways.name == "braintree"
-              success = response.success?
-            else
-              success = response[:response][:success] == true     
-            end
-
-            if success && user
+            if response[:success] && user
 
               memberships_gateway = ProcourseMemberships::Billing::Gateways.new(:user_id => user_id, :product_id => JSON.parse(subscription.value)[0]["product_id"])
               memberships_gateway.unstore_subscription
