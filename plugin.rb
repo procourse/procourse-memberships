@@ -1,6 +1,6 @@
 # name: procourse-memberships
 # about: Adds the ability to sell memberships to groups.
-# version: 0.1
+# version: 1.0
 # author: Joe Buhlig joebuhlig.com
 # contributors: Justin DiRose justindirose.com
 # url: https://www.github.com/discourseleague/discourse-league
