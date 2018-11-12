@@ -1,0 +1,129 @@
+fr:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          procourse_memberships: "ProCourse Memberships"
+  js:
+    admin:
+      memberships:
+        titles:
+          dashboard: "Tableau de bord"
+          levels: "Niveaux"
+          gateways: "Passerelles"
+          messages: "Messages"
+          advanced: "Avancé"
+          extras: "Bonus"
+        levels:
+          new_name: "Créer un nouveau niveau"
+          id: "ID"
+          membership_page: "Page publique d'adhésion"
+          trust_level: "Les utilisateurs doivent avoir au moins ce niveau de confiance pour acquérir cette adhésion."
+          trust_level_option: "(niveau de confiance)"
+          initial_payment: "Paiement initial"
+          initial_payment_description: "Le montant payé au début de l'adhésion"
+          recurring: "Récurrent"
+          recurring_description: "Ce niveau requiet un paiement récurrent ?"
+          recurring_payment: "Montant récurrent"
+          recurring_payment_description: "Le montant qui sera prélevé à chaque échéance."
+          recurring_payment_period: "Récurrence des paiements"
+          recurring_payment_period_description: "La période à laquelle le paiement s'effectue."
+          trial: "Période d'essai"
+          trial_description: "Voulez-vous offrir une période d'essai pour ce niveau ?"
+          trial_period: "Durée de l'essai"
+          trial_period_description: "La durée de la période d'essai, en jours."
+          braintree_plan_id: "ID du plan Braintree"
+          braintree_plan_id_description: "Braintree gère les souscriptions récurrents à l'aide de plans créés depuis leur panneau de contrôle. Vous aurez besoin de créer un plan sur celui-ci et entrer le numéro ID ici."
+          description_raw: "Description du niveau"
+          description_raw_description: "Le contenu qui sera affiché sur la page de paiement. Pensez à bien clarifier les détails de paiement pour vos clients."
+          welcome_message: "Message de bienvenue"
+          welcome_message_description: "Le contenu du message privé qui sera envoyé à chaque nouvel adhérent à ce niveau."
+          delete_confirm: "Supprimer ce niveau ?"
+          no_levels: "Ajoutez des niveaux pour vos utilisateurs."
+          no_level_selected: "Pas de niveau sélectionné."
+          paypal_active_message: "Les abonnements actifs sur PayPal ne peuvent pas être modifiés."
+          stripe_active_message: "Les abonnements Stripe ne peuvent pas être modifiés une fois créés"
+    memberships:
+      title: "ProCourse Memberships"
+      member_exists: "Vous êtes déjà membre du groupe que cette adhésion attribue. Si vous pensez que c'est une erreur, merci de contacter un de nos administrateurs."
+      member_insufficient_tl: "Vous n'avez pas un niveau d'utilisateur suffisant pour acquérir cette adhésion. Si vous pensez que c'est une erreur, merci de contacter un de nos administrateurs."
+      dashboard_default: "À venir"
+      billing: "Facturation"
+      subscriptions_title: "Souscriptions"
+      transactions_title: "Paiements"
+      product: "Produit"
+      paid_through_date: "Payé via"
+      subscription_id: "ID"
+      created: "Créé le"
+      actions: "Actions"
+      update_billing: "Mettre à jour le paiement"
+      cancel_subscription: "Annuler"
+      cancel_confirmation: "Êtes-vous sûr de vouloir annuler votre souscription ?"
+      transaction_id: "ID"
+      transaction_amount: "Montant"
+      transaction_date: "Date"
+      view_receipt: "Voir reçu"
+      checkout:
+        title: "Paiement de l'abonnement"
+        billing_address: "Adresse de facutation"
+        payment_details: "Détails de paiement"
+        credit_card: "Carte de crédit"
+        paypal: "PayPal"
+        paypal_email: "Courriel PayPal"
+        paypal_name: "Nom"
+        sign_up_message: "Avant de pouvoir avancer, vous devez être connecté. Vous pouvez vous connecter ou créer un nouveau compte en cliquant ci-dessous."
+        name: "Nom"
+        first_name: "Prénom"
+        last_name: "Nom de famille"
+        address_1: "Adresse 1"
+        address_2: "Adresse 2"
+        city: "Ville"
+        state: "Région/État"
+        postal_code: "Code postal"
+        country: "Pays"
+        phone: "Téléphone"
+        card_number: "Numéro de carte"
+        expiration_date: "Date d'expiration"
+        cvv: "CVC"
+        continue: "Continuer"
+        edit_payment: "Modifier"
+        submit_checkout: "Payer"
+        subscribe: "Souscrire"
+        verify_paypal: "Vous allez être diriger vers PayPal pour compléter le paiement. Une fois le formulaire complété, votre paiement sera validé.."
+        progress:
+          log_in: "Se connecter"
+          billing_payment: "Facture et paiement"
+          verify: "Vérifier"
+          completed: "Terminé"
+        cancel_message: "Le paiement a été annulé."
+        completed_message: "<h2>Réussi !</h2><p>Merci d'avoir souscris. Vous devriez recevoir un message direct prochainement avec des détails sur votre adhésion.</p>"
+        update_billing:
+          paypal_description: 'Changer la méthode de paiement et les informations de facturation sur la page <a href="/my/billing">Facturation</a> de votre profil.'
+          description: "Entrez les informations de facturation pour changer votre méthode de paiement."
+          completed_message: "<h2>Réussi !</h2><p>Votre méthode de paiement a été mise à jour.</p>"
+      currency:
+        CAD: "$"
+        EUR: "€"
+        GBP: "£"
+        USD: "$"
+
+  memberships:
+    errors:
+      first_name: "Prénom"
+      last_name: "Nom"
+      card_number: "Numéro de carte"
+      expiration_month: "Mois d'expiration"
+      expiration_year: "Année d'expiration"
+      cvv: "CVC"
+    private_messages:
+      sign_up_success:
+        title: "Bienvenue sur %{productName}!"
+      subscription_canceled:
+        title: "Souscription à %{productName} annulée"
+        message: "Il semble que votre souscription à %{productName} a été annulée. Nous sommes navrés de vous voir partir. Si vous changez d'avis, vous pouvez toujours souscrire à nouveau."
+      subscription_charged_unsuccessfully:
+        title: "Souscription à %{productName} annulée"
+        message: "Il semble que votre souscription à %{productName} a été annulée en raison d'un problème avec la carte de paiement. Votre souscription est invalide. Pour résoudre ce problème, essayez de vous abonner à nouveau ou contactez un de nos administrateurs."
+      receipt:
+        title: "Reçu #%{transactionId}"
+        message: 'Merci ! Vous pouvez voir votre reçu sur la page <a href="/my/billing">Facturation de votre profil</a>.'

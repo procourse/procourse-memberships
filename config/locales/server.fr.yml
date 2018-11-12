@@ -1,0 +1,20 @@
+fr:
+  site_settings:
+    memberships_enabled: 'Activer ProCourse Memberships. Tous les réglages sont disponibles ci-dessous. La gestion des groupes et adhésions est troubable sur la page <a href="/admin/plugins/memberships">/admin/plugins/memberships</a>.'
+    memberships_go_live: "ProCourse Memberships fonctionne en mode TEST jusqu'à ce que vous activiez cette option. Ne l'activez que lorsque vous êtes prêts à entrer en mode live."
+    memberships_contact_user: "Le compte utilisateur qui servira à envoyer les messages privés (messages de bienvenue dans le(s) groupe(s), reçus, etc)"
+    memberships_currency: "La monnaie utilisée pour les paiements. VÉRIFIEZ QUE LA PASSERELLE DE PAIEMENT SOIT AUSSI RÉGLÉE SUR CETTE MONNAIE."
+    memberships_gateway: "Quelle plate-forme de paiement souhaitez-vous utiliser ?"
+    memberships_include_paypal: "Autoriser les paiements en cartes de crédits et par PayPal ? - Passerelle BrainTree"
+    memberships_paypal_username: "API Utilisateur PayPal pour la passerelle BrainTree PayPal"
+    memberships_paypal_password: "Password API PayPal pour BrainTree PayPal"
+    memberships_paypal_signature: "Signature PayPal pour BrainTree PayPal"
+    memberships_braintree_merchant_id: "ID Marchand Braintree"
+    memberships_braintree_public_key: "Clé publique Braintree"
+    memberships_braintree_private_key: "Clé privée Braintree"
+    memberships_paypal_api_id: "ID API PayPal - Passerelle PayPal"
+    memberships_paypal_api_secret: "PayPal API Secret - Passerelle PayPal"
+    memberships_stripe_publishable_key: "Clé publique API sur Stripe"
+    memberships_stripe_secret_key: "Clé secrète API sur Stripe"
+    memberships_stripe_webhook_secret: "Clé secrète du webhook Stripe -- utilisée pour validation de paiements récurrents"
+    
