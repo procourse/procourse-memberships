@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe ProcourseMemberships::Transaction do
     it "should initialize the Transaction object" do
-        subscription = ProcourseMemberships::Transaction.new({
+        transaction = ProcourseMemberships::Transaction.new({
             :id => 1,
             :user_id => -1,
             :product_id => 1677,
@@ -14,14 +14,14 @@ describe ProcourseMemberships::Transaction do
             :paypal => nil,
         })
 
-        expect(subscription.id).to eq(1)
-        expect(subscription.user_id).to eq(-1)
-        expect(subscription.product_id).to eq(1677)
-        expect(subscription.transaction_id).to eq(1)
-        expect(subscription.transaction_amount).to eq(2.76)
-        expect(subscription.transaction_date).to eq("2018-12-12 13:00:00")
-        expect(subscription.billing_address).to eq("555 Main Street, East South West Central, Anyplace, State US")
-        expect(subscription.credit_card).to eq("x5655")
-        expect(subscription.paypal).to eq(nil)
+        expect(transaction.id).to eq(1)
+        expect(transaction.user_id).to eq(-1)
+        expect(transaction.product_id).to eq(1677)
+        expect(transaction.transaction_id).to eq(1)
+        expect(transaction.transaction_amount).to eq(2.76)
+        expect(transaction.transaction_date).to eq("2018-12-12 13:00:00")
+        expect(transaction.billing_address).to eq("555 Main Street, East South West Central, Anyplace, State US")
+        expect(transaction.credit_card).to eq("x5655")
+        expect(transaction.paypal).to eq(nil)
     end
 end
