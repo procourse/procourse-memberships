@@ -59,7 +59,6 @@ module ProcourseMemberships
           return {:success => true, :response => subscription}
 
         rescue => e
-          binding.pry
           return {:success => false, :message => e}
         end
 
