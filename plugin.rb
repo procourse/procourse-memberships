@@ -7,6 +7,8 @@
 
 enabled_site_setting :memberships_enabled
 
+register_svg_icon "credit-card" if respond_to?(:register_svg_icon)
+
 add_admin_route 'memberships.title', 'memberships'
 
 register_asset "stylesheets/procourse-memberships.scss"
