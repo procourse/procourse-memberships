@@ -26,6 +26,7 @@ module ProcourseMemberships
             :return_url => "#{Discourse.base_url}/memberships/l/#{product[:id]}",
             :cancel_url => "#{Discourse.base_url}" },
           :transactions =>  [{
+            :invoice_number => "#{(Time.now.to_f * 1000).to_i}-#{product[:id]}-#{user_id}",
             :item_list => {
               :items => [{
                 :name => product[:name],

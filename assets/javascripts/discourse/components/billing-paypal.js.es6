@@ -123,6 +123,7 @@ export default Ember.Component.extend({
 
                         // At this point, the payment has been authorized, and you will need to call your back-end to complete the
                         // payment. Your back-end should invoke the PayPal Payment Execute api to finalize the transaction.
+                        self.set('hidePaypalButton', true);
                         let result = Payment.submitNonce(self.get('membershipsLevel')[0].id, { paymentID: data.paymentID, payerID: data.payerID }, "execute");
                         result.then(response => {
                             self._paymentExecuted();

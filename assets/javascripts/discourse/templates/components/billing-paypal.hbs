@@ -8,8 +8,9 @@
                 {{d-button action="submitPayment" label="memberships.checkout.subscribe" id="subscription-checkout" class="btn-primary"}}
             </div>
         {{else}}
-                <div id="paypal-button-container"></div>
-
+                {{#unless hidePaypalButton}}
+                    <div id="paypal-button-container"></div>
+                {{/unless}}
         {{/if}}
 
       </center>
