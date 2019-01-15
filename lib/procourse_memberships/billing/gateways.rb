@@ -75,7 +75,7 @@ module ProcourseMemberships
         username = User.find(@options[:user_id]).username
 
         new_log = {
-          timestamp: time,
+          timestamp: time.strftime("%m/%d/%Y %I:%M%p %z"),
           username: username,
           level_id: @options[:product_id],
           type: "Subscription",
@@ -111,7 +111,7 @@ module ProcourseMemberships
         username = User.find(@options[:user_id]).username
 
         new_log = {
-          timestamp: time,
+          timestamp: time.strftime("%m/%d/%Y %I:%M%p %z"),
           username: username,
           level_id: @options[:product_id],
           type: "Payment",
@@ -134,6 +134,7 @@ module ProcourseMemberships
       def unstore_subscription
         subscriptions = PluginStore.get("procourse_memberships", "s:" + @options[:user_id].to_s)
         subscription = subscriptions.select{|subscription| subscription[:product_id] = @options[:product_id].to_i}
+        time = Time.now
         
         subscriptions.delete(subscription[0])
         PluginStore.set("procourse_memberships", "s:" + @options[:user_id].to_s, subscriptions)
@@ -142,7 +143,7 @@ module ProcourseMemberships
         log = PluginStore.get("procourse_memberships", "log") || []
         username = User.find(@options[:user_id]).username
         new_log = {
-          timestamp: Time.now(),
+          timestamp: time.strftime("%m/%d/%Y %I:%M%p %z"),
           username: username,
           level_id: @options[:product_id],
           type: "Cancellation",

@@ -1,3 +1,29 @@
-{{#conditional-loading-spinner condition=model.loading}}
-<div>{{{dashboard}}}</div>
+{{#conditional-loading-spinner condition=loading}}
+
+{{text-field value=filter class="log-search" placeholderKey="admin.memberships.logs.filter" autocorrect="off" autocapitalize="off"}}
+
+<table class="table grid">
+    {{#if model.length}}
+        <thead>
+            <th>Time</th>
+            <th>Username</th>
+            <th>Product</th>
+            <th>Transaction Type</th>
+            <th>Amount</th>
+        </thead>
+        <tbody>
+            {{#each model as |item|}}
+                <tr class="admin-list-item">
+                    <td class="col">{{item.timestamp}}</td>
+                    <td class="col">{{item.username}}</td>
+                    <td class="col">{{item.product_name}}</td>
+                    <td class="col">{{item.type}}</td>
+                    <td class="col">{{item.amount}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    {{else}}
+        {{i18n 'search.no_results'}}
+    {{/if}}
+</table>
 {{/conditional-loading-spinner}}

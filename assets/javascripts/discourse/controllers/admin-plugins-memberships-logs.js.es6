@@ -1,9 +1,15 @@
-import paymentLogs from '../models/payment-logs';
+import PaymentLogs from '../models/payment-logs';
+import debounce from "discourse/lib/debounce";
 
 export default Ember.Controller.extend({
+  loading: false,
+  filter: null,
 
-  _init: function() {
-    self = this;
- 
-  }.on('init'),
+  show: debounce(function() {
+    this.set("loading", true);
+    PaymentLogs.findAll(this.get("filter")).then(result => {
+      this.set("model", result);
+      this.set("loading", false);
+    });
+  }, 250).observes("filter")
 })
