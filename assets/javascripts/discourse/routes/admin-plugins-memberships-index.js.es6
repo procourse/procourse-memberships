@@ -1,4 +1,4 @@
-import Dashboard from '../models/dashboard';
+import paymentLogs from '../models/payment-logs';
 
 export default Discourse.Route.extend({
   model() {

@@ -55,6 +55,7 @@ module ProcourseMemberships
 
       def store_subscription(subscription_id, subscription_end_date)
         subscriptions = PluginStore.get("procourse_memberships", "s:" + @options[:user_id].to_s) || []
+        log = PluginStore.get("procourse_memberships", "log") || []
         time = Time.now
 
         new_subscription = {
@@ -69,10 +70,27 @@ module ProcourseMemberships
         subscriptions.push(new_subscription)
 
         PluginStore.set("procourse_memberships", "s:" + @options[:user_id].to_s, subscriptions)
+
+        # Add to admin transaction log
+        username = User.find(@options[:user_id]).username
+
+        new_log = {
+          timestamp: time,
+          username: username,
+          level_id: @options[:product_id],
+          type: "Subscription",
+          amount: "---"
+        }
+
+        log.push(new_log)
+
+        PluginStore.set("procourse_memberships", "log", log)
       end
 
       def store_transaction(transaction_id, transaction_amount, transaction_date, credit_card = {}, paypal = {})
         transactions = PluginStore.get("procourse_memberships", "t:" + @options[:user_id].to_s) || []
+        log = PluginStore.get("procourse_memberships", "log") || []
+
         time = Time.now
 
         new_transaction = {
@@ -89,7 +107,20 @@ module ProcourseMemberships
 
         PluginStore.set("procourse_memberships", "t:" + @options[:user_id].to_s, transactions)
 
+        # Add to admin transaction log
         username = User.find(@options[:user_id]).username
+
+        new_log = {
+          timestamp: time,
+          username: username,
+          level_id: @options[:product_id],
+          type: "Payment",
+          amount: transaction_amount
+        }
+
+        log.push(new_log)
+
+        PluginStore.set("procourse_memberships", "log", log)
 
         PostCreator.create(
           ProcourseMemberships.contact_user,
@@ -103,13 +134,26 @@ module ProcourseMemberships
       def unstore_subscription
         subscriptions = PluginStore.get("procourse_memberships", "s:" + @options[:user_id].to_s)
         subscription = subscriptions.select{|subscription| subscription[:product_id] = @options[:product_id].to_i}
-
+        
         subscriptions.delete(subscription[0])
         PluginStore.set("procourse_memberships", "s:" + @options[:user_id].to_s, subscriptions)
+
+        # Add to admin transaction log
+        log = PluginStore.get("procourse_memberships", "log") || []
+        username = User.find(@options[:user_id]).username
+        new_log = {
+          timestamp: Time.now(),
+          username: username,
+          level_id: @options[:product_id],
+          type: "Cancellation",
+          amount: "---"
+        }
+
+        log.push(new_log)
+
+        PluginStore.set("procourse_memberships", "log", log)
       end
-
     end
-
   end
 end
 
