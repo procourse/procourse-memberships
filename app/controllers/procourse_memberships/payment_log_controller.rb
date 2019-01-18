@@ -6,8 +6,8 @@ module ProcourseMemberships
         logs = PluginStore.get("procourse_memberships", "log") || []
 
         if !logs.empty?
+          logs = logs.select {|log| log["timestamp"] == filter || log["username"] == filter || log["type"] == filter || log["amount"] == filter} if !filter.nil?
           logs = logs.flatten.map{ |log| PaymentLog.new(log) }
-          #todo - handle filtering of logs
         else
           logs = []
         end
