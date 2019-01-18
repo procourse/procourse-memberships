@@ -11,6 +11,9 @@
                 {{#unless hidePaypalButton}}
                     <div id="paypal-button-container"></div>
                 {{/unless}}
+                {{#if hidePaypalButton}}
+                    <p>Please wait for PayPal transaction to complete. Do not navigate away from this page.</p>
+                {{/if}}
         {{/if}}
 
       </center>
