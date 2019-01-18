@@ -24,6 +24,7 @@ after_initialize do
 
 	Discourse::Application.routes.append do
 		get '/admin/plugins/memberships' => 'admin/plugins#index', constraints: StaffConstraint.new
+		get '/admin/plugins/memberships/logs' => 'admin/plugins#index', constraints: StaffConstraint.new
 		get '/admin/plugins/memberships/levels' => 'admin/plugins#index', constraints: StaffConstraint.new
 		get '/admin/plugins/memberships/gateways' => 'admin/plugins#index', constraints: StaffConstraint.new
 		get '/admin/plugins/memberships/messages' => 'admin/plugins#index', constraints: StaffConstraint.new

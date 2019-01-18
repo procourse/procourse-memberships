@@ -10,6 +10,7 @@ en:
         titles:
           dashboard: "Dashboard"
           levels: "Levels"
+          logs: "Logs"
           gateways: "Gateways"
           messages: "Messages"
           advanced: "Advanced"

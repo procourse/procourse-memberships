@@ -5,6 +5,7 @@ export default {
     this.route('memberships', function(){
       this.route('index', {path: '/'});
       this.route('levels');
+      this.route('logs');
       this.route('pages');
       this.route('gateways');
       this.route('messages');
