@@ -27,6 +27,7 @@ procourse_memberships:
       - "Braintree"
       - "PayPal"
       - "Stripe"
+      - "Test"
   memberships_include_paypal:
     default: false
     client: true
