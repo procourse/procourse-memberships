@@ -115,9 +115,9 @@ export default Ember.Controller.extend({
       MembershipsLevel.save(this.get('selectedItem'));
     },
 
-    copy: function(MembershipsLevel) {
-      var newPCMLevel = MembershipsLevel.copy(MembershipsLevel);
-      newPCMLevel.set('name', I18n.t('admin.customize.colors.copy_name_prefix') + ' ' + MembershipsLevel.get('name'));
+    copy: function(membershipsLevel) {
+      var newPCMLevel = MembershipsLevel.copy(membershipsLevel);
+      newPCMLevel.set('name', I18n.t('admin.customize.colors.copy_name_prefix') + ' ' + membershipsLevel.get('name'));
       this.get('model').pushObject(newPCMLevel);
       this.send('selectPCMLevel', newPCMLevel);
     },
