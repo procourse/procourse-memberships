@@ -115,6 +115,10 @@ MembershipsLevel.reopenClass({
   copy: function(object){
     var copiedLevel = MembershipsLevel.create(object);
     copiedLevel.id = null;
+    copiedLevel.enabled = false;
+    copiedLevel.braintree_plan_id = "";
+    copiedLevel.paypal_plan_status = "";
+    copiedLevel.stripe_plan_id = "";
     return copiedLevel;
   },
 
