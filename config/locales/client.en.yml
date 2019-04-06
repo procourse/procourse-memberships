@@ -6,6 +6,8 @@ en:
           procourse_memberships: "ProCourse Memberships"
   js:
     admin:
+      groups:
+        bulk_select: "-- select a group --"
       memberships:
         titles:
           dashboard: "Dashboard"
