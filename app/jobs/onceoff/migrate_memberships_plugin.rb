@@ -1,5 +1,5 @@
 module Jobs
-    class MigrateMembershipsPlugin < Jobs::Onceoff
+    class MigrateMembershipsPlugin < ::Jobs::Onceoff
       # Migrate content from discourse_league name to procourse_memberships
       def execute_onceoff(args)
           dl_row_presence = PluginStoreRow.where(plugin_name: "discourse_league").exists?

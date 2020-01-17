@@ -17,11 +17,11 @@ module ProcourseMemberships
       require_dependency 'current_user_serializer'
       class ::CurrentUserSerializer
         attributes :groups
-      end 
+      end
 
       module ::Jobs
 
-        class SubscriptionCanceled < Jobs::Base
+        class SubscriptionCanceled < ::Jobs::Base
           def execute(args)
             subscription = PluginStoreRow.where(plugin_name: "procourse_memberships")
               .where("key LIKE 's:%'")
@@ -63,7 +63,7 @@ module ProcourseMemberships
           end
         end
 
-        class SubscriptionChargedUnsuccessfully < Jobs::Base
+        class SubscriptionChargedUnsuccessfully < ::Jobs::Base
           def execute(args)
             subscription = PluginStoreRow.where(plugin_name: "procourse_memberships")
               .where("key LIKE 's:%'")
@@ -105,7 +105,7 @@ module ProcourseMemberships
           end
         end
 
-        class SubscriptionChargedSuccessfully < Jobs::Base
+        class SubscriptionChargedSuccessfully < ::Jobs::Base
           def execute(args)
             subscription = PluginStoreRow.where(plugin_name: "procourse_memberships")
               .where("key LIKE 's:%'")
