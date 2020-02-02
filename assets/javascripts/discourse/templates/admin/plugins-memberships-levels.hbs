@@ -53,10 +53,17 @@
         </div>
         {{/if}}
         <div>
-          {{combo-box content=customGroups valueAttribute="id" value=selectedItem.group none="admin.groups.bulk_select"}}
+          {{combo-box
+            content=customGroups
+            valueProperty="id"
+            value=selectedItem.group
+            none="admin.groups.bulk_select"}}
         </div>
         <div>
-          {{combo-box content=trustLevels valueAttribute="id" value=selectedItem.trust_level}}
+          {{combo-box
+            content=trustLevels
+            valueProperty="id"
+            value=selectedItem.trust_level}}
         </div>
         <div>
           <label for="initial-payment">{{i18n 'admin.memberships.levels.initial_payment'}}</label>
