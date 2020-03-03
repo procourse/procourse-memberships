@@ -1,0 +1,14 @@
+zh_CN:
+  site_settings:
+    league_enabled: '启用 League，所有设置都在设置列表 Discourse League，所有 League 分组和页面设置都在 <a href="/admin/plugins/league">/admin/plugins/league</a>。'
+    league_go_live: "League 在测试模式下运行，当你准备好上线时启用此选项。"
+    league_contact_user: "将用于发送私人信息的用户帐号。"
+    league_currency: "用于支付的币种，确保网关的默认值与此币种匹配。"
+    league_gateway: "你想使用哪个网关？"
+    league_include_paypal: "允许信用卡和 PayPal 的选择？"
+    league_paypal_username: "PayPal API 用户名"
+    league_paypal_password: "PayPal API 密码"
+    league_paypal_signature: "PayPal 签名"
+    league_braintree_merchant_id: "Braintree 商家 ID"
+    league_braintree_public_key: "Braintree 公钥"
+    league_braintree_private_key: "Braintree 私钥"
