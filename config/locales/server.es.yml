@@ -1,0 +1,14 @@
+en:
+  site_settings:
+    league_enabled: 'Habilitar la Liga. Todas las opciones de configuración pueden ser encontradas aquí al final de la lista de categoria de configuraciones. Todos los grupo de Liga y la página de configuración se encuentra en <a href="/admin/plugins/league">/admin/plugins/league</a>.'
+    league_go_live: "La Liga core en modo de PRUEBA hasta que esta opción esté habilitada. Habilita esta opción cuando quieras ponerla en marcha."
+    league_contact_user: "El usuario utilizado para enviar mensajes privados."
+    league_currency: "La moneda utilizada para los pagos. ASEGÚRATE DE COINCIDIR CON LA MONEDA DE TU ENLACE DE PAGOS UTILIZADO."
+    league_gateway: "¿Qué enlace de pagos quieres utilizar?"
+    league_include_paypal: "Permitir utilizar ambas opciones, tarjeta de crédito y PayPay?"
+    league_paypal_username: "Usuario de PayPal API"
+    league_paypal_password: "Contraseña de PayPal API"
+    league_paypal_signature: "Firma de PayPal"
+    league_braintree_merchant_id: "ID de Comerciante de Braintree"
+    league_braintree_public_key: "Llave Pública de Braintree"
+    league_braintree_private_key: "Llave Privada de Braintree"
